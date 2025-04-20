@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Experiences from './components/Experiences';
 import ProtectedRoute from './components/ProtectedRoute';
 import FetchUserAndRedirect from './components/FetchUserAndRedirect';
+import AddExperience from './components/AddExperience';
 
 function App() {
   const dispatch = useDispatch();
@@ -25,6 +26,9 @@ function App() {
             <li>
               <Link to="/experiences">Experiences</Link>
             </li>
+            <li>
+              <Link to="/AddExperiences">Add Experience</Link>
+            </li>
           </ul>
         </nav>
         <Routes>
@@ -35,6 +39,16 @@ function App() {
               <ProtectedRoute>
                 <FetchUserAndRedirect>
                   <Experiences />
+                </FetchUserAndRedirect>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/addExperiences"
+            element={
+              <ProtectedRoute>
+                <FetchUserAndRedirect>
+                  <AddExperience />
                 </FetchUserAndRedirect>
               </ProtectedRoute>
             }

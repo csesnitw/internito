@@ -16,7 +16,7 @@ function FetchUserAndRedirect({ children }) {
         const data = await response.json();
         if (data.success) {
           dispatch(setUser(data.user)); // Store user details in Redux
-          navigate('/experiences'); // Redirect to experiences after login
+          //navigate('/experiences'); // Redirect to experiences after login
         }
       } catch (error) {
         console.error('Error fetching user details:', error);

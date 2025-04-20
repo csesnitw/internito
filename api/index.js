@@ -16,6 +16,7 @@ const dotenv = require("dotenv");  /// This library is commonly used for setting
 //database credentials, and other configuration variables out of your source code for security purposes
 
 const passportSetup = require("./passport-setup"); /// importing our student authentication middleware written in another file
+const experience_router = require("./routes/experiences"); /// importing our experience routes written in another file
 
 /* 
 Status codes returned in the responses of various API endpoints are mostly in line with
@@ -73,6 +74,7 @@ mongoose.connect(process.env.mongo_link); // connects to our mongodb database
 app.use(express.json()); /* The above code is configuring an Express application to use the built-in middleware express.json().
 This middleware is used to parse incoming requests with JSON payloads. */
 
+app.use("/experiences", experience_router);
 
 /// Basic endpoint to see if our backend server is running without any complications
 app.get("/", (req, res) => {
