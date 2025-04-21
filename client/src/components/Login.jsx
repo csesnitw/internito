@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { login, setUser } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
+import './Login.css'; // Add styles for the Login page
 
 function Login() {
   const dispatch = useDispatch();
@@ -35,9 +36,16 @@ function Login() {
   }, [dispatch, navigate]);
 
   return (
-    <div>
-      <h1>Login Page</h1>
-      <button onClick={handleLogin}>Login with Google</button>
+    <div className="login-container">
+      <div className="login-box">
+        <h1>Login to Your Account</h1>
+        <button className="google-login-btn" onClick={handleLogin}>
+          Login with Google
+        </button>
+        <p>
+          Don't have an account? <a href="/register">Register Now!</a>
+        </p>
+      </div>
     </div>
   );
 }
