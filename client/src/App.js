@@ -8,6 +8,7 @@ import Experiences from './components/Experiences';
 import ProtectedRoute from './components/ProtectedRoute';
 import FetchUserAndRedirect from './components/FetchUserAndRedirect';
 import AddExperience from './components/AddExperience';
+import SearchPage from './components/SearchPage'; // Import the SearchPage component
 
 function App() {
   const dispatch = useDispatch();
@@ -40,6 +41,14 @@ function App() {
                   <FetchUserAndRedirect>
                     <AddExperience />
                   </FetchUserAndRedirect>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <ProtectedRoute>
+                  <SearchPage />
                 </ProtectedRoute>
               }
             />

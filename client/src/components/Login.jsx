@@ -43,7 +43,7 @@ function Login() {
           Login with Google
         </button>
         <p>
-          Don't have an account? <a href="/register">Register Now!</a>
+          *Use your NITW student email only.
         </p>
       </div>
     </div>
