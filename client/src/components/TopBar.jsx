@@ -17,7 +17,7 @@ function TopBar() {
             <Link to="/experiences">Experiences</Link>
           </li>
           <li>
-            <Link to="/write">Write</Link>
+            <Link to="/addExperiences">Write</Link>
           </li>
           <li>
             <Link to="/about">About</Link>
