@@ -11,6 +11,9 @@ function TopBar() {
       <nav>
         <ul className="nav-links">
           <li>
+            <Link to="/admin">Admin</Link>
+          </li>
+          <li>
             <Link to="/search">Search Companies</Link>
           </li>
           <li>

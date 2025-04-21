@@ -8,6 +8,7 @@ import Experiences from './components/Experiences';
 import ProtectedRoute from './components/ProtectedRoute';
 import FetchUserAndRedirect from './components/FetchUserAndRedirect';
 import AddExperience from './components/AddExperience';
+import AdminDashboard from './components/AdminDashboard';
 
 function App() {
   const dispatch = useDispatch();
@@ -23,6 +24,16 @@ function App() {
         <div className="content"> {/* Dynamic content below TopBar */}
           <Routes>
             <Route path="/" element={<Login />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <FetchUserAndRedirect>
+                    <AdminDashboard />
+                  </FetchUserAndRedirect>
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/experiences"
               element={
