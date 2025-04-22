@@ -27,11 +27,9 @@ function App() {
             <Route
               path="/admin"
               element={
-                <ProtectedRoute>
-                  <FetchUserAndRedirect>
-                    <AdminDashboard />
-                  </FetchUserAndRedirect>
-                </ProtectedRoute>
+                <FetchUserAndRedirect>
+                  <AdminDashboard />
+                </FetchUserAndRedirect>
               }
             />
             <Route
