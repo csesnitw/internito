@@ -9,6 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import FetchUserAndRedirect from './components/FetchUserAndRedirect';
 import AddExperience from './components/AddExperience';
 import SearchPage from './components/SearchPage'; // Import the SearchPage component
+import './App.css'; // Import your CSS file
 
 function App() {
   const dispatch = useDispatch();

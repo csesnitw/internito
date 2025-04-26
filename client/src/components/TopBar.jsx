@@ -1,13 +1,19 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import { logout } from '../slices/authSlice';
 import './TopBar.css'; // Add styles for the TopBar
 
 function TopBar() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn); // Check login status
+  const user = useSelector((state) => state.auth.user); // Get user details from Redux
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log('User details:', user);
+  }, [user]);
 
   const handleLogout = async () => {
     try {
@@ -25,31 +31,57 @@ function TopBar() {
   return (
     <header className="topbar">
       <div className="logo">
-        <h1>interNito</h1>
+        <h1>inter<span className="logo-n">N</span>ito</h1>
       </div>
       <nav>
         <ul className="nav-links">
-          <li>
-            <Link to="/about">About</Link>
-          </li>
           {!isLoggedIn ? (
             // Show Login and Register if not logged in
             <>
               <li>
-                <Link to="/">Log In</Link>
+                <NavLink to="/about" className={({ isActive }) => (isActive ? 'active' : '')}>
+                  About
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>
+                  Log In
+                </NavLink>
               </li>
             </>
           ) : (
             // Show other links if logged in
             <>
-              <li>
-                <Link to="/search">Search Companies</Link>
+              <li>              
+                <span>
+                  {user && user.firstName ? (
+                    <>
+                      Hello, <strong>{user.firstName}</strong>!
+                    </>
+                  ) : (
+                    'Loading...'
+                  )}
+                </span>
               </li>
               <li>
-                <Link to="/experiences">Experiences</Link>
+                <NavLink to="/about" className={({ isActive }) => (isActive ? 'active' : '')}>
+                  About
+                </NavLink>
               </li>
               <li>
-                <Link to="/addExperiences">Write</Link>
+                <NavLink to="/search" className={({ isActive }) => (isActive ? 'active' : '')}>
+                  Search Companies
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/experiences" className={({ isActive }) => (isActive ? 'active' : '')}>
+                  Experiences
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/addExperiences" className={({ isActive }) => (isActive ? 'active' : '')}>
+                  Write
+                </NavLink>
               </li>
               <li>
                 <button onClick={handleLogout} className="logout-button">

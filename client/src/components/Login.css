@@ -2,7 +2,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   background-color: #f4f4f4;
 }
 
@@ -16,19 +15,16 @@
 }
 
 .login-box h1 {
-  margin-bottom: 20px;
   font-size: 24px;
   color: #333;
 }
 
 .form-group {
-  margin-bottom: 15px;
   text-align: left;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 5px;
   font-weight: bold;
 }
 
@@ -41,7 +37,6 @@
 
 .form-footer {
   text-align: right;
-  margin-bottom: 15px;
 }
 
 .form-footer a {
@@ -73,7 +68,6 @@ button:hover {
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
-  margin-bottom: 15px;
 }
 
 .google-login-btn:hover {
@@ -81,7 +75,6 @@ button:hover {
 }
 
 p {
-  margin-top: 15px;
   font-size: 14px;
 }
 
