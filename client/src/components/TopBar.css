@@ -3,8 +3,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #ddd;
+  background-color: white;
+  border-bottom-color: rgb(186, 186, 186);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
 }
 
 .logo h1 {
