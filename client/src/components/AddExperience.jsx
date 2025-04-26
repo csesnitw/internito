@@ -30,37 +30,40 @@ const AddExperience = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage(''); // Clear previous error messages
-    setSuccessMessage(''); // Clear previous success messages
+    setErrorMessage('');
+    setSuccessMessage('');
 
     try {
-      const response = await fetch('http://localhost:8000/experiences/addExperience', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(experience),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/experiences/addExperience`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(experience),
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
-        setSuccessMessage(data.message); // Display success message
+        setSuccessMessage(data.message);
         setExperience({
-          company: "",
-          name: "",
+          company: '',
+          name: '',
           email: user.username,
-          batch: "",
-          cgpaCutoff: "",
-          experienceType: "Intern",
-          position: "",
-          date: "",
-          OT_description: "",
-          interview_description: "",
-          other_comments: ""
+          batch: '',
+          cgpaCutoff: '',
+          experienceType: 'Intern',
+          position: '',
+          date: '',
+          OT_description: '',
+          interview_description: '',
+          other_comments: '',
         });
       } else {
-        setErrorMessage(data.message); // Display error message
+        setErrorMessage(data.message);
       }
     } catch (error) {
       console.error('Error submitting experience:', error);

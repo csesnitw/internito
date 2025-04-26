@@ -10,13 +10,15 @@ function FetchUserAndRedirect({ children }) {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch('http://localhost:8000/login/success', {
-          credentials: 'include', // Include cookies for session
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/login/success`,
+          {
+            credentials: 'include',
+          }
+        );
         const data = await response.json();
         if (data.success) {
-          dispatch(setUser(data.user)); // Store user details in Redux
-          //navigate('/experiences'); // Redirect to experiences after login
+          dispatch(setUser(data.user));
         }
       } catch (error) {
         console.error('Error fetching user details:', error);

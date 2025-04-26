@@ -17,12 +17,15 @@ function TopBar() {
 
   const handleLogout = async () => {
     try {
-      await fetch('http://localhost:8000/logout', {
-        method: 'GET',
-        credentials: 'include', // Include cookies for session
-      });
-      dispatch(logout()); // Clear Redux state
-      navigate('/'); // Redirect to login page
+      await fetch(
+        `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/logout`,
+        {
+          method: 'GET',
+          credentials: 'include',
+        }
+      );
+      dispatch(logout());
+      navigate('/');
     } catch (error) {
       console.error('Error during logout:', error);
     }

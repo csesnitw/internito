@@ -119,10 +119,10 @@ to authenticate the user using the 'google' strategy. If the authentication fail
 redirected to 'http://localhost:3000/'. If the authentication is successful, the user is redirected
 to the frontend experiences page. */
 app.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: 'http://localhost:3000/' }),
+    passport.authenticate('google', { failureRedirect: `${process.env.REACT_APP_CLIENT_URL || 'http://localhost:3000'}/` }),
     (req, res) => {
         // Redirect to the frontend experiences page after successful login
-        res.redirect('http://localhost:3000/experiences');
+        res.redirect(`${process.env.REACT_APP_CLIENT_URL || 'http://localhost:3000'}/experiences`);
     }
 );
 

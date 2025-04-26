@@ -9,17 +9,20 @@ function SearchPage() {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    setErrorMessage(''); // Clear previous error messages
-    setResults([]); // Clear previous results
+    setErrorMessage('');
+    setResults([]);
 
     try {
-      const response = await fetch('http://localhost:8000/experiences/search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ company, cgpa }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/experiences/search`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ company, cgpa }),
+        }
+      );
 
       const data = await response.json();
 
@@ -27,7 +30,7 @@ function SearchPage() {
         if (data.length === 0) {
           setErrorMessage('No results found. Try adjusting your filters.');
         } else {
-          setResults(data); // Update results with the fetched data
+          setResults(data);
         }
       } else {
         setErrorMessage('Failed to fetch search results.');
