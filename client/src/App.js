@@ -9,6 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import FetchUserAndRedirect from './components/FetchUserAndRedirect';
 import AddExperience from './components/AddExperience';
 import SearchPage from './components/SearchPage'; // Import the SearchPage component
+import About from './components/About'; // Import the About component
 import './App.css'; // Import your CSS file
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path="/about" element={<About />} /> {/* Add About route */}
           </Routes>
         </div>
       </div>

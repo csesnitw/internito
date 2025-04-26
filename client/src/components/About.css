@@ -1,0 +1,104 @@
+/* General container styles */
+.about-container {
+    padding: 40px;
+    color: #333;
+    line-height: 1.6;
+  }
+  
+  /* Intro section */
+  .about-intro {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+.about-intro-text {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6em;
+}
+  
+  .about-intro h1 {
+    font-size: 2.5rem;
+    color: #76B852; /* Green color */
+    margin-bottom: 20px;
+  }
+  
+  .about-intro p {
+    font-size: 1.1rem;
+  }
+  
+  /* Developers section */
+  .developers-section {
+    text-align: center;
+  }
+  
+  .developers-section h2 {
+    font-size: 2rem;
+    color: #76B852; /* Green color */
+    margin-bottom: 30px;
+  }
+  
+  /* Developer cards */
+  .developer-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .developer-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 250px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .developer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  .card-image {
+    margin-bottom: 15px;
+  }
+  
+  .card-image img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .developer-card h3 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .developer-card p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 15px;
+  }
+  
+  .developer-card a {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #76B852; /* Green color */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .developer-card a:hover {
+    background-color: #5da347; /* Slightly darker green */
+  }
