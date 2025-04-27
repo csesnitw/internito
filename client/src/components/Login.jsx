@@ -47,6 +47,7 @@ function Login() {
         </button>
         <p>
           *Use your NITW student email only.
+          Final test for automatic deployment.Remove this line later on.
         </p>
       </div>
     </div>
