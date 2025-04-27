@@ -106,3 +106,15 @@
   .developer-card a:hover {
     background-color: #5da347; /* Slightly darker green */
   }
+
+  /* Add styles for first and last names */
+.developer-card h3 .first-name {
+  display: block; /* Ensures the first name is on its own line */
+}
+
+.developer-card h3 .last-name {
+  display: block; /* Ensures the last name is on its own line */
+}
+
+/* Responsive Design */
+/*  */

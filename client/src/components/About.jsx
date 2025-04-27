@@ -6,31 +6,31 @@ function About() {
     {
       name: 'Sufiyan Ansari',
       role: 'Backend Developer',
-      image: '/images/sufiyan.jpg',
+      image: '/devs/sufiyan.jpg',
       linkedin: 'https://www.linkedin.com/in/sufiyan-ansari/',
     },
     {
       name: 'Chaitanya Hardikar',
       role: 'Backend Developer',
-      image: '/images/chaitanya.jpg',
+      image: '/devs/sufiyan.jpg',
       linkedin: 'https://www.linkedin.com/in/chaitanya-hardikar/',
     },
     {
       name: 'Divya Soni',
       role: 'Frontend Developer',
-      image: '/images/divya.jpg',
+      image: '/devs/sufiyan.jpg',
       linkedin: 'https://www.linkedin.com/in/divya-soni/',
     },
     {
       name: 'Abhishek Upadhyayula',
       role: 'Frontend Developer',
-      image: '/images/abhishek.jpg',
+      image: '/devs/sufiyan.jpg',
       linkedin: 'https://www.linkedin.com/in/abhishek-upadhyayula/',
     },
     {
       name: 'Chirantan Muliya',
       role: 'Backend Developer',
-      image: '/images/chirantan.jpg',
+      image: '/devs/sufiyan.jpg',
       linkedin: 'https://www.linkedin.com/in/chirantan-muliya/',
     },
   ];
@@ -39,19 +39,19 @@ function About() {
     {
       name: 'Devashish Dubal',
       role: 'MERN Developer',
-      image: '/images/placeholder.jpg', // Placeholder image
+      image: '/devs/sufiyan.jpg', // Placeholder image
       linkedin: 'https://www.linkedin.com/',
     },
     {
       name: 'Chetan Kar',
       role: 'MERN Developer',
-      image: '/images/placeholder.jpg', // Placeholder image
+      image: '/devs/sufiyan.jpg', // Placeholder image
       linkedin: 'https://www.linkedin.com/',
     },
     {
       name: 'Shubham Pahilwani',
       role: 'MERN Developer',
-      image: '/images/placeholder.jpg', // Placeholder image
+      image: '/devs/sufiyan.jpg', // Placeholder image
       linkedin: 'https://www.linkedin.com/',
     },
   ];
@@ -78,7 +78,10 @@ function About() {
               <div className="card-image">
                 <img src={dev.image} alt={dev.name} />
               </div>
-              <h3>{dev.name}</h3>
+              <h3>
+                <span className="first-name">{dev.name.split(' ')[0]}</span>
+                <span className="last-name">{dev.name.split(' ')[1]}</span>
+              </h3>
               <p>{dev.role}</p>
               <a href={dev.linkedin} target="_blank" rel="noopener noreferrer">
                 LinkedIn Profile
@@ -96,7 +99,10 @@ function About() {
               <div className="card-image">
                 <img src={dev.image} alt={dev.name} />
               </div>
-              <h3>{dev.name}</h3>
+              <h3>
+                <span className="first-name">{dev.name.split(' ')[0]}</span>
+                <span className="last-name">{dev.name.split(' ')[1]}</span>
+              </h3>
               <p>{dev.role}</p>
               <a href={dev.linkedin} target="_blank" rel="noopener noreferrer">
                 LinkedIn Profile
