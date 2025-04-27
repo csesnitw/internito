@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Experience = require("../models/Experience");
 
+// Get all experiences sorted by date
 router.get("/", async (req, res) => {
   try {
     const experiences = await Experience.find().sort({ date: -1 });
@@ -12,6 +13,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Add a new experience
 router.post("/addExperience", async (req, res) => {
   try {
     const { company, name, email, batch, cgpaCutoff, experienceType, position, date, OT_description, interview_description, other_comments } = req.body;
@@ -44,24 +46,49 @@ router.post("/addExperience", async (req, res) => {
   }
 });
 
+// Search all experiences sorted by date
 router.post('/search', async (req, res) => {
-  const { company, cgpa } = req.body;
-
   try {
-    // If no search parameters are provided, return an empty array
-    if (!company && !cgpa) {
-      return res.status(200).json([]); // Return an empty array
-    }
-
-    const query = {};
-    if (company) query.company = company;
-    if (cgpa) query.cgpaCutoff = { $gte: parseFloat(cgpa) };
-
-    const experiences = await Experience.find(query).sort({ date: -1 });
+    const experiences = await Experience.find().sort({ date: -1 });
     res.status(200).json(experiences);
   } catch (error) {
     console.error('Error fetching search results:', error);
     res.status(500).json({ message: 'Failed to fetch search results' });
+  }
+});
+
+// Search by company name (regex) and/or CGPA, grouped by company
+router.post('/company', async (req, res) => {
+  const { company, cgpa } = req.body;
+
+  try {
+    const query = {};
+
+    // Match company name using regex (case-insensitive)
+    if (company) {
+      query.company = { $regex: company, $options: "i" };
+    }
+
+    // Filter by CGPA cutoff if provided
+    if (cgpa) {
+      query.cgpaCutoff = { $lte: parseFloat(cgpa) };
+    }
+
+    const experiences = await Experience.find(query).sort({ date: -1 });
+
+    // Group experiences by company
+    const groupedByCompany = experiences.reduce((acc, experience) => {
+      if (!acc[experience.company]) {
+        acc[experience.company] = [];
+      }
+      acc[experience.company].push(experience);
+      return acc;
+    }, {});
+
+    res.status(200).json(groupedByCompany);
+  } catch (error) {
+    console.error('Error fetching company search results:', error);
+    res.status(500).json({ message: 'Failed to fetch company search results' });
   }
 });
 

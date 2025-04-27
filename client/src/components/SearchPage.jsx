@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { NAMES } from '../constants/companies'; // Import the list of companies
+import './SearchPage.css'; // Add a CSS file for styling
 
 function SearchPage() {
-  const [company, setCompany] = useState('');
-  const [cgpa, setCgpa] = useState('');
+  const [searchInput, setSearchInput] = useState('');
+  const [suggestions, setSuggestions] = useState([]); // State for autocomplete suggestions
   const [results, setResults] = useState([]); // State to store search results
   const [errorMessage, setErrorMessage] = useState(''); // State to store error messages
 
@@ -12,23 +13,28 @@ function SearchPage() {
     setErrorMessage('');
     setResults([]);
 
+    const isCgpaSearch = !isNaN(searchInput) && searchInput.trim() !== '';
+
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences/search`,
+        `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences/company`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ company, cgpa }),
+          body: JSON.stringify({
+            company: isCgpaSearch ? '' : searchInput,
+            cgpa: isCgpaSearch ? parseFloat(searchInput) : undefined,
+          }),
         }
       );
 
       const data = await response.json();
 
       if (response.ok) {
-        if (data.length === 0) {
-          setErrorMessage('No results found. Try adjusting your filters.');
+        if (Object.keys(data).length === 0) {
+          setErrorMessage('No results found. Try selecting a different company or CGPA.');
         } else {
           setResults(data);
         }
@@ -41,59 +47,84 @@ function SearchPage() {
     }
   };
 
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setSearchInput(value);
+
+    // Show autocomplete suggestions only for text input
+    if (isNaN(value)) {
+      const filteredSuggestions = NAMES.filter((name) =>
+        name.toLowerCase().includes(value.toLowerCase())
+      );
+      setSuggestions(filteredSuggestions);
+    } else {
+      setSuggestions([]); // Clear suggestions for numeric input
+    }
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setSearchInput(suggestion);
+    setSuggestions([]); // Clear suggestions after selection
+  };
+
   return (
-    <div>
-      <h1>Search Experiences</h1>
-      <form onSubmit={handleSearch} style={{ marginBottom: '20px' }}>
-        <div>
-          <label>
-            Company Name:
-            <select
-              value={company}
-              onChange={(e) => setCompany(e.target.value)}
-            >
-              <option value="">Select a company</option>
-              {NAMES.map((name, index) => (
-                <option key={index} value={name}>
-                  {name}
-                </option>
+    <div className="search-page">
+      <h1>Search Experiences by <span>Company</span></h1>
+      <form onSubmit={handleSearch} className="search-form">
+        <div className="autocomplete-container">
+          <input
+            type="text"
+            value={searchInput}
+            onChange={handleInputChange}
+            placeholder="Enter Company Name or CGPA"
+            className="search-input"
+          />
+          {suggestions.length > 0 && (
+            <ul className="autocomplete-suggestions">
+              {suggestions.map((suggestion, index) => (
+                <li
+                  key={index}
+                  onClick={() => handleSuggestionClick(suggestion)}
+                  className="autocomplete-item"
+                >
+                  {suggestion}
+                </li>
               ))}
-            </select>
-          </label>
+            </ul>
+          )}
         </div>
-        <div>
-          <label>
-            CGPA Cutoff:
-            <input
-              type="number"
-              value={cgpa}
-              onChange={(e) => setCgpa(e.target.value)}
-              placeholder="Enter CGPA"
-            />
-          </label>
-        </div>
-        <button type="submit">Search</button>
+        <button type="submit" className="search-button">Search</button>
       </form>
 
       {/* Display Error Message */}
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
 
       {/* Display Results */}
-      <div>
-        {results.length > 0 &&
-          results.map((result) => (
-            <div key={result._id} style={{ border: '1px solid #ddd', padding: '10px', margin: '10px 0' }}>
-              <h3>{result.company}</h3>
-              <p><strong>Position:</strong> {result.position}</p>
-              <p><strong>CGPA Cutoff:</strong> {result.cgpaCutoff}</p>
-              <p><strong>Batch:</strong> {result.batch}</p>
-              <p><strong>Experience Type:</strong> {result.experienceType}</p>
-              <p><strong>Online Test:</strong> {result.OT_description}</p>
-              <p><strong>Interview:</strong> {result.interview_description}</p>
-              <p><strong>Other Comments:</strong> {result.other_comments}</p>
+      <div className="search-results">
+        {Object.keys(results).length > 0 &&
+          Object.entries(results).map(([companyName, experiences]) => (
+            <div key={companyName} className="company-group">
+              <h2>{companyName}</h2>
+              {experiences.map((experience) => (
+                <div key={experience._id} className="result-card">
+                  <h3>{experience.company}</h3>
+                  <p><strong>Position:</strong> {experience.position}</p>
+                  <p><strong>CGPA Cutoff:</strong> {experience.cgpaCutoff}</p>
+                  <p><strong>Batch:</strong> {experience.batch}</p>
+                  <p><strong>Experience Type:</strong> {experience.experienceType}</p>
+                  <p><strong>Online Test:</strong> {experience.OT_description}</p>
+                  <p><strong>Interview:</strong> {experience.interview_description}</p>
+                  <p><strong>Other Comments:</strong> {experience.other_comments}</p>
+                </div>
+              ))}
             </div>
           ))}
       </div>
+
+      <footer className="search-footer">
+        <p>Copyright © 2021 interNito</p>
+        <p>Made with ❤ by Sufiyan, Chaitanya, Chirantan, Divya & Abhishek</p>
+      </footer>
     </div>
   );
 }

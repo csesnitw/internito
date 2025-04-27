@@ -34,6 +34,8 @@
 }
 .nav-links li {
   display: inline;
+  display: flex;
+  align-items: center;
 }
 .nav-links a, .nav-links span {
   text-decoration: none;
@@ -64,7 +66,7 @@
 }
 
 /* Mobile behavior */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 800px) {
   .hamburger {
     display: flex;
   }
@@ -98,19 +100,46 @@
     width: 100%;
     text-align: left;
   }
+}
 
-  .logout-button {
-    width: 100%;
-    background-color: white;
-    border: 1px solid red;
-    color: red;
-    padding: 10px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
+.logout-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #76B852;
+  color: white;
+  border: none;
+  padding: 12px 12px 12px 15px;
+  font-size: 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
-  .logout-button:hover {
-    background-color: red;
-    color: white;
-  }
+.feedback-button {
+  background-color: #76B852;
+  border: none;
+  padding: 11px 14px;
+  font-size: 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.2s;
+  flex: 1;
+}
+
+.nav-links .feedback-button {
+  color: white;
+}
+
+.nav-links .feedback-button:hover {
+  color: white;
+}
+
+.feedback-button:hover {
+  background-color: #5da347;
 }

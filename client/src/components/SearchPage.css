@@ -1,0 +1,95 @@
+/* Autocomplete container */
+.autocomplete-container {
+    position: relative;
+  }
+  
+  .autocomplete-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0;
+  }
+  
+  .autocomplete-item {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .autocomplete-item:hover {
+    background-color: #f4f4f4;
+  }
+  
+  /* General styles for the search page */
+  .search-page {
+    text-align: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 15px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    margin-bottom: 10px;
+    outline: none;
+  }
+  
+  .search-input:focus {
+    border-color: #76B852;
+    box-shadow: 0 0 5px rgba(118, 184, 82, 0.5);
+  }
+  
+  .search-button {
+    background-color: #76B852;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .search-button:hover {
+    background-color: #5da347;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 1rem;
+    margin-top: 20px;
+  }
+  
+  .search-results {
+    margin-top: 30px;
+  }
+  
+  .company-group {
+    margin-bottom: 20px;
+  }
+  
+  .result-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px auto;
+    max-width: 600px;
+    text-align: left;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+.search-page h1 span {
+    color: #76B852
+}
