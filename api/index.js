@@ -74,10 +74,10 @@ mongoose.connect(process.env.mongo_link); // connects to our mongodb database
 app.use(express.json()); /* The above code is configuring an Express application to use the built-in middleware express.json().
 This middleware is used to parse incoming requests with JSON payloads. */
 
-app.use("/experiences", experience_router);
+app.use("/api/experiences", experience_router);
 
 /// Basic endpoint to see if our backend server is running without any complications
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
     try {
         return res.status(200).json("JSON Server is running");
     } catch (error) {
@@ -86,7 +86,7 @@ app.get("/", (req, res) => {
 })
 
 /* This is the route which we redirect to incase of a login success*/
-app.get("/login/success", (req, res) => {
+app.get("/api/login/success", (req, res) => {
     if (req.user) {
         res.status(200).json({
             success: true,
@@ -98,7 +98,7 @@ app.get("/login/success", (req, res) => {
 });
 
 /* This is the route which we redirect to incase of a login failure */
-app.get("/login/failed", (req, res) => {
+app.get("/api/login/failed", (req, res) => {
     res.status(401).json({
         error: true,
         message: "Log in failure",
@@ -109,7 +109,7 @@ app.get("/login/failed", (req, res) => {
 the "/auth/google/" endpoint, the code initiates the authentication process with Google using the
 Passport.js library. It specifies that the authentication strategy to be used is 'google' and
 requests access to the user's profile, email, and Google Calendar. */
-app.get("/auth/google/",
+app.get("/api/auth/google/",
     passport.authenticate('google', { scope: ['profile', 'email'] })
 )
 
@@ -118,7 +118,7 @@ Google. When a user is redirected to the '/auth/google/callback' endpoint, the c
 to authenticate the user using the 'google' strategy. If the authentication fails, the user is
 redirected to 'http://localhost:3000/'. If the authentication is successful, the user is redirected
 to the frontend experiences page. */
-app.get('/auth/google/callback',
+app.get('/api/auth/google/callback',
     passport.authenticate('google', { failureRedirect: 'http://localhost:3000/' }),
     (req, res) => {
         // Redirect to the frontend experiences page after successful login
@@ -129,13 +129,13 @@ app.get('/auth/google/callback',
 /* When a GET request is
 made to the '/user' endpoint, the server will respond with a status code of 200 and send the data
 stored in the `req.user` object back to the client. */
-app.get('/user', (req, res) => {
+app.get('api/user', (req, res) => {
     res.status(200).send(req.user)
 })
 
 /* The below code is a route handler for the "/logout" endpoint in a Node.js application using Express
 framework. When a user accesses this endpoint, it logs out the current user session. */
-app.get('/logout', (req, res) => {
+app.get('api/logout', (req, res) => {
     req.logout((err) => {
         if (err) {
             return res.status(500).json({ error: true, message: 'Logout failed' });

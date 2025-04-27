@@ -34,7 +34,7 @@ const AddExperience = () => {
     setSuccessMessage(''); // Clear previous success messages
 
     try {
-      const response = await fetch('http://localhost:8000/experiences/addExperience', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences/addExperience`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
