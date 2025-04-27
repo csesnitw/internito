@@ -21,7 +21,7 @@ jobs:
     - name: SSH into EC2 and Deploy
       run: |
         # SSH into EC2 and perform tasks
-        ssh -o StrictHostKeyChecking=no ubuntu@your-ec2-ip << 'EOF'
+        ssh -o StrictHostKeyChecking=no ubuntu@13.201.189.137 << 'EOF'
           # Navigate to the project folder
           cd internito
 
