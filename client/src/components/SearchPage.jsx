@@ -14,7 +14,7 @@ function SearchPage() {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/experiences/search`,
+        `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences/search`,
         {
           method: 'POST',
           headers: {

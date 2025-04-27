@@ -35,7 +35,7 @@ const AddExperience = () => {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/experiences/addExperience`,
+        `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences/addExperience`,
         {
           method: 'POST',
           headers: {
