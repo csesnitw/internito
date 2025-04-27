@@ -1,0 +1,46 @@
+name: Deploy Internito to EC2 automatically
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH Key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
+    - name: SSH into EC2 and Deploy
+      run: |
+        # SSH into EC2 and perform tasks
+        ssh -o StrictHostKeyChecking=no ubuntu@your-ec2-ip << 'EOF'
+          # Navigate to the project folder
+          cd internito
+
+          # Pull the latest code from GitHub
+          git pull
+
+          # Navigate to the client directory and run build
+          cd client
+          npm install  # Install any new dependencies
+          npm run build  # Build the React app
+          sudo rm -rf /var/www/html/*
+          sudo cp -r build/* /var/www/html/
+
+          # Go back to the main project folder
+          cd ..
+          cd api
+          # Restart backend servers (assuming pm2 is used)
+          pm2 restart all  # Restart all services managed by pm2
+
+          # Alternatively, restart specific services:
+          # pm2 restart your-backend-service-name
+        EOF
