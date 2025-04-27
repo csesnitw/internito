@@ -44,7 +44,7 @@ module.exports = function () {
         will handle the callback from Google after the user has authenticated, allowing the
         application to retrieve the necessary information to complete the authentication process and
         potentially redirect the user to the appropriate page within the application. */
-        callbackURL: 'http://localhost:8000/auth/google/callback',
+        callbackURL: `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/auth/google/callback`,
         /* The `scope: ['profile', 'email', 'https://www.googleapis.com/auth/calendar'],` line is
         setting the scope of access requested by the application when authenticating with Google
         using OAuth 2.0. */

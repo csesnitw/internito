@@ -11,7 +11,7 @@ function FetchUserAndRedirect({ children }) {
     const fetchUser = async () => {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/login/success`,
+          `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/login/success`,
           {
             credentials: 'include',
           }

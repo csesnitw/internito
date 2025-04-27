@@ -18,7 +18,7 @@ function TopBar() {
   const handleLogout = async () => {
     try {
       await fetch(
-        `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/logout`,
+        `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/logout`,
         {
           method: 'GET',
           credentials: 'include',

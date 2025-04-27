@@ -10,7 +10,7 @@ function Login() {
 
   // Function to handle Google login redirect
   const handleLogin = () => {
-    const redirectUri = `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/auth/google`;
+    const redirectUri = `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/auth/google`;
     window.location.href = redirectUri; // Redirect to Google login
   };
 
@@ -19,7 +19,7 @@ function Login() {
     const fetchUser = async () => {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/login/success`,
+          `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/login/success`,
           {
             credentials: 'include', // Include cookies for session
           }

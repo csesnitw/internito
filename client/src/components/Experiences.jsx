@@ -10,7 +10,7 @@ function Experiences() {
     const fetchExperiences = async () => {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/experiences`,
+          `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences`,
           {
             credentials: 'include',
           }
