@@ -19,28 +19,17 @@ jobs:
         ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
 
     - name: SSH into EC2 and Deploy
-      run: |
-        # SSH into EC2 and perform tasks
-        ssh -o StrictHostKeyChecking=no ubuntu@13.201.189.137 << 'EOF'
-          # Navigate to the project folder
-          cd internito
+    run: |
+      ssh -o StrictHostKeyChecking=no ubuntu@13.201.189.137 << 'EOF'
+        cd internito
+        GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key" git pull origin main
+        cd client
+        npm install
+        npm run build
+        sudo rm -rf /var/www/html/*
+        sudo cp -r build/* /var/www/html/
+        cd ../api
+        npm install
+        pm2 restart all
+      EOF
 
-          # Pull the latest code from GitHub
-          git pull
-
-          # Navigate to the client directory and run build
-          cd client
-          npm install  # Install any new dependencies
-          npm run build  # Build the React app
-          sudo rm -rf /var/www/html/*
-          sudo cp -r build/* /var/www/html/
-
-          # Go back to the main project folder
-          cd ..
-          cd api
-          # Restart backend servers (assuming pm2 is used)
-          pm2 restart all  # Restart all services managed by pm2
-
-          # Alternatively, restart specific services:
-          # pm2 restart your-backend-service-name
-        EOF
