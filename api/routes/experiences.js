@@ -4,6 +4,10 @@ const Experience = require("../models/Experience");
 
 // Include npm packages
 const natural = require("natural");
+const aposToLexForm = require("apos-to-lex-form");
+const SpellCorrector = require("spelling-corrector");
+const spellCorrector = new SpellCorrector();
+spellCorrector.loadDictionary();
 const stopword = require("stopword");
 
 // For conversion of contractions to standard lexicon
@@ -96,27 +100,29 @@ const removeNonAlpha = text => {
 }
 
 const getSentiment = text => {
+  if (!text || typeof text !== 'string') {
+    throw new Error('Invalid input: text must be a non-empty string');
+  }
+  // Check if the text is empty after removing spaces
+  if (text.trim() === '') {
+    return 0; // Neutral sentiment
+  }
 
   // NLP Logic
-  // Convert all data to its standard form
-  const lexData = convertToStandard(text);
-  //console.log("Lexed Data: ",lexData);
-
-  // Convert all data to lowercase
-  const lowerCaseData = convertTolowerCase(lexData);
-  //console.log("LowerCase Format: ",lowerCaseData);
-
-  // Remove non alphabets and special characters
-  const onlyAlpha = removeNonAlpha(lowerCaseData);
-  //console.log("OnlyAlpha: ",onlyAlpha);
+  // Convert all data to its standard form and lowercase
+  const lexData = aposToLexForm(text)
+    .toLowerCase()
+    .replace(/[^a-zA-Z\s]+/g, "");
 
   // Tokenization
   const tokenConstructor = new natural.WordTokenizer();
-  const tokenizedData = tokenConstructor.tokenize(onlyAlpha);
+  const tokenizedData = tokenConstructor.tokenize(lexData);
   //console.log("Tokenized Data: ",tokenizedData);
 
+  const fixedSpelling = tokenizedData.map((word) => spellCorrector.correct(word));
+
   // Remove Stopwords
-  const filteredData = stopword.removeStopwords(tokenizedData);
+  const filteredData = stopword.removeStopwords(fixedSpelling);
   //console.log("After removing stopwords: ",filteredData);
 
   // Stemming
