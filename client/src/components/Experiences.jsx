@@ -42,6 +42,7 @@ function Experiences() {
             <p><strong>Online Test:</strong> {exp.OT_description}</p>
             <p><strong>Interview:</strong> {exp.interview_description}</p>
             <p><strong>Other Comments:</strong> {exp.other_comments}</p>
+            <p><strong>Posted by:</strong> {exp.rollNo + " " + exp.name}</p>
           </div>
         ))}
       </div>
