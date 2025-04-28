@@ -1,34 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../slices/authSlice';
-import './TopBar.css'; 
+import React, { useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../slices/authSlice";
+import "./TopBar.css";
 
 function TopBar() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
-  const [menuOpen, setMenuOpen] = useState(false); // <-- new state for mobile menu
+
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    console.log('User details:', user);
+    console.log("User details:", user);
   }, [user]);
 
   const handleLogout = async () => {
     try {
       await fetch(
-        `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/logout`,
+        `${
+          process.env.REACT_APP_API_URL || "http://localhost:8000"
+        }/api/logout`,
         {
-          method: 'GET',
-          credentials: 'include',
+          method: "GET",
+          credentials: "include",
         }
       );
       dispatch(logout());
-      navigate('/');
+      navigate("/");
     } catch (error) {
-      console.error('Error during logout:', error);
+      console.error("Error during logout:", error);
     }
   };
 
@@ -38,8 +40,10 @@ function TopBar() {
 
   return (
     <header className="topbar">
-      <div className="logo">
-        <h1>inter<span className="logo-n">N</span>ito</h1>
+      <div className="logo" style={{ cursor: "pointer" }} onClick={() => navigate("/search")}>
+        <h1>
+          inter<span className="logo-n">N</span>ito
+        </h1>
       </div>
 
       {/* Hamburger icon */}
@@ -49,17 +53,25 @@ function TopBar() {
         <div className="bar"></div>
       </div>
 
-      <nav className={`nav-links ${menuOpen ? 'open' : ''}`}>
+      <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
         <ul>
           {!isLoggedIn ? (
             <>
               <li>
-                <NavLink to="/about" onClick={() => setMenuOpen(false)} className={({ isActive }) => (isActive ? 'active' : '')}>
+                <NavLink
+                  to="/about"
+                  onClick={() => setMenuOpen(false)}
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
                   About
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/" onClick={() => setMenuOpen(false)} className={({ isActive }) => (isActive ? 'active' : '')}>
+                <NavLink
+                  to="/"
+                  onClick={() => setMenuOpen(false)}
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
                   Log In
                 </NavLink>
               </li>
@@ -73,44 +85,72 @@ function TopBar() {
                       Hello <strong>{user.firstName}</strong>!
                     </>
                   ) : (
-                    'Loading...'
+                    "Loading..."
                   )}
                 </span>
               </li>
               <li>
-                <NavLink to="/search" onClick={() => setMenuOpen(false)} className={({ isActive }) => (isActive ? 'active' : '')}>
+                <NavLink
+                  to="/search"
+                  onClick={() => setMenuOpen(false)}
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
                   Search Companies
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/experiences" onClick={() => setMenuOpen(false)} className={({ isActive }) => (isActive ? 'active' : '')}>
+                <NavLink
+                  to="/experiences"
+                  onClick={() => setMenuOpen(false)}
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
                   Experiences
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/addExperiences" onClick={() => setMenuOpen(false)} className={({ isActive }) => (isActive ? 'active' : '')}>
+                <NavLink
+                  to="/addExperiences"
+                  onClick={() => setMenuOpen(false)}
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
                   Write
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/about" onClick={() => setMenuOpen(false)} className={({ isActive }) => (isActive ? 'active' : '')}>
+                <NavLink
+                  to="/about"
+                  onClick={() => setMenuOpen(false)}
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
                   About
                 </NavLink>
               </li>
               <li>
-              <NavLink
-                to="/about" // Change to "/feedback" when ready
-                onClick={() => setMenuOpen(false)}
-                className="feedback-button"
-              >
-                Feedback
-              </NavLink>
-            </li>
+                <NavLink
+                  to="/about" // Change to "/feedback" when ready
+                  onClick={() => setMenuOpen(false)}
+                  className="feedback-button"
+                >
+                  Feedback
+                </NavLink>
+              </li>
               <li>
                 <button onClick={handleLogout} className="logout-button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24">
-                  <path d="M16 17l5-5m0 0l-5-5m5 5H9m4 5v1a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h6a2 2 0 012 2v1" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M16 17l5-5m0 0l-5-5m5 5H9m4 5v1a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h6a2 2 0 012 2v1"
+                      stroke="#fff"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 </button>
               </li>
             </>

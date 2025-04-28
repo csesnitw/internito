@@ -66,7 +66,7 @@
 }
 
 /* Mobile behavior */
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 890px) {
   .hamburger {
     display: flex;
   }
@@ -106,7 +106,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #76B852;
+  background-color: rgb(205, 40, 40);
   color: white;
   border: none;
   padding: 12px 12px 12px 15px;
@@ -138,6 +138,10 @@
 
 .nav-links .feedback-button:hover {
   color: white;
+}
+
+.logout-button:hover {
+  background-color: rgb(170, 40, 40);
 }
 
 .feedback-button:hover {

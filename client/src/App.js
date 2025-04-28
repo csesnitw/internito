@@ -8,6 +8,7 @@ import Experiences from './components/Experiences';
 import ProtectedRoute from './components/ProtectedRoute';
 import FetchUserAndRedirect from './components/FetchUserAndRedirect';
 import AddExperience from './components/AddExperience';
+import SearchResults from './components/SearchResults'; // Import the SearchResults component
 import SearchPage from './components/SearchPage'; // Import the SearchPage component
 import About from './components/About'; // Import the About component
 import './App.css'; // Import your CSS file
@@ -51,6 +52,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <SearchPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/search/:query"
+              element={
+                <ProtectedRoute>
+                  <SearchResults />
                 </ProtectedRoute>
               }
             />

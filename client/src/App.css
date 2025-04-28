@@ -12,10 +12,12 @@ html, body, #root, .App{
 
 .content {
   flex: 1; 
+  padding: 20px;
   background-color: #E5E5E5;
 }
 
 * {
+  line-height: 1.1;
   font-family: 'Poppins', Arial, sans-serif; /* Default font is Poppins, fallback to Arial and sans-serif */
   margin: 0;
   padding: 0;
@@ -27,4 +29,5 @@ html, body, #root, .App{
   background-color: #76B852; /* Green background */
   color: white; /* White text */
 }
+
 

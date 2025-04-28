@@ -1,75 +1,68 @@
-import React, { useState } from 'react';
-import { NAMES } from '../constants/companies'; // Import the list of companies
-import './SearchPage.css'; // Add a CSS file for styling
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { NAMES } from "../constants/companies";
+import "./SearchPage.css";
+
+const COMPANY_LOGOS = [
+  "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/6/6e/Accenture.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/8/8e/Infosys_logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/5/51/Capgemini_201x_logo.svg",
+  // Add more as needed
+];
 
 function SearchPage() {
-  const [searchInput, setSearchInput] = useState('');
-  const [suggestions, setSuggestions] = useState([]); // State for autocomplete suggestions
-  const [results, setResults] = useState([]); // State to store search results
-  const [errorMessage, setErrorMessage] = useState(''); // State to store error messages
+  const [searchInput, setSearchInput] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const navigate = useNavigate();
 
-  const handleSearch = async (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
-    setErrorMessage('');
-    setResults([]);
-
-    const isCgpaSearch = !isNaN(searchInput) && searchInput.trim() !== '';
-
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences/company`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            company: isCgpaSearch ? '' : searchInput,
-            cgpa: isCgpaSearch ? parseFloat(searchInput) : undefined,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.ok) {
-        if (Object.keys(data).length === 0) {
-          setErrorMessage('No results found. Try selecting a different company or CGPA.');
-        } else {
-          setResults(data);
-        }
-      } else {
-        setErrorMessage('Failed to fetch search results.');
-      }
-    } catch (error) {
-      console.error('Error fetching search results:', error);
-      setErrorMessage('An unexpected error occurred. Please try again later.');
+    if (searchInput.trim() !== "") {
+      navigate(`/search/${encodeURIComponent(searchInput.trim())}`);
     }
   };
 
   const handleInputChange = (e) => {
     const value = e.target.value;
     setSearchInput(value);
-
-    // Show autocomplete suggestions only for text input
     if (isNaN(value)) {
       const filteredSuggestions = NAMES.filter((name) =>
         name.toLowerCase().includes(value.toLowerCase())
       );
       setSuggestions(filteredSuggestions);
     } else {
-      setSuggestions([]); // Clear suggestions for numeric input
+      setSuggestions([]);
     }
   };
 
   const handleSuggestionClick = (suggestion) => {
     setSearchInput(suggestion);
-    setSuggestions([]); // Clear suggestions after selection
+    setSuggestions([]);
   };
 
   return (
     <div className="search-page">
-      <h1>Search Experiences by <span>Company</span></h1>
+      <div className="logo-slider-container">
+        <div className="logo-slider">
+          {[...COMPANY_LOGOS, ...COMPANY_LOGOS].map((logo, idx) => (
+            <img
+              src={logo}
+              alt="Company Logo"
+              className="slider-logo"
+              key={idx}
+              draggable={false}
+            />
+          ))}
+        </div>
+      </div>
+      <h1 className="main-search-title">
+        Search Experiences by <span>Company</span>
+      </h1>
       <form onSubmit={handleSearch} className="search-form">
         <div className="autocomplete-container">
           <input
@@ -93,38 +86,10 @@ function SearchPage() {
             </ul>
           )}
         </div>
-        <button type="submit" className="search-button">Search</button>
+        <button type="submit" className="search-button">
+          Search
+        </button>
       </form>
-
-      {/* Display Error Message */}
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-
-      {/* Display Results */}
-      <div className="search-results">
-        {Object.keys(results).length > 0 &&
-          Object.entries(results).map(([companyName, experiences]) => (
-            <div key={companyName} className="company-group">
-              <h2>{companyName}</h2>
-              {experiences.map((experience) => (
-                <div key={experience._id} className="result-card">
-                  <h3>{experience.company}</h3>
-                  <p><strong>Position:</strong> {experience.position}</p>
-                  <p><strong>CGPA Cutoff:</strong> {experience.cgpaCutoff}</p>
-                  <p><strong>Batch:</strong> {experience.batch}</p>
-                  <p><strong>Experience Type:</strong> {experience.experienceType}</p>
-                  <p><strong>Online Test:</strong> {experience.OT_description}</p>
-                  <p><strong>Interview:</strong> {experience.interview_description}</p>
-                  <p><strong>Other Comments:</strong> {experience.other_comments}</p>
-                </div>
-              ))}
-            </div>
-          ))}
-      </div>
-
-      <footer className="search-footer">
-        <p>Copyright © 2021 interNito</p>
-        <p>Made with ❤ by Sufiyan, Chaitanya, Chirantan, Divya & Abhishek</p>
-      </footer>
     </div>
   );
 }
