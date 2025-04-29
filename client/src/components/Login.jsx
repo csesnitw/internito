@@ -28,7 +28,7 @@ function Login() {
         if (data.success) {
           dispatch(login()); // Set login state
           dispatch(setUser(data.user)); // Store user details in Redux
-          navigate('/experiences'); // Navigate to experiences
+          navigate('/search'); // Navigate to experiences
         }
       } catch (error) {
         console.error('Error fetching user details:', error);

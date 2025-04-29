@@ -28,6 +28,16 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route
+              path="/search"
+              element={
+                <ProtectedRoute>
+                  <FetchUserAndRedirect>
+                    <SearchPage />
+                  </FetchUserAndRedirect>
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/experiences"
               element={
                 <ProtectedRoute>
@@ -48,18 +58,12 @@ function App() {
               }
             />
             <Route
-              path="/search"
-              element={
-                <ProtectedRoute>
-                  <SearchPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
               path="/search/:query"
               element={
                 <ProtectedRoute>
-                  <SearchResults />
+                  <FetchUserAndRedirect>
+                    <SearchResults />
+                  </FetchUserAndRedirect>
                 </ProtectedRoute>
               }
             />
