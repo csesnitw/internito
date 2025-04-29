@@ -40,7 +40,11 @@ function TopBar() {
 
   return (
     <header className="topbar">
-      <div className="logo" style={{ cursor: "pointer" }} onClick={() => navigate("/search")}>
+      <div
+        className="logo"
+        style={{ cursor: "pointer" }}
+        onClick={() => navigate("/search")}
+      >
         <h1>
           inter<span className="logo-n">N</span>ito
         </h1>
@@ -84,6 +88,21 @@ function TopBar() {
                     <>
                       Hello <strong>{user.firstName}</strong>!
                     </>
+                  ) : (
+                    ''
+                  )}
+                </span>
+              </li>
+              <li>
+                <span>
+                  {user && user.username == "dv22csb0f38" ? (
+                    <NavLink
+                      to="/admin"
+                      onClick={() => setMenuOpen(false)}
+                      className={({ isActive }) => (isActive ? "active" : "")}
+                    >
+                      Admin
+                    </NavLink>
                   ) : (
                     "Loading..."
                   )}

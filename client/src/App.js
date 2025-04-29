@@ -12,6 +12,7 @@ import SearchResults from './components/SearchResults'; // Import the SearchResu
 import SearchPage from './components/SearchPage'; // Import the SearchPage component
 import About from './components/About'; // Import the About component
 import './App.css'; // Import your CSS file
+import AdminDashboard from './components/AdminDashboard';
 
 function App() {
   const dispatch = useDispatch();
@@ -27,6 +28,14 @@ function App() {
         <div className="content"> {/* Dynamic content below TopBar */}
           <Routes>
             <Route path="/" element={<Login />} />
+            <Route
+              path="/admin"
+              element={
+                <FetchUserAndRedirect>
+                  <AdminDashboard />
+                </FetchUserAndRedirect>
+              }
+            />
             <Route
               path="/search"
               element={
