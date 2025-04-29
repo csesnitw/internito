@@ -58,6 +58,20 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:id",async (req,res) => {
+  try {
+    const { id } = req.params;
+    const experiences = await Experience.find({email:id});
+    if (!experiences) {
+      return res.status(404).json({ message: "Experience not found" });
+    }
+    res.status(200).json(experiences);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: "Failed to retrieve experience" });
+  }
+})
+
 router.get("/pending", async (req, res) => {
   try {
     const experiences = await Experience.find({ status: "Pending" });

@@ -85,15 +85,19 @@ function TopBar() {
               <li>
                 <span>
                   {user && user.firstName ? (
-                    <>
+                    <NavLink
+                      to="/user"
+                      onClick={() => setMenuOpen(false)}
+                      className={({ isActive }) => (isActive ? "active" : "")}
+                    >
                       Hello <strong>{user.firstName}</strong>!
-                    </>
+                    </NavLink>
                   ) : (
-                    ''
+                    ""
                   )}
                 </span>
               </li>
-              {user && (user.username == "dv22csb0f38") ? (
+              {user && user.username == "dv22csb0f38" ? (
                 <li>
                   <span>
                     <NavLink
