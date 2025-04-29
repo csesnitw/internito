@@ -16,7 +16,7 @@ const AdminDashboard = () => {
     const fetchExperiences = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8000/experiences/pending",
+          `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences/pending`,
           {
             method: "GET",
             credentials: "include",
@@ -34,11 +34,11 @@ const AdminDashboard = () => {
   const handleDecision = async (id, decision) => {
     try {
       if (decision === "rejected") {
-        await fetch(`http://localhost:8000/experiences/delete/${id}`, {
+        await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences/delete/${id}`, {
           method: "DELETE",
         });
       } else {
-        await fetch(`http://localhost:8000/experiences/verify/${id}`, {
+        await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences/verify/${id}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",

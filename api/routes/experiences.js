@@ -141,7 +141,7 @@ router.delete("/delete/:experienceId", async (req, res) => {
   }
 });
 
-/
+
 // Search all experiences sorted by date
 router.post('/search', async (req, res) => {
   try {
