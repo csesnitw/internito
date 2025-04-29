@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import './Experiences.css'; // For Experiences-specific styles
 
 const AdminDashboard = () => {
   const [experiences, setExperiences] = useState([]);
   const user = useSelector((state) => state.auth.user);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,6 +17,7 @@ const AdminDashboard = () => {
     // Fetch all experiences from the server
     const fetchExperiences = async () => {
       try {
+        setLoading(true);
         const response = await fetch(
           `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences/pending`,
           {
@@ -24,6 +27,7 @@ const AdminDashboard = () => {
         );
         const data = await response.json();
         setExperiences(data);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching experiences:", error);
       }
@@ -59,21 +63,31 @@ const AdminDashboard = () => {
   return (
     <div>
       <h1>Admin Dashboard</h1>
-      <ul>
-        {experiences.map((experience) => (
-          <li key={experience._id}>
-            <p>
-              {experience.company} - {experience.position}
-            </p>
-            <button onClick={() => handleDecision(experience._id, "Accepted")}>
-              Accept
-            </button>
-            <button onClick={() => handleDecision(experience._id, "Rejected")}>
-              Reject
-            </button>
-          </li>
-        ))}
-      </ul>
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <div className="experiences-results">
+          {experiences.map((exp) => (
+            <div key={exp._id} className="result-card experiences-card">
+              <div className="card-desc">
+                {exp.OT_description?.slice(0, 180) || ''}...
+              </div>
+              <div className="card-name">
+                {exp.name}
+              </div>
+              <div className="card-company">
+                interview experience of <span style={{ fontWeight: 600 }}>{exp.company?.toLowerCase()}</span>
+              </div>
+              <button
+                className="read-more-btn"
+                onClick={() => navigate(`/experiences/${exp._id}`)}
+              >
+                Read More
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
