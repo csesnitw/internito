@@ -87,7 +87,7 @@ function App() {
               Made with <span className="footer-heart">❤</span> by Sufiyan, Chaitanya, Chirantan, Divya &amp; Abhishek
             </div>
             <div className="footer-madeby">
-              Rebuilt by CSES Development Team
+              Rebuilt by CSES Development Team, NIT Warangal
             </div>
           </footer>
       </div>

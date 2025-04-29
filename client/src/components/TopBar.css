@@ -97,8 +97,10 @@
   }
 
   .nav-links li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    text-align: left;
   }
 }
 
@@ -109,9 +111,9 @@
   background-color: rgb(205, 40, 40);
   color: white;
   border: none;
-  padding: 12px 12px 12px 15px;
+  padding: 10px 10px 10px 13px;
   font-size: 1rem;
-  border-radius: 20px;
+  border-radius: 15px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -119,9 +121,9 @@
 .feedback-button {
   background-color: #76B852;
   border: none;
-  padding: 11px 14px;
+  padding: 9px 14px;
   font-size: 1rem;
-  border-radius: 20px;
+  border-radius: 15px;
   cursor: pointer;
   display: flex;
   align-items: center;

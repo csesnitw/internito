@@ -24,66 +24,53 @@ const COMPANY_LOGOS = [
 
 function SearchPage() {
   const [searchInput, setSearchInput] = useState("");
-  const [suggestions, setSuggestions] = useState("");
   const navigate = useNavigate();
-
 
   // --- Slider logic ---
   const sliderRef = useRef(null);
-  const animationRef = useRef();
+  const animationRef = useRef(null);
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
     const slider = sliderRef.current;
     if (!slider) return;
-
+  
     const logosCount = COMPANY_LOGOS.length;
     const logoWidth = slider.children[0]?.offsetWidth || 200;
     const gap = parseInt(getComputedStyle(slider).gap) || 40;
-    const totalWidth = logosCount * (logoWidth + gap);
-
-    let start;
+    const singleSetWidth = logosCount * (logoWidth + gap);
+    const doubleSetWidth = singleSetWidth * 2;
+  
+    let currentOffset = 0;
+    let lastTimestamp = null;
+    const speed = 600; // px per second
+  
     function animate(ts) {
-      if (!start) start = ts;
-      const speed = 60; // px per second
-      const elapsed = ts - start;
-      let newOffset = (elapsed / 1000) * speed;
-
-      if (newOffset > totalWidth) {
-        start = ts;
-        newOffset = 0;
+      if (!lastTimestamp) lastTimestamp = ts;
+      const elapsed = ts - lastTimestamp;
+      lastTimestamp = ts;
+      currentOffset += (elapsed / 1000) * speed;
+  
+      if (currentOffset >= doubleSetWidth) {
+        // Reset after the full double set has scrolled
+        currentOffset = 0;
       }
-      setOffset(-newOffset);
+      setOffset(-currentOffset);
       animationRef.current = requestAnimationFrame(animate);
     }
+  
     animationRef.current = requestAnimationFrame(animate);
-
+  
     return () => cancelAnimationFrame(animationRef.current);
   }, []);
+
+  // --- End slider logic ---
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchInput.trim() !== "") {
       navigate(`/search/${encodeURIComponent(searchInput.trim())}`);
     }
-  };
-
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setSearchInput(value);
-    if (isNaN(value)) {
-      const filteredSuggestions = NAMES.filter((name) =>
-        name.toLowerCase().includes(value.toLowerCase())
-      );
-      setSuggestions(filteredSuggestions);
-    } else {
-      setSuggestions([]);
-    }
-  };
-
-  const handleSuggestionClick = (suggestion) => {
-    setSearchInput(suggestion);
-    setSuggestions([]);
   };
 
   return (
@@ -114,7 +101,7 @@ function SearchPage() {
         <input
           type="text"
           value={searchInput}
-          onChange={e => setSearchInput(e.target.value)}
+          onChange={(e) => setSearchInput(e.target.value)}
           placeholder="Company or Branch or CGPA"
           className="search-input"
           list="company-suggestions"
@@ -125,7 +112,8 @@ function SearchPage() {
           ))}
         </datalist>
         <div className="search-tips">
-        Enter a company name to search, or enter your CGPA to see the companies you're eligible for.
+          Enter a company name to search, or enter your CGPA to see the
+          companies you're eligible for.
         </div>
         <button type="submit" className="search-button">
           Search
