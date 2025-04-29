@@ -1,99 +1,124 @@
-import React, { useState } from 'react';
-import { NAMES } from '../constants/companies'; // Import the list of companies
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { NAMES } from "../constants/companies";
+import { useEffect, useRef } from "react";
+import "./SearchPage.css";
+
+const COMPANY_LOGOS = [
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/D._E._Shaw_%26_Co._Logo.svg/1920px-D._E._Shaw_%26_Co._Logo.svg.png",
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Goldman_Sachs_logo.svg/375px-Goldman_Sachs_logo.svg.png",
+  "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Microsoft_logo_%282012%29.svg/768px-Microsoft_logo_%282012%29.svg.png",
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Salesforce.com_logo.svg/500px-Salesforce.com_logo.svg.png",
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Uber_logo_2018.svg/2560px-Uber_logo_2018.svg.png",
+  "https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/e/ec/Morgan_Stanley_Logo_2024.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mastercard_2019_logo.svg/1200px-Mastercard_2019_logo.svg.png",
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Visa_2021.svg/500px-Visa_2021.svg.png",
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Qualcomm-Logo.svg/1200px-Qualcomm-Logo.svg.png",
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Samsung_Logo.svg/2560px-Samsung_Logo.svg.png",
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Wells_Fargo_Bank.svg/453px-Wells_Fargo_Bank.svg.png",
+
+  // Add more as needed
+];
 
 function SearchPage() {
-  const [company, setCompany] = useState('');
-  const [cgpa, setCgpa] = useState('');
-  const [results, setResults] = useState([]); // State to store search results
-  const [errorMessage, setErrorMessage] = useState(''); // State to store error messages
+  const [searchInput, setSearchInput] = useState("");
+  const navigate = useNavigate();
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    setErrorMessage('');
-    setResults([]);
+  // --- Slider logic ---
+  const sliderRef = useRef(null);
+  const animationRef = useRef(null);
+  const [offset, setOffset] = useState(0);
 
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences/search`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ company, cgpa }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.ok) {
-        if (data.length === 0) {
-          setErrorMessage('No results found. Try adjusting your filters.');
-        } else {
-          setResults(data);
-        }
-      } else {
-        setErrorMessage('Failed to fetch search results.');
+  useEffect(() => {
+    const slider = sliderRef.current;
+    if (!slider) return;
+  
+    const logosCount = COMPANY_LOGOS.length;
+    const logoWidth = slider.children[0]?.offsetWidth || 200;
+    const gap = parseInt(getComputedStyle(slider).gap) || 40;
+    const singleSetWidth = logosCount * (logoWidth + gap);
+    const doubleSetWidth = singleSetWidth * 2;
+  
+    let currentOffset = 0;
+    let lastTimestamp = null;
+    const speed = 60; // px per second
+  
+    function animate(ts) {
+      if (!lastTimestamp) lastTimestamp = ts;
+      const elapsed = ts - lastTimestamp;
+      lastTimestamp = ts;
+      currentOffset += (elapsed / 1000) * speed;
+  
+      if (currentOffset >= doubleSetWidth) {
+        // Reset after the full double set has scrolled
+        currentOffset = 0;
       }
-    } catch (error) {
-      console.error('Error fetching search results:', error);
-      setErrorMessage('An unexpected error occurred. Please try again later.');
+      setOffset(-currentOffset);
+      animationRef.current = requestAnimationFrame(animate);
+    }
+  
+    animationRef.current = requestAnimationFrame(animate);
+  
+    return () => cancelAnimationFrame(animationRef.current);
+  }, []);
+
+  // --- End slider logic ---
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchInput.trim() !== "") {
+      navigate(`/search/${encodeURIComponent(searchInput.trim())}`);
     }
   };
 
   return (
-    <div>
-      <h1>Search Experiences</h1>
-      <form onSubmit={handleSearch} style={{ marginBottom: '20px' }}>
-        <div>
-          <label>
-            Company Name:
-            <select
-              value={company}
-              onChange={(e) => setCompany(e.target.value)}
-            >
-              <option value="">Select a company</option>
-              {NAMES.map((name, index) => (
-                <option key={index} value={name}>
-                  {name}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-        <div>
-          <label>
-            CGPA Cutoff:
-            <input
-              type="number"
-              value={cgpa}
-              onChange={(e) => setCgpa(e.target.value)}
-              placeholder="Enter CGPA"
+    <div className="search-page">
+      <div className="logo-slider-container">
+        <div
+          className="logo-slider"
+          ref={sliderRef}
+          style={{
+            transform: `translateX(${offset}px)`,
+          }}
+        >
+          {[...COMPANY_LOGOS, ...COMPANY_LOGOS].map((logo, idx) => (
+            <img
+              src={logo}
+              alt="Company Logo"
+              className="slider-logo"
+              key={idx}
+              draggable={false}
             />
-          </label>
-        </div>
-        <button type="submit">Search</button>
-      </form>
-
-      {/* Display Error Message */}
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-
-      {/* Display Results */}
-      <div>
-        {results.length > 0 &&
-          results.map((result) => (
-            <div key={result._id} style={{ border: '1px solid #ddd', padding: '10px', margin: '10px 0' }}>
-              <h3>{result.company}</h3>
-              <p><strong>Position:</strong> {result.position}</p>
-              <p><strong>CGPA Cutoff:</strong> {result.cgpaCutoff}</p>
-              <p><strong>Batch:</strong> {result.batch}</p>
-              <p><strong>Experience Type:</strong> {result.experienceType}</p>
-              <p><strong>Online Test:</strong> {result.OT_description}</p>
-              <p><strong>Interview:</strong> {result.interview_description}</p>
-              <p><strong>Other Comments:</strong> {result.other_comments}</p>
-            </div>
           ))}
+        </div>
       </div>
+      <h1 className="main-search-title">
+        Search Experiences by <span>Company</span>
+      </h1>
+      <form onSubmit={handleSearch} className="search-form">
+        <input
+          type="text"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          placeholder="Company or Branch or CGPA"
+          className="search-input"
+          list="company-suggestions"
+        />
+        <datalist id="company-suggestions">
+          {NAMES.map((name, idx) => (
+            <option value={name} key={idx} />
+          ))}
+        </datalist>
+        <div className="search-tips">
+          Enter a company name to search, or enter your CGPA to see the
+          companies you're eligible for.
+        </div>
+        <button type="submit" className="search-button">
+          Search
+        </button>
+      </form>
     </div>
   );
 }

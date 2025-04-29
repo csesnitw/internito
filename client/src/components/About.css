@@ -1,6 +1,6 @@
 /* General container styles */
 .about-container {
-    padding: 40px;
+    padding: 0px 40px;
     color: #333;
     line-height: 1.6;
   }
@@ -14,7 +14,9 @@
 .about-intro-text {
     background-color: white;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-color: rgb(186, 186, 186);
+    border-width: 1px;
+    border-style: solid;
     padding: 1em;
     display: flex;
     flex-direction: column;
@@ -53,16 +55,18 @@
   .developer-card {
     background: white;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-color: rgb(186, 186, 186);
+    border-width: 1px;
+    border-style: solid;
     padding: 20px;
     text-align: center;
     width: 250px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   
-  .developer-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  .developer-card:hover, .about-intro-text:hover { 
+    transform: scale(1.005);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   
   .card-image {
@@ -102,3 +106,15 @@
   .developer-card a:hover {
     background-color: #5da347; /* Slightly darker green */
   }
+
+  /* Add styles for first and last names */
+.developer-card h3 .first-name {
+  display: block; /* Ensures the first name is on its own line */
+}
+
+.developer-card h3 .last-name {
+  display: block; /* Ensures the last name is on its own line */
+}
+
+/* Responsive Design */
+/*  */

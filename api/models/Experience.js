@@ -8,6 +8,10 @@ const experienceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  rollNo:{
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     required: true,
@@ -40,6 +44,10 @@ const experienceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  status:{
+    type: String,
+    required: true
+  }
 });
 
 module.exports = mongoose.model("Experience", experienceSchema);

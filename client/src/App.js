@@ -8,9 +8,11 @@ import Experiences from './components/Experiences';
 import ProtectedRoute from './components/ProtectedRoute';
 import FetchUserAndRedirect from './components/FetchUserAndRedirect';
 import AddExperience from './components/AddExperience';
+import SearchResults from './components/SearchResults'; // Import the SearchResults component
 import SearchPage from './components/SearchPage'; // Import the SearchPage component
 import About from './components/About'; // Import the About component
 import './App.css'; // Import your CSS file
+import AdminDashboard from './components/AdminDashboard';
 
 function App() {
   const dispatch = useDispatch();
@@ -26,6 +28,24 @@ function App() {
         <div className="content"> {/* Dynamic content below TopBar */}
           <Routes>
             <Route path="/" element={<Login />} />
+            <Route
+              path="/admin"
+              element={
+                <FetchUserAndRedirect>
+                  <AdminDashboard />
+                </FetchUserAndRedirect>
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <ProtectedRoute>
+                  <FetchUserAndRedirect>
+                    <SearchPage />
+                  </FetchUserAndRedirect>
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/experiences"
               element={
@@ -47,16 +67,29 @@ function App() {
               }
             />
             <Route
-              path="/search"
+              path="/search/:query"
               element={
                 <ProtectedRoute>
-                  <SearchPage />
+                  <FetchUserAndRedirect>
+                    <SearchResults />
+                  </FetchUserAndRedirect>
                 </ProtectedRoute>
               }
             />
             <Route path="/about" element={<About />} /> {/* Add About route */}
           </Routes>
         </div>
+        <footer>
+            <div className="footer-copyright">
+              Copyright © 2025 interNito
+            </div>
+            <div className="footer-madeby">
+              Made with <span className="footer-heart">❤</span> by Sufiyan, Chaitanya, Chirantan, Divya &amp; Abhishek
+            </div>
+            <div className="footer-madeby">
+              Rebuilt by CSES Development Team, NIT Warangal
+            </div>
+          </footer>
       </div>
     </Router>
   );

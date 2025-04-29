@@ -6,13 +6,13 @@ const AddExperience = () => {
   const user = useSelector((state) => state.auth.user);
   const [experience, setExperience] = useState({
     company: "",
-    name: "",
+    name: user.firstName + " " + user.lastName,
+    rollNo: user.rollNo,
     email: user.username,
     batch: "",
     cgpaCutoff: "",
     experienceType: "Intern",
     position: "",
-    date: "",
     OT_description: "",
     interview_description: "",
     other_comments: ""
@@ -50,17 +50,17 @@ const AddExperience = () => {
       if (response.ok) {
         setSuccessMessage(data.message);
         setExperience({
-          company: '',
-          name: '',
+          company: "",
+          name: user.firstName + " " + user.lastName,
+          rollNo: user.username,
           email: user.username,
-          batch: '',
-          cgpaCutoff: '',
-          experienceType: 'Intern',
-          position: '',
-          date: '',
-          OT_description: '',
-          interview_description: '',
-          other_comments: '',
+          batch: "",
+          cgpaCutoff: "",
+          experienceType: "Intern",
+          position: "",
+          OT_description: "",
+          interview_description: "",
+          other_comments: ""
         });
       } else {
         setErrorMessage(data.message);
@@ -74,15 +74,6 @@ const AddExperience = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <label>
-          Name:
-          <input
-            type="text"
-            name="name"
-            value={experience.name}
-            onChange={handleChange}
-          />
-        </label>
         <br />
         <label>
           Batch:

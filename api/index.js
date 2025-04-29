@@ -1,6 +1,6 @@
 /* This code snippet is setting up a Node.js server using Express framework along with various
 middleware and dependencies. Here's a breakdown of what each part is doing: */
-const express = require("express"); // express backend framework
+const express = require("express"); // express backend frameworkhttp://localhost:3000/search
 const passport = require("passport"); /// Node.js Authentication middleware library (for sign in with google)
 const session = require("express-session"); //This module is commonly used for managing user sessions in Express.js 
 //applications.
