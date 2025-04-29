@@ -50,7 +50,7 @@ const getSentiment = text => {
 // Get all experiences sorted by date
 router.get("/", async (req, res) => {
   try {
-    const experiences = await Experience.find({$or: [{status: "Accepted"}, {status: "Pending"}]}).sort({ date: -1 });
+    const experiences = await Experience.find().sort({ date: -1 });
     res.status(200).json(experiences);
   } catch (error) {
     console.log(error);
