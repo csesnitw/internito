@@ -49,6 +49,10 @@
   outline: none;
 }
 
+.search-tips {
+  font-size: 0.9rem;
+  margin-bottom: 20px;;
+}
 .search-input:focus {
   border-color: var(--green);
   border-width: 2px;

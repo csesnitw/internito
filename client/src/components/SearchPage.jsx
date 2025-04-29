@@ -124,7 +124,7 @@ function SearchPage() {
             <option value={name} key={idx} />
           ))}
         </datalist>
-        <div>
+        <div className="search-tips">
         Enter a company name to search, or enter your CGPA to see the companies you're eligible for.
         </div>
         <button type="submit" className="search-button">
