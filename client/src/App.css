@@ -19,7 +19,6 @@ html, body, #root, .App{
 
 .content {
   flex: 1; 
-  padding: 20px;
   background-color: #E5E5E5;
 }
 
@@ -36,4 +35,35 @@ html, body, #root, .App{
   color: white; /* White text */
 }
 
+footer {
+  background: linear-gradient(90deg, #76B852 0%, #8DC26F 100%);
+  color: #fff;
+  text-align: center;
+  padding: 20px 0px;
+  margin-top: 0;
+  border-top: var(--border);
+  letter-spacing: 0.01em;
+}
 
+footer .footer-copyright {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  color: white;
+}
+
+footer .footer-madeby {
+  font-weight: 600;
+  color: #222;
+}
+
+footer .footer-heart {
+  color: white;
+  font-size: 1.2em;
+  vertical-align: middle;
+}
+
+footer .footer-heart:hover {
+  color: red;
+  transition: var(--transition);
+  cursor: pointer;
+}
