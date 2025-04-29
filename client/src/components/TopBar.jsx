@@ -93,9 +93,9 @@ function TopBar() {
                   )}
                 </span>
               </li>
-              <li>
-                <span>
-                  {user && user.username == "dv22csb0f38" ? (
+              {user && (user.username == "dv22csb0f38") ? (
+                <li>
+                  <span>
                     <NavLink
                       to="/admin"
                       onClick={() => setMenuOpen(false)}
@@ -103,11 +103,11 @@ function TopBar() {
                     >
                       Admin
                     </NavLink>
-                  ) : (
-                    "Loading..."
-                  )}
-                </span>
-              </li>
+                  </span>
+                </li>
+              ) : (
+                ""
+              )}
               <li>
                 <NavLink
                   to="/search"

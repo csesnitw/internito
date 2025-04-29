@@ -80,7 +80,7 @@ const AdminDashboard = () => {
               </div>
               <button
                 className="read-more-btn"
-                onClick={() => navigate(`/experiences/${exp._id}`)}
+                onClick={() => navigate(`/admin/experiences/${exp._id}`)}
               >
                 Read More
               </button>

@@ -100,7 +100,7 @@ router.post("/addExperience", async (req, res) => {
       status: "Pending",
     });
     const savedExperience = await newExperience.save();
-    res.status(201).json(savedExperience);
+    res.status(201).json({ success: true, message: 'Experience added successfully!' });
   } catch (error) {
     console.error('Error fetching company search results:', error);
     res.status(500).json({ message: 'Failed to fetch company search results' });

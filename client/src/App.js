@@ -28,14 +28,14 @@ function App() {
         <div className="content"> {/* Dynamic content below TopBar */}
           <Routes>
             <Route path="/" element={<Login />} />
-            <Route
-              path="/admin"
-              element={
+            <Route path="/admin">
+            <Route index element={
                 <FetchUserAndRedirect>
                   <AdminDashboard />
                 </FetchUserAndRedirect>
-              }
-            />
+              } />
+            <Route path="experiences/:id" element={<>Not created yet!</>}/>
+            </Route>
             <Route
               path="/search"
               element={
