@@ -43,7 +43,7 @@ function SearchPage() {
   
     let currentOffset = 0;
     let lastTimestamp = null;
-    const speed = 600; // px per second
+    const speed = 60; // px per second
   
     function animate(ts) {
       if (!lastTimestamp) lastTimestamp = ts;
