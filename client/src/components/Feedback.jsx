@@ -4,10 +4,12 @@ import "./Feedback.css";
 const Feedback = () => {
   const [feedback, setFeedback] = useState("");
   const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false); // <-- loading state
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("");
+    setLoading(true); // Start loading
     try {
       const res = await fetch(
         `${process.env.REACT_APP_API_URL || "http://localhost:8000"}/api/feedback`,
@@ -28,6 +30,7 @@ const Feedback = () => {
     } catch {
       setStatus("Failed to send feedback.");
     }
+    setLoading(false); // Stop loading
   };
 
   return (
@@ -44,10 +47,24 @@ const Feedback = () => {
           placeholder="Enter your feedback here..."
           rows={6}
           required
+          disabled={loading}
         />
-        <button className="feedback-submit" type="submit">
-          Submit
+        <button className="feedback-submit" type="submit" disabled={loading}>
+          {loading ? "Submitting..." : "Submit"}
         </button>
+        {loading && (
+          <div className="feedback-loading" style={{ textAlign: "center", marginTop: 8 }}>
+            <span className="spinner" style={{
+              display: "inline-block",
+              width: 22,
+              height: 22,
+              border: "3px solid #76b852",
+              borderTop: "3px solid #eafbe7",
+              borderRadius: "50%",
+              animation: "spin 1s linear infinite"
+            }} />
+          </div>
+        )}
         {status && (
           <div
             className={`feedback-status ${
@@ -58,6 +75,15 @@ const Feedback = () => {
           </div>
         )}
       </form>
+      {/* Spinner animation */}
+      <style>
+        {`
+          @keyframes spin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+          }
+        `}
+      </style>
     </div>
   );
 };
