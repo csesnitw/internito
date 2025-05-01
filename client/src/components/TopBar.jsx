@@ -146,7 +146,7 @@ function TopBar() {
               </li>
               <li>
                 <NavLink
-                  to="/about" // Change to "/feedback" when ready
+                  to="/feedback" // Change to "/feedback" when ready
                   onClick={() => setMenuOpen(false)}
                   className="feedback-button"
                 >

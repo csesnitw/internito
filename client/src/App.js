@@ -13,6 +13,7 @@ import SearchPage from './components/SearchPage'; // Import the SearchPage compo
 import About from './components/About'; // Import the About component
 import './App.css'; // Import your CSS file
 import AdminDashboard from './components/AdminDashboard';
+import Feedback from './components/Feedback';
 
 function App() {
   const dispatch = useDispatch();
@@ -52,6 +53,16 @@ function App() {
                 <ProtectedRoute>
                   <FetchUserAndRedirect>
                     <Experiences />
+                  </FetchUserAndRedirect>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/feedback"
+              element={
+                <ProtectedRoute>
+                  <FetchUserAndRedirect>
+                    <Feedback />
                   </FetchUserAndRedirect>
                 </ProtectedRoute>
               }
