@@ -35,11 +35,28 @@ router.post("/", async (req, res) => {
       subject: `New Feedback from ${userName}`,
       replyTo: userEmail, // This is important!
       html: `
-        <p><strong>From:</strong> ${userName} (${userEmail})</p>
-        <p><strong>Feedback:</strong></p>
-        <blockquote style="border-left:2px solid #76b852;padding-left:8px;margin:8px 0;color:#333;">${feedback}</blockquote>
-        <p>Replying to this email will send your response directly to the user.</p>
-      `
+  <div style="font-family:'Poppins',Arial,sans-serif;max-width:600px;margin:0 auto;background:#f9f9f9;padding:32px 24px 24px 24px;border-radius:16px;box-shadow:0 2px 12px rgba(34,139,34,0.07);">
+    <div style="text-align:center;margin-bottom:24px;">
+      <img src="https://img.icons8.com/color/96/000000/feedback.png" alt="Feedback" width="56" height="56" style="margin-bottom:8px;" />
+      <h2 style="margin:0;font-size:1.5rem;color:#222;font-weight:600;letter-spacing:0.01em;">New Feedback Received</h2>
+    </div>
+    <div style="background:#fff;border-radius:12px;padding:20px 18px 14px 18px;border:1.5px solid #e0e0e0;">
+      <p style="margin:0 0 8px 0;font-size:1.05rem;color:#333;">
+        <strong>From:</strong> <span style="color:#76b852;">${userName}</span> (<a href="mailto:${userEmail}" style="color:#76b852;text-decoration:none;">${userEmail}</a>)
+      </p>
+      <p style="margin:0 0 8px 0;font-size:1.05rem;color:#333;"><strong>Feedback:</strong></p>
+      <div style="border-left:4px solid #76b852;padding-left:14px;margin:8px 0 16px 0;color:#222;font-size:1.08rem;line-height:1.6;background:#f6fff4;border-radius:6px;">
+        ${feedback}
+      </div>
+      <p style="font-size:0.97rem;color:#888;margin:0 0 4px 0;">
+        <em>Replying to this email will send your response directly to the user.</em>
+      </p>
+    </div>
+    <div style="margin-top:28px;text-align:center;font-size:0.95rem;color:#aaa;">
+      <span>interNito Feedback System</span>
+    </div>
+  </div>
+`
     });
 
     res.status(200).json({ message: "Feedback sent successfully!" });

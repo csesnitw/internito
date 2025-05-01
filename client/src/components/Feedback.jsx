@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./Feedback.css";
 
 const Feedback = () => {
   const [feedback, setFeedback] = useState("");
@@ -30,19 +31,33 @@ const Feedback = () => {
   };
 
   return (
-    <div className="feedback-container">
-      <h2>Send us your Feedback</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="feedback-bg">
+      <form className="feedback-form" onSubmit={handleSubmit}>
+        <h2 className="feedback-title">We value your feedback!</h2>
+        <p className="feedback-desc">
+          Please let us know your thoughts, suggestions, or issues below.
+        </p>
         <textarea
+          className="feedback-textarea"
           value={feedback}
           onChange={e => setFeedback(e.target.value)}
           placeholder="Enter your feedback here..."
           rows={6}
           required
         />
-        <button type="submit">Submit</button>
+        <button className="feedback-submit" type="submit">
+          Submit
+        </button>
+        {status && (
+          <div
+            className={`feedback-status ${
+              status.toLowerCase().includes("thank") ? "success" : "error"
+            }`}
+          >
+            {status}
+          </div>
+        )}
       </form>
-      {status && <div className="feedback-status">{status}</div>}
     </div>
   );
 };
