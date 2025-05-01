@@ -78,7 +78,7 @@ router.post("/addExperience", async (req, res) => {
 
     const {
       company, batch, cgpaCutoff, experienceType,
-      eligibleBranches, OT_questions, interviewRounds, other_comments,
+      eligibleBranches, OT_description, OT_questions, interviewRounds, other_comments,
       jobDescription, numberOfSelections
     } = req.body;
 
@@ -89,6 +89,7 @@ router.post("/addExperience", async (req, res) => {
 
     // Sentiment check (unchanged)
     const text = [
+      OT_description || "",
       ...(OT_questions || []),
       ...(interviewRounds?.map(r => r.description) || []),
       other_comments || ""
@@ -113,6 +114,7 @@ router.post("/addExperience", async (req, res) => {
       cgpaCutoff,
       experienceType,
       eligibleBranches,
+      OT_description, // <-- Add this line
       OT_questions,
       interviewRounds,
       other_comments,

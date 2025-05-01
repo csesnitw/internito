@@ -23,6 +23,7 @@ const AddExperience = () => {
     cgpaCutoff: "",
     experienceType: "Intern",
     eligibleBranches: [],
+    OT_description: "", // <-- Add this line
     OT_questions: [""],
     interviewRounds: [{ title: "Round 1", description: "" }],
     other_comments: "",
@@ -214,6 +215,17 @@ const AddExperience = () => {
             onChange={handleChange}
             placeholder="Number of Selections"
             min="0"
+          />
+        </div>
+
+        <div className="add-exp-section">
+          <label>Online Test Description</label>
+          <textarea
+            name="OT_description"
+            value={experience.OT_description}
+            onChange={handleChange}
+            placeholder="Describe the Online Test (pattern, duration, etc.)"
+            style={{ width: "100%" }}
           />
         </div>
 

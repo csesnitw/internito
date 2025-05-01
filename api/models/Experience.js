@@ -6,6 +6,7 @@ const experienceSchema = new mongoose.Schema({
   cgpaCutoff: { type: Number, required: true },
   experienceType: { type: String, required: true },
   eligibleBranches: [{ type: String }],
+  OT_description: { type: String }, // <-- add this
   OT_questions: [{ type: String }],
   interviewRounds: [
     {
