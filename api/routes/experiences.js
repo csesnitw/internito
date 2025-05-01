@@ -85,39 +85,62 @@ router.get("/pending", async (req, res) => {
 // Add a new experience
 router.post("/addExperience", async (req, res) => {
   try {
-    const { company, name,rollNo, email, batch, cgpaCutoff, experienceType, position, OT_description, interview_description, other_comments } = req.body;
+    // Ensure user is authenticated (Google Auth should set req.user)
+    if (!req.user || !req.user.user || !req.user.user._id) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const {
+      company, batch, cgpaCutoff, experienceType,
+      eligibleBranches, OT_description, OT_questions, interviewRounds, other_comments,
+      jobDescription, numberOfSelections
+    } = req.body;
 
     // Validate required fields
-    if (!company || !name || !rollNo || !email || !batch || !cgpaCutoff || !experienceType || !position || !OT_description || !interview_description || !other_comments) {
+    if (!company || !batch || !cgpaCutoff || !experienceType || !OT_questions || !interviewRounds) {
       return res.status(400).json({ error: true, message: 'All required fields must be filled.' });
     }
 
-    text = OT_description + " " + interview_description + " " + other_comments;
-    // Get sentiment score
+    // Sentiment check (unchanged)
+    const text = [
+      OT_description || "",
+      ...(OT_questions || []),
+      ...(interviewRounds?.map(r => r.description) || []),
+      other_comments || ""
+    ].join(" ");
     const sentimentScore = getSentiment(text);
     if (sentimentScore < 0) {
       return res.status(400).json({ error: true, message: 'Sentiment score is negative. Please check your input.' });
     }
+
+    // Get user's name
+    const userObj = req.user.user;
+    const name = userObj.firstName && userObj.lastName
+      ? `${userObj.firstName} ${userObj.lastName}`
+      : userObj.firstName || userObj.lastName || "";
+
     // Create a new experience
     const newExperience = new Experience({
+      user: userObj._id,
+      name, // <-- add name here
       company,
-      name,
-      rollNo,
-      email,
       batch,
       cgpaCutoff,
       experienceType,
-      position,
-      OT_description,
-      interview_description,
+      eligibleBranches,
+      OT_description, // <-- Add this line
+      OT_questions,
+      interviewRounds,
       other_comments,
+      jobDescription,
+      numberOfSelections,
       status: "Pending",
     });
     const savedExperience = await newExperience.save();
     res.status(201).json({ success: true, message: 'Experience added successfully!' });
   } catch (error) {
-    console.error('Error fetching company search results:', error);
-    res.status(500).json({ message: 'Failed to fetch company search results' });
+    console.error('Error submitting experience:', error);
+    res.status(500).json({ message: 'Failed to submit experience' });
   }
 });
 

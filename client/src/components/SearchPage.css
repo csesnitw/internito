@@ -1,47 +1,17 @@
-/* Autocomplete container */
-.autocomplete-container {
-  width: 100%;
-  position: relative;
-}
-
-.autocomplete-suggestions {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 1000;
-  list-style: none;
-  padding: 0;
-  margin: 5px 0 0;
-}
-
-.autocomplete-item {
-  padding: 10px;
-  cursor: pointer;
-}
-
-.autocomplete-item:hover {
-  background-color: #f4f4f4;
-}
-
 /* General styles for the search page */
 .search-page {
-  padding-top: 20px;
+  padding: 20px;
+  padding-top: 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 40px;
 }
 
 .search-input {
   width: 100%;
-  padding: 15px;
+  padding: 12px 15px;
   font-size: 1.2rem;
   border: var(--border);
   border-radius: 25px;
@@ -98,6 +68,7 @@
 
 .main-search-title {
   font-size: 3rem;
+  line-height: 1;
 }
 
 .result-card {
@@ -118,41 +89,13 @@
 
 .logo-slider-container {
   width: 100%;
-  overflow: hidden;
   padding: 10px 0;
-  background: transparent;
-  display: flex;
-  justify-content: center;
 }
 
-.logo-slider {
-  display: flex;
-  align-items: center;
-  gap: 40px;
-  width: max-content;
-  will-change: transform;
-  /* No animation here, JS will handle it */
-  transition: none;
-}
-
-.slider-logo {
-  height: 50px;
-  max-width: 250px;
-  width: auto;
-  object-fit: contain;
-  filter: grayscale(0.2) brightness(0.9);
-  opacity: 0.85;
-  transition: filter 0.2s;
-  user-select: none;
-  pointer-events: none;
-}
-
-/* Responsive for mobile */
-@media (max-width: 700px) {
-  .logo-slider {
-    gap: 20px;
-  }
-  .slider-logo {
-    height: 40px;
-  }
+.logo-slider-container img {
+  height: 60px;
+  max-width: 300px;
+  margin-right: 40px;
+  cursor: pointer;
+  display: inline-block;
 }

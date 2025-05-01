@@ -81,6 +81,17 @@ function App() {
             <Route path="/about" element={<About />} /> {/* Add About route */}
           </Routes>
         </div>
+        <footer>
+            <div className="footer-copyright">
+              Copyright © 2025 interNito
+            </div>
+            <div className="footer-madeby">
+              Made with <span className="footer-heart">❤</span> by Sufiyan, Chaitanya, Chirantan, Divya &amp; Abhishek
+            </div>
+            <div className="footer-madeby">
+              Rebuilt by CSES Development Team, NIT Warangal
+            </div>
+          </footer>
       </div>
     </Router>
   );
