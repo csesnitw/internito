@@ -1,70 +1,67 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import Marquee from "react-fast-marquee";
 import { NAMES } from "../constants/companies";
-import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import "./SearchPage.css";
 
 const COMPANY_LOGOS = [
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/D._E._Shaw_%26_Co._Logo.svg/1920px-D._E._Shaw_%26_Co._Logo.svg.png",
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Goldman_Sachs_logo.svg/375px-Goldman_Sachs_logo.svg.png",
-  "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Microsoft_logo_%282012%29.svg/768px-Microsoft_logo_%282012%29.svg.png",
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Salesforce.com_logo.svg/500px-Salesforce.com_logo.svg.png",
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Uber_logo_2018.svg/2560px-Uber_logo_2018.svg.png",
-  "https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/e/ec/Morgan_Stanley_Logo_2024.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mastercard_2019_logo.svg/1200px-Mastercard_2019_logo.svg.png",
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Visa_2021.svg/500px-Visa_2021.svg.png",
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Qualcomm-Logo.svg/1200px-Qualcomm-Logo.svg.png",
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Samsung_Logo.svg/2560px-Samsung_Logo.svg.png",
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Wells_Fargo_Bank.svg/453px-Wells_Fargo_Bank.svg.png",
-
-  // Add more as needed
+  {
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/D._E._Shaw_%26_Co._Logo.svg/1920px-D._E._Shaw_%26_Co._Logo.svg.png",
+    name: "D.E. Shaw",
+  },
+  {
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Goldman_Sachs_logo.svg/375px-Goldman_Sachs_logo.svg.png",
+    name: "Goldman Sachs",
+  },
+  {
+    url: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+    name: "Google",
+  },
+  {
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Microsoft_logo_%282012%29.svg/768px-Microsoft_logo_%282012%29.svg.png",
+    name: "Microsoft",
+  },
+  {
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Salesforce.com_logo.svg/500px-Salesforce.com_logo.svg.png",
+    name: "Salesforce",
+  },
+  {
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Uber_logo_2018.svg/2560px-Uber_logo_2018.svg.png",
+    name: "Uber",
+  },
+  {
+    url: "https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg",
+    name: "Oracle",
+  },
+  {
+    url: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Morgan_Stanley_Logo_2024.svg",
+    name: "Morgan Stanley",
+  },
+  {
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mastercard_2019_logo.svg/1200px-Mastercard_2019_logo.svg.png",
+    name: "Mastercard",
+  },
+  {
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Visa_2021.svg/500px-Visa_2021.svg.png",
+    name: "Visa",
+  },
+  {
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Qualcomm-Logo.svg/1200px-Qualcomm-Logo.svg.png",
+    name: "Qualcomm",
+  },
+  {
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Samsung_Logo.svg/2560px-Samsung_Logo.svg.png",
+    name: "Samsung",
+  },
+  {
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Wells_Fargo_Bank.svg/453px-Wells_Fargo_Bank.svg.png",
+    name: "Wells Fargo",
+  },
 ];
 
 function SearchPage() {
   const [searchInput, setSearchInput] = useState("");
   const navigate = useNavigate();
-
-  // --- Slider logic ---
-  const sliderRef = useRef(null);
-  const animationRef = useRef(null);
-  const [offset, setOffset] = useState(0);
-
-  useEffect(() => {
-    const slider = sliderRef.current;
-    if (!slider) return;
-  
-    const logosCount = COMPANY_LOGOS.length;
-    const logoWidth = slider.children[0]?.offsetWidth || 200;
-    const gap = parseInt(getComputedStyle(slider).gap) || 40;
-    const singleSetWidth = logosCount * (logoWidth + gap);
-    const doubleSetWidth = singleSetWidth * 2;
-  
-    let currentOffset = 0;
-    let lastTimestamp = null;
-    const speed = 60; // px per second
-  
-    function animate(ts) {
-      if (!lastTimestamp) lastTimestamp = ts;
-      const elapsed = ts - lastTimestamp;
-      lastTimestamp = ts;
-      currentOffset += (elapsed / 1000) * speed;
-  
-      if (currentOffset >= doubleSetWidth) {
-        // Reset after the full double set has scrolled
-        currentOffset = 0;
-      }
-      setOffset(-currentOffset);
-      animationRef.current = requestAnimationFrame(animate);
-    }
-  
-    animationRef.current = requestAnimationFrame(animate);
-  
-    return () => cancelAnimationFrame(animationRef.current);
-  }, []);
-
-  // --- End slider logic ---
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -76,24 +73,19 @@ function SearchPage() {
   return (
     <div className="search-page">
       <div className="logo-slider-container">
-        <div
-          className="logo-slider"
-          ref={sliderRef}
-          style={{
-            transform: `translateX(${offset}px)`,
-          }}
-        >
-          {[...COMPANY_LOGOS, ...COMPANY_LOGOS].map((logo, idx) => (
+        <Marquee gradient={false} speed={60} pauseOnHover={true}>
+          {COMPANY_LOGOS.map((logo, idx) => (
             <img
-              src={logo}
-              alt="Company Logo"
-              className="slider-logo"
+              src={logo.url}
+              alt={logo.name}
               key={idx}
-              draggable={false}
+              onClick={() => navigate(`/search/${encodeURIComponent(logo.name)}`)} // Navigate on click
+              title={logo.name} // Title attribute for accessibility
             />
           ))}
-        </div>
+        </Marquee>
       </div>
+
       <h1 className="main-search-title">
         Search Experiences by <span>Company</span>
       </h1>

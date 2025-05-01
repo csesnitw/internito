@@ -89,42 +89,13 @@
 
 .logo-slider-container {
   width: 100%;
-  overflow: hidden;
   padding: 10px 0;
-  background: transparent;
-  display: flex;
-  justify-content: center;
 }
 
-.logo-slider {
-  display: flex;
-  align-items: center;
-  gap: 40px;
-  min-width: 100vw;
-  width: max-content;
-  will-change: transform;
-  /* No animation here, JS will handle it */
-  transition: none;
-}
-
-.slider-logo {
-  height: 50px;
-  max-width: 250px;
-  width: auto;
-  object-fit: contain;
-  filter: grayscale(0.2) brightness(0.9);
-  opacity: 0.85;
-  transition: filter 0.2s;
-  user-select: none;
-  pointer-events: none;
-}
-
-/* Responsive for mobile */
-@media (max-width: 700px) {
-  .logo-slider {
-    gap: 20px;
-  }
-  .slider-logo {
-    height: 40px;
-  }
+.logo-slider-container img {
+  height: 60px;
+  max-width: 300px;
+  margin-right: 40px;
+  cursor: pointer;
+  display: inline-block;
 }
