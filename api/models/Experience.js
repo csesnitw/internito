@@ -1,53 +1,22 @@
 const mongoose = require("mongoose");
 const experienceSchema = new mongoose.Schema({
-  company: {
-    type: String,
-    required: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-  rollNo:{
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  batch: {
-    type: String,
-    required: true,
-  },
-  cgpaCutoff: {
-    type: Number,
-    required: true,
-  },
-  experienceType: {
-    type: String,
-    required: true,
-  },
-  position: {
-    type: String,
-    required: true,
-  },
-  OT_description: {
-    type: String,
-    required: true,
-  },
-  interview_description: {
-    type: String,
-    required: true,
-  },
-  other_comments: {
-    type: String,
-    required: true,
-  },
-  status:{
-    type: String,
-    required: true
-  }
-});
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  company: { type: String, required: true },
+  batch: { type: String, required: true },
+  cgpaCutoff: { type: Number, required: true },
+  experienceType: { type: String, required: true },
+  eligibleBranches: [{ type: String }],
+  OT_questions: [{ type: String }],
+  interviewRounds: [
+    {
+      title: String,
+      description: String,
+    }
+  ],
+  other_comments: { type: String },
+  jobDescription: { type: String }, // <-- add this
+  numberOfSelections: { type: Number }, // <-- add this
+  status: { type: String, required: true }
+}, { timestamps: true });
 
 module.exports = mongoose.model("Experience", experienceSchema);
