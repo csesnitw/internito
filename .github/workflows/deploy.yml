@@ -1,0 +1,46 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH Key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}  # YOUR EC2 SSH KEY (to login)
+
+    - name: SSH into EC2 and Deploy
+      run: |
+        ssh -o StrictHostKeyChecking=no ubuntu@13.201.189.137 << 'EOF'
+          # Go to the project folder
+          cd internito
+
+          # Pull the latest code using Deploy Key
+          GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key" git pull origin main
+
+          # Update frontend (client)
+          cd client
+          npm install
+          npm run build
+
+          # Replace frontend files served by nginx
+          sudo rm -rf /var/www/html/*
+          sudo cp -r build/* /var/www/html/
+
+          # Update backend (api)
+          cd ../api
+          npm install
+
+          # Restart backend server using pm2
+          pm2 restart all
+        EOF
+
