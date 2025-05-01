@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Marquee from "react-fast-marquee";
+import { NAMES } from "../constants/companies";
 import { useNavigate } from "react-router-dom";
 import "./SearchPage.css";
 
@@ -98,8 +99,8 @@ function SearchPage() {
           list="company-suggestions"
         />
         <datalist id="company-suggestions">
-          {COMPANY_LOGOS.map((logo, idx) => (
-            <option value={logo.name} key={idx} />
+          {NAMES.map((name, idx) => (
+            <option value={name} key={idx} />
           ))}
         </datalist>
         <div className="search-tips">
