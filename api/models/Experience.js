@@ -16,6 +16,7 @@ const experienceSchema = new mongoose.Schema({
   other_comments: { type: String },
   jobDescription: { type: String }, // <-- add this
   numberOfSelections: { type: Number }, // <-- add this
+  name: { type: String, required: true }, // <-- add this
   status: { type: String, required: true }
 }, { timestamps: true });
 
