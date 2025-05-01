@@ -133,6 +133,21 @@ app.get('/api/user', (req, res) => {
     res.status(200).send(req.user)
 })
 
+app.get('api/user/modify/:userId', (req, res) => {
+    const { userId } = req.params;
+    const {linkedIn, github, resume } = req.body;
+
+    User.findOneAndUpdate(
+        { _id: userId },
+        { $set: { linkedIn, github, resume } },
+        { new: true }
+    ).then((user) => {
+        res.status(200).json({ success: true, message: 'Experience added successfully!' });
+    }).catch((err) => {
+        res.status(500).json({ error: true, message: err });
+    });
+})
+
 /* The below code is a route handler for the "/api/logout" endpoint in a Node.js application using Express
 framework. When a user accesses this endpoint, it logs out the current user session. */
 app.get('/api/logout', (req, res) => {

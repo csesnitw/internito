@@ -124,6 +124,9 @@ module.exports = function () {
                     profilePic: photoURL,
                     yearOfStudy: yearOfStudy,
                     branch: branch,
+                    linkedIn: "",
+                    github: "",
+                    resume: "",
                 });
 
                 /// The new user is saved in the table
