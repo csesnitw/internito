@@ -1,4 +1,4 @@
-name: Deploy Internito to EC2 automatically
+name: Deploy to EC2
 
 on:
   push:
@@ -43,3 +43,4 @@ jobs:
           # Restart backend server using pm2
           pm2 restart all
         EOF
+
