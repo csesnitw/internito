@@ -79,7 +79,7 @@ router.post("/addExperience", async (req, res) => {
     const {
       company, batch, cgpaCutoff, experienceType,
       eligibleBranches, OT_questions, interviewRounds, other_comments,
-      jobDescription, numberOfSelections // <-- add these
+      jobDescription, numberOfSelections
     } = req.body;
 
     // Validate required fields
@@ -98,9 +98,16 @@ router.post("/addExperience", async (req, res) => {
       return res.status(400).json({ error: true, message: 'Sentiment score is negative. Please check your input.' });
     }
 
+    // Get user's name
+    const userObj = req.user.user;
+    const name = userObj.firstName && userObj.lastName
+      ? `${userObj.firstName} ${userObj.lastName}`
+      : userObj.firstName || userObj.lastName || "";
+
     // Create a new experience
     const newExperience = new Experience({
-      user: req.user.user._id,
+      user: userObj._id,
+      name, // <-- add name here
       company,
       batch,
       cgpaCutoff,
@@ -109,8 +116,8 @@ router.post("/addExperience", async (req, res) => {
       OT_questions,
       interviewRounds,
       other_comments,
-      jobDescription, // <-- add
-      numberOfSelections, // <-- add
+      jobDescription,
+      numberOfSelections,
       status: "Pending",
     });
     const savedExperience = await newExperience.save();
