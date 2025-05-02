@@ -7,6 +7,7 @@ import "./TopBar.css";
 function TopBar() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
+  const loading = useSelector((state) => state.auth.loading);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -99,7 +100,7 @@ function TopBar() {
             <>
               <li>
                 <span>
-                  {user && user.firstName ? (
+                  {loading ? null : user && user.firstName ? (
                     <>
                       Hello <strong>{user.firstName}</strong>!
                     </>

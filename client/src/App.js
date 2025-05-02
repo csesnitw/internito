@@ -8,10 +8,10 @@ import Experiences from './components/Experiences';
 import ProtectedRoute from './components/ProtectedRoute';
 import FetchUserAndRedirect from './components/FetchUserAndRedirect';
 import AddExperience from './components/AddExperience';
-import SearchResults from './components/SearchResults'; // Import the SearchResults component
-import SearchPage from './components/SearchPage'; // Import the SearchPage component
-import About from './components/About'; // Import the About component
-import './App.css'; // Import your CSS file
+import SearchResults from './components/SearchResults';
+import SearchPage from './components/SearchPage';
+import About from './components/About';
+import './App.css';
 import AdminDashboard from './components/AdminDashboard';
 import Feedback from './components/Feedback';
 
@@ -33,64 +33,36 @@ function App() {
             <Routes>
               <Route path="/" element={<Login />} />
               <Route
-                path="/admin"
-                element={
-                  <FetchUserAndRedirect>
-                    <AdminDashboard />
-                  </FetchUserAndRedirect>
-                }
-              />
-              <Route
-                path="/search"
-                element={
+                element={<FetchUserAndRedirect />}
+              >
+                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/search" element={
                   <ProtectedRoute>
-                    <FetchUserAndRedirect>
-                      <SearchPage />
-                    </FetchUserAndRedirect>
+                    <SearchPage />
                   </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/experiences"
-                element={
+                } />
+                <Route path="/experiences" element={
                   <ProtectedRoute>
-                    <FetchUserAndRedirect>
-                      <Experiences />
-                    </FetchUserAndRedirect>
+                    <Experiences />
                   </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/feedback"
-                element={
+                } />
+                <Route path="/feedback" element={
                   <ProtectedRoute>
-                    <FetchUserAndRedirect>
-                      <Feedback />
-                    </FetchUserAndRedirect>
+                    <Feedback />
                   </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/addExperiences"
-                element={
+                } />
+                <Route path="/addExperiences" element={
                   <ProtectedRoute>
-                    <FetchUserAndRedirect>
-                      <AddExperience />
-                    </FetchUserAndRedirect>
+                    <AddExperience />
                   </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/search/:query"
-                element={
+                } />
+                <Route path="/search/:query" element={
                   <ProtectedRoute>
-                    <FetchUserAndRedirect>
-                      <SearchResults />
-                    </FetchUserAndRedirect>
+                    <SearchResults />
                   </ProtectedRoute>
-                }
-              />
-              <Route path="/about" element={<About />} />
+                } />
+                <Route path="/about" element={<About />} />
+              </Route>
             </Routes>
           </div>
           <footer>
@@ -109,6 +81,5 @@ function App() {
     </Router>
   );
 }
-
 
 export default App;
