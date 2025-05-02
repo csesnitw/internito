@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useDispatch } from 'react-redux';
+import { login, setUser } from '../slices/authSlice';
+
 import { useNavigate } from "react-router-dom";
 import "./UserDetails.css";
 import "./Experiences.css"; // For Experiences-specific styles
@@ -14,6 +17,7 @@ const UserDashboard = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setUserCopy(user);
@@ -43,7 +47,7 @@ const UserDashboard = () => {
   }, []);
 
   const handleChange = (e) => {
-    setChanged(true);
+    if (!changed) setChanged(true);
     const { name, value } = e.target;
     setUserCopy((prev) => ({ ...prev, [name]: value }));
   };
@@ -77,17 +81,19 @@ const UserDashboard = () => {
           }),
         }
       );
+
       const data = await response.json();
+      console.log(data.user)
       if (response.ok) {
-        setSuccessMessage("User details updated successfully!");
+        dispatch(setUser(data.user)); // Store user details in Redux
+        setSuccessMessage("User details updated successfully! Please login again to view changes.");
         setErrorMessage("");
       } else {
         setErrorMessage("Failed to update user details. Please try again.");
         setSuccessMessage("");
       }
     } catch (error) {
-      //setUserCopy(user);
-      setErrorMessage("Failed to update user details. Please try again.");
+      setErrorMessage(error.message);
       setSuccessMessage("");
     }
   };
@@ -98,38 +104,38 @@ const UserDashboard = () => {
         <div className="user-card">
           <h1 className="user-title">User Details</h1>
           <p>
-            <span className="label">Name:</span> {UserCopy.firstName}{" "}
+            <span className="label">Name:</span> {user.firstName}{" "}
             {user.lastName}
           </p>
           <p>
-            <span className="label">Email:</span> {UserCopy.email}
+            <span className="label">Email:</span> {user.email}
           </p>
           <p>
-            <span className="label">Roll No:</span> {UserCopy.rollNo}
+            <span className="label">Roll No:</span> {user.rollNo}
           </p>
           <p>
-            <span className="label">Branch:</span> {UserCopy.branch}
+            <span className="label">Branch:</span> {user.branch}
           </p>
           <p>
-            <span className="label">Year of Study:</span> {UserCopy.yearOfStudy}
+            <span className="label">Year of Study:</span> {user.yearOfStudy}
           </p>
           <p>
             <span className="label">LinkedIn:</span>{" "}
-            {UserCopy.linkedIn === "" || UserCopy.linkedIn === undefined
+            {user.linkedIn === "" || user.linkedIn === undefined
               ? "-"
-              : UserCopy.linkedIn}
+              : user.linkedIn}
           </p>
           <p>
             <span className="label">GitHub:</span>{" "}
-            {UserCopy.github === "" || UserCopy.github === undefined
+            {user.github === "" || user.github === undefined
               ? "-"
-              : UserCopy.github}
+              : user.github}
           </p>
           <p>
             <span className="label">Resume:</span>{" "}
-            {UserCopy.resume === "" || UserCopy.resume === undefined
+            {user.resume === "" || user.resume === undefined
               ? "-"
-              : UserCopy.resume}
+              : user.resume}
           </p>
           <button className="read-more-btn" onClick={handleModifyDetails}>
             Modify Details
@@ -186,11 +192,10 @@ const UserDashboard = () => {
         ) : (
           <div className="experiences-section">
             <h1>Modify your details</h1>
-            <form onSubmit={handleSubmit} className="profile-links-form">
-              <h2>Enter Your Links</h2>
-
-              <label>
-                LinkedIn:
+            <form onSubmit={handleSubmit} className="add-exp-form">
+              <h2 className="add-exp-title">Enter your Links</h2>
+              <div className="add-exp-grid">
+                <label>LinkedIn</label>
                 <input
                   type="url"
                   name="linkedIn"
@@ -198,10 +203,8 @@ const UserDashboard = () => {
                   onChange={handleChange}
                   placeholder="https://linkedin.com/in/your-profile"
                 />
-              </label>
 
-              <label>
-                GitHub:
+                <label>GitHub</label>
                 <input
                   type="url"
                   name="github"
@@ -209,10 +212,8 @@ const UserDashboard = () => {
                   onChange={handleChange}
                   placeholder="https://github.com/your-username"
                 />
-              </label>
 
-              <label>
-                Resume Link:
+                <label>Resume Link</label>
                 <input
                   type="url"
                   name="resume"
@@ -220,7 +221,7 @@ const UserDashboard = () => {
                   onChange={handleChange}
                   placeholder="https://yourdomain.com/resume.pdf"
                 />
-              </label>
+              </div>
 
               <button type="submit">Submit</button>
             </form>

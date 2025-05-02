@@ -13,7 +13,7 @@ function TopBar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    console.log("User details:", user);
+    //console.log("User details:", user);
   }, [user]);
 
   const handleLogout = async () => {
