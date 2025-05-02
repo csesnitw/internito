@@ -58,10 +58,11 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id",async (req,res) => {
+router.get("/user/:id",async (req,res) => {
   try {
     const { id } = req.params;
-    const experiences = await Experience.find({email:id});
+    console.log(id)
+    const experiences = await Experience.find({user: id}).sort({ date: -1 });
     if (!experiences) {
       return res.status(404).json({ message: "Experience not found" });
     }
@@ -74,7 +75,7 @@ router.get("/:id",async (req,res) => {
 
 router.get("/pending", async (req, res) => {
   try {
-    const experiences = await Experience.find({ status: "Pending" });
+    const experiences = await Experience.find({ "status": "Pending" }).sort({ date: -1 });
     res.status(200).json(experiences);
   } catch (error) {
     console.log(error);

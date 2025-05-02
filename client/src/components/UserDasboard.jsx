@@ -30,7 +30,7 @@ const UserDashboard = () => {
         const response = await fetch(
           `${
             process.env.REACT_APP_API_URL || "http://localhost:8000"
-          }/api/experiences/${UserCopy.username}`,
+          }/api/experiences/user/${UserCopy._id}`,
           {
             method: "GET",
             credentials: "include",

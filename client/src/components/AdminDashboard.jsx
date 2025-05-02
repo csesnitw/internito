@@ -26,8 +26,14 @@ const AdminDashboard = () => {
           }
         );
         const data = await response.json();
-        setExperiences(data);
-        setLoading(false);
+        if (response.ok){
+          setExperiences(data);
+          setLoading(false);
+        }
+        else {
+          console.error("Failed to fetch experiences:", data);
+          setLoading(false);
+        }
       } catch (error) {
         console.error("Error fetching experiences:", error);
       }
