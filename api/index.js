@@ -123,7 +123,7 @@ app.get('/api/auth/google/callback',
     passport.authenticate('google', { failureRedirect: `${process.env.REACT_APP_CLIENT_URL || 'http://localhost:3000'}/` }),
     (req, res) => {
         // Redirect to the frontend experiences page after successful login
-        res.redirect(`${process.env.REACT_APP_CLIENT_URL || 'http://localhost:3000'}/experiences`);
+        res.redirect(`${process.env.REACT_APP_CLIENT_URL || 'http://localhost:3000'}/search`);
     }
 );
 
