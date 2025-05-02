@@ -1,176 +1,546 @@
 import React, { useState } from "react";
-import { useSelector } from 'react-redux';
-import { NAMES } from '../constants/companies'; // Import the list of companies
+import { useSelector } from "react-redux";
+import { NAMES } from "../constants/companies";
+import "./AddExperience.css";
+
+const BRANCHES = [
+  "CSE",
+  "ECE",
+  "EEE",
+  "MECH",
+  "CHEM",
+  "CIVIL",
+  "MME",
+  "BIOTECH",
+];
+
+const BATCHES = [
+  "2017-21",
+  "2018-22",
+  "2019-23",
+  "2020-24",
+  "2021-25",
+  "2022-26",
+];
+
+function autoGrow(e) {
+  e.target.style.height = "auto";
+  e.target.style.height = e.target.scrollHeight + "px";
+}
+
+const REQUIRED_FIELDS = [
+  "batch",
+  "company",
+  "cgpaCutoff",
+  "jobDescription",
+  "numberOfSelections",
+  "OT_description",
+  "other_comments",
+];
 
 const AddExperience = () => {
   const user = useSelector((state) => state.auth.user);
+  const [loading, setLoading] = useState(false); // <-- Add loading state
   const [experience, setExperience] = useState({
     company: "",
-    name: user.firstName + " " + user.lastName,
-    rollNo: user.rollNo,
-    email: user.username,
     batch: "",
     cgpaCutoff: "",
     experienceType: "Intern",
-    position: "",
+    eligibleBranches: [],
     OT_description: "",
-    interview_description: "",
-    other_comments: ""
+    OT_questions: [""],
+    interviewRounds: [{ title: "Round 1", description: "" }],
+    other_comments: "",
+    jobDescription: "",
+    numberOfSelections: "",
   });
-  const [errorMessage, setErrorMessage] = useState(''); // State to store error messages
-  const [successMessage, setSuccessMessage] = useState(''); // State to store success messages
+  const [dontRememberSelections, setDontRememberSelections] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [submitAttempted, setSubmitAttempted] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setExperience((prevExperience) => ({
-      ...prevExperience,
-      [name]: value,
-    }));
+  // Validation helpers
+  const isFieldValid = (name, value) => {
+    if (name === "cgpaCutoff") {
+      const num = parseFloat(value);
+      return value !== "" && !isNaN(num) && num >= 0 && num <= 10;
+    }
+    if (name === "numberOfSelections") {
+      if (dontRememberSelections) return true;
+      const num = parseInt(value, 10);
+      return value !== "" && !isNaN(num) && num >= 0;
+    }
+    if (REQUIRED_FIELDS.includes(name)) {
+      return value && value.trim() !== "";
+    }
+    return true;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrorMessage('');
-    setSuccessMessage('');
+  const getInputClass = (name, value) => {
+    if (!submitAttempted) return "add-exp-grid-input";
+    if (isFieldValid(name, value)) return "add-exp-grid-input valid";
+    return "add-exp-grid-input invalid";
+  };
 
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences/addExperience`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(experience),
-        }
-      );
+  const getTextareaClass = (name, value) => {
+    if (!submitAttempted) return "add-exp-grid-textarea";
+    if (isFieldValid(name, value)) return "add-exp-grid-textarea valid";
+    return "add-exp-grid-textarea invalid";
+  };
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setSuccessMessage(data.message);
-        setExperience({
-          company: "",
-          name: user.firstName + " " + user.lastName,
-          rollNo: user.username,
-          email: user.username,
-          batch: "",
-          cgpaCutoff: "",
-          experienceType: "Intern",
-          position: "",
-          OT_description: "",
-          interview_description: "",
-          other_comments: ""
-        });
-      } else {
-        setErrorMessage(data.message);
-      }
-    } catch (error) {
-      console.error('Error submitting experience:', error);
-      setErrorMessage('An unexpected error occurred. Please try again later.');
+  // Handle input changes
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    if (name === "eligibleBranches") {
+      setExperience((prev) => ({
+        ...prev,
+        eligibleBranches: checked
+          ? [...prev.eligibleBranches, value]
+          : prev.eligibleBranches.filter((b) => b !== value),
+      }));
+    } else if (name === "dontRememberSelections") {
+      setDontRememberSelections(checked);
+      setExperience((prev) => ({
+        ...prev,
+        numberOfSelections: checked ? "-1" : "",
+      }));
+    } else {
+      setExperience((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
     }
   };
 
+  // OT Questions
+  const handleOTQuestionChange = (idx, value) => {
+    setExperience((prev) => {
+      const updated = [...prev.OT_questions];
+      updated[idx] = value;
+      return { ...prev, OT_questions: updated };
+    });
+  };
+  const addOTQuestion = () => {
+    setExperience((prev) => ({
+      ...prev,
+      OT_questions: [...prev.OT_questions, ""],
+    }));
+  };
+  const removeOTQuestion = (idx) => {
+    setExperience((prev) => ({
+      ...prev,
+      OT_questions: prev.OT_questions.filter((_, i) => i !== idx),
+    }));
+  };
+
+  // Interview Rounds
+  const handleRoundChange = (idx, field, value) => {
+    setExperience((prev) => {
+      const updated = [...prev.interviewRounds];
+      updated[idx][field] = value;
+      return { ...prev, interviewRounds: updated };
+    });
+  };
+  const addRound = () => {
+    setExperience((prev) => ({
+      ...prev,
+      interviewRounds: [
+        ...prev.interviewRounds,
+        { title: `Round ${prev.interviewRounds.length + 1}`, description: "" },
+      ],
+    }));
+  };
+  const removeRound = (idx) => {
+    setExperience((prev) => ({
+      ...prev,
+      interviewRounds: prev.interviewRounds.filter((_, i) => i !== idx),
+    }));
+  };
+
+  // Validation for OT Questions and Interview Rounds
+  const isOTQuestionsValid = experience.OT_questions.every(
+    (q) => q.trim() !== ""
+  );
+  const areRoundsValid = experience.interviewRounds.every(
+    (r) => r.title.trim() !== "" && r.description.trim() !== ""
+  );
+
+  // Submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage("");
+    setSuccessMessage("");
+    setSubmitAttempted(true);
+    setLoading(true);
+
+    // Validate all fields
+    let valid = true;
+    REQUIRED_FIELDS.forEach((field) => {
+      if (!isFieldValid(field, experience[field])) valid = false;
+    });
+    // Validate OT Questions and Interview Rounds
+    if (!isOTQuestionsValid) valid = false;
+    if (!areRoundsValid) valid = false;
+
+    if (!valid) {
+      setErrorMessage("Please fill all required fields.");
+      setLoading(false);
+      return;
+    }
+
+    // Prepare data for backend
+    const payload = {
+      ...experience,
+      numberOfSelections: dontRememberSelections
+        ? -1
+        : experience.numberOfSelections,
+    };
+
+    try {
+      const response = await fetch(
+        `${
+          process.env.REACT_APP_API_URL || "http://localhost:8000"
+        }/api/experiences/addExperience`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(payload),
+        }
+      );
+      const data = await response.json();
+      if (response.ok) {
+        setSuccessMessage("Thank you! Experience submitted for review.");
+        setExperience({
+          company: "",
+          batch: "",
+          cgpaCutoff: "",
+          experienceType: "Intern",
+          eligibleBranches: [],
+          OT_description: "",
+          OT_questions: [""],
+          interviewRounds: [{ title: "Round 1", description: "" }],
+          other_comments: "",
+          jobDescription: "",
+          numberOfSelections: "",
+        });
+        setDontRememberSelections(false);
+        setSubmitAttempted(false);
+      } else {
+        setErrorMessage(data.message || "Submission failed.");
+      }
+    } catch (error) {
+      setErrorMessage("An unexpected error occurred. Please try again later.");
+    }
+    setLoading(false);
+  };
+
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <br />
-        <label>
-          Batch:
-          <input
-            type="text"
+    <div className="add-exp-form-bg">
+      <h2 className="add-exp-title">
+        Fill out the form below to add a{" "}
+        <span className="add-exp-title-green">new experience</span>
+      </h2>
+      <form className="add-exp-form" onSubmit={handleSubmit}>
+        <div className="add-exp-grid">
+          <label>Batch</label>
+          <select
             name="batch"
             value={experience.batch}
             onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          CGPA Cutoff:
-          <input
-            type="text"
-            name="cgpaCutoff"
-            value={experience.cgpaCutoff}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Company:
+            className={getInputClass("batch", experience.batch)}
+          >
+            <option value="">Select Batch</option>
+            {BATCHES.map((batch) => (
+              <option key={batch} value={batch}>
+                {batch}
+              </option>
+            ))}
+          </select>
+
+          <label>Company Name</label>
           <select
             name="company"
             value={experience.company}
             onChange={handleChange}
+            className={getInputClass("company", experience.company)}
           >
-            <option value="">Select a company</option>
-            {NAMES.map((name, index) => (
-              <option key={index} value={name}>
+            <option value="">Company Name</option>
+            {NAMES.map((name, idx) => (
+              <option key={idx} value={name}>
                 {name}
               </option>
             ))}
           </select>
-        </label>
-        <br />
-        <label>
-          Position:
+
+          <label>CGPA Cutoff</label>
           <input
-            type="text"
-            name="position"
-            value={experience.position}
+            type="number"
+            name="cgpaCutoff"
+            value={experience.cgpaCutoff}
             onChange={handleChange}
+            placeholder="CGPA"
+            min="0"
+            max="10"
+            step="0.01"
+            className={getInputClass("cgpaCutoff", experience.cgpaCutoff)}
           />
-        </label>
-        <br />
-        <label>
-          Experience Type:
+
+          <label>Experience Type</label>
           <select
             name="experienceType"
             value={experience.experienceType}
             onChange={handleChange}
+            className="add-exp-grid-input"
           >
             <option value="Intern">Intern</option>
             <option value="Placement">Placement</option>
           </select>
-        </label>
-        <br />
-        <label>
-          Online Test Experience:
+
+          <label>Eligible Branches</label>
+          <div className="branches-list">
+            {BRANCHES.map((branch) => (
+              <label key={branch} className="modern-checkbox-label">
+                <input
+                  type="checkbox"
+                  name="eligibleBranches"
+                  value={branch}
+                  checked={experience.eligibleBranches.includes(branch)}
+                  onChange={handleChange}
+                  className="modern-checkbox"
+                />
+                <span className="modern-checkbox-custom" />
+                <span className="modern-checkbox-text">{branch}</span>
+              </label>
+            ))}
+          </div>
+          <label>Job Description</label>
+          <input
+            type="text"
+            name="jobDescription"
+            value={experience.jobDescription}
+            onChange={handleChange}
+            placeholder="Job Description"
+            className={getInputClass(
+              "jobDescription",
+              experience.jobDescription
+            )}
+            style={{ width: "100%" }}
+          />
+
+          <label>Number of Selections</label>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <input
+              type="number"
+              name="numberOfSelections"
+              value={
+                dontRememberSelections ? "" : experience.numberOfSelections
+              }
+              onChange={handleChange}
+              placeholder="Number of Selections"
+              min="0"
+              className={getInputClass(
+                "numberOfSelections",
+                experience.numberOfSelections
+              )}
+              disabled={dontRememberSelections}
+              style={{ flex: 1 }}
+            />
+            <label className="modern-checkbox-label" style={{ margin: 0 }}>
+              <input
+                type="checkbox"
+                name="dontRememberSelections"
+                checked={dontRememberSelections}
+                onChange={handleChange}
+                className="modern-checkbox"
+              />
+              <span className="modern-checkbox-custom" />
+              <span className="modern-checkbox-text">Don't Remember</span>
+            </label>
+          </div>
+        </div>
+
+        <div className="add-exp-section">
+          <label>Online Test Description</label>
           <textarea
             name="OT_description"
-            type="text"
             value={experience.OT_description}
             onChange={handleChange}
+            placeholder="Describe the Online Test (pattern, duration, etc.)"
+            className={getTextareaClass(
+              "OT_description",
+              experience.OT_description
+            )}
+            onInput={autoGrow}
+            rows={4}
+            style={{ width: "100%", minHeight: 80 }}
           />
-        </label>
-        <br />
-        <label>
-          Interview Experience:
-          <textarea
-            name="interview_description"
-            type="text"
-            value={experience.interview_description}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Other Remarks/Comments:
+        </div>
+
+        <div className="add-exp-section">
+          <label>Online Test Questions</label>
+          <div className="add-exp-ot-questions-list">
+            {experience.OT_questions.map((q, idx) => {
+              const isValid = q.trim() !== "";
+              return (
+                <div
+                  key={idx}
+                  className={
+                    "add-exp-ot-question-card" +
+                    (submitAttempted ? (isValid ? " valid" : " invalid") : "")
+                  }
+                >
+                  <input
+                    type="text"
+                    value={q}
+                    onChange={(e) =>
+                      handleOTQuestionChange(idx, e.target.value)
+                    }
+                    placeholder={`Question ${idx + 1} of OT`}
+                    className="plain-input"
+                  />
+                  {experience.OT_questions.length > 1 && (
+                    <button
+                      type="button"
+                      className="add-exp-remove-btn"
+                      onClick={() => removeOTQuestion(idx)}
+                      aria-label="Remove question"
+                      title="Remove"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <button
+            type="button"
+            className="add-exp-add-btn"
+            onClick={addOTQuestion}
+            style={{ marginTop: 8 }}
+          >
+            + Add OT Question
+          </button>
+        </div>
+
+        <div className="add-exp-section">
+          <label>Interview Rounds</label>
+          {experience.interviewRounds.map((round, idx) => {
+            const titleValid = round.title.trim() !== "";
+            const descValid = round.description.trim() !== "";
+            return (
+              <div
+                key={idx}
+                className={
+                  "add-exp-round" +
+                  (submitAttempted
+                    ? titleValid && descValid
+                      ? " valid"
+                      : " invalid"
+                    : "")
+                }
+                tabIndex={-1}
+              >
+                <input
+                  type="text"
+                  value={round.title}
+                  onChange={(e) =>
+                    handleRoundChange(idx, "title", e.target.value)
+                  }
+                  placeholder={`Round ${idx + 1} Title`}
+                  className="plain-input"
+                  style={{ width: "100%" }}
+                />
+                <hr className="add-exp-round-divider" />
+                <textarea
+                  value={round.description}
+                  onChange={(e) =>
+                    handleRoundChange(idx, "description", e.target.value)
+                  }
+                  placeholder={`Describe ${round.title || `Round ${idx + 1}`}`}
+                  className="plain-textarea"
+                  onInput={autoGrow}
+                  rows={4}
+                  style={{ width: "100%", minHeight: 80 }}
+                />
+                {experience.interviewRounds.length > 1 && (
+                  <button
+                    type="button"
+                    className="add-exp-remove-btn"
+                    onClick={() => removeRound(idx)}
+                    aria-label="Remove round"
+                    title="Remove"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
+            );
+          })}
+          <button type="button" className="add-exp-add-btn" onClick={addRound}>
+            + Add Interview Round
+          </button>
+        </div>
+
+        <div className="add-exp-section">
+          <label>Other Remarks/Comments</label>
           <textarea
             name="other_comments"
-            type="text"
             value={experience.other_comments}
             onChange={handleChange}
+            placeholder="Final Comments"
+            className={getTextareaClass(
+              "other_comments",
+              experience.other_comments
+            )}
+            onInput={autoGrow}
+            rows={4}
+            style={{ width: "100%", minHeight: 80 }}
           />
-        </label>
-        <br />
-        <button type="submit">Add Experience</button>
+        </div>
+        <button type="submit" className="add-exp-submit-btn" disabled={loading}>
+          {loading ? "Submitting..." : "Submit"}
+        </button>
+        {loading && (
+          <div
+            className="feedback-loading"
+            style={{ textAlign: "center", marginTop: 8 }}
+          >
+            <span
+              className="spinner"
+              style={{
+                display: "inline-block",
+                width: 22,
+                height: 22,
+                border: "3px solid #76b852",
+                borderTop: "3px solid #eafbe7",
+                borderRadius: "50%",
+                animation: "spin 1s linear infinite",
+              }}
+            />
+          </div>
+        )}
+        {(errorMessage || successMessage) && (
+          <div
+            className={`feedback-status ${
+              successMessage ? "success" : "error"
+            }`}
+            style={{ marginTop: 10 }}
+          >
+            {successMessage || errorMessage}
+          </div>
+        )}
       </form>
-
-      {/* Display Error Message */}
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-
-      {/* Display Success Message */}
-      {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+      {/* Spinner animation */}
+      <style>
+        {`
+          @keyframes spin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+          }
+        `}
+      </style>
     </div>
   );
 };
