@@ -61,6 +61,7 @@ const Feedback = () => {
         </h2>
         <p className="feedback-desc">
           Please let us know your thoughts, suggestions, or issues below.
+          <br></br>P.S. We actually read it!
         </p>
         <textarea
           className={getTextareaClass()}
