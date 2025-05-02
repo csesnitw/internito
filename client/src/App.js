@@ -14,6 +14,7 @@ import About from './components/About';
 import './App.css';
 import AdminDashboard from './components/AdminDashboard';
 import Feedback from './components/Feedback';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ function App() {
   return (
     <Router>
       <div className="App">
+        <ScrollToTop />
         <div className="topbar-fixed">
           <TopBar />
         </div>
