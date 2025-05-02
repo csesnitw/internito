@@ -37,7 +37,6 @@ router.post("/", async (req, res) => {
       html: `
   <div style="font-family:'Poppins',Arial,sans-serif;max-width:600px;margin:0 auto;background:#f9f9f9;padding:32px 24px 24px 24px;border-radius:16px;box-shadow:0 2px 12px rgba(34,139,34,0.07);">
     <div style="text-align:center;margin-bottom:24px;">
-      <img src="https://img.icons8.com/color/96/000000/feedback.png" alt="Feedback" width="56" height="56" style="margin-bottom:8px;" />
       <h2 style="margin:0;font-size:1.5rem;color:#222;font-weight:600;letter-spacing:0.01em;">New Feedback Received</h2>
     </div>
     <div style="background:#fff;border-radius:12px;padding:20px 18px 14px 18px;border:1.5px solid #e0e0e0;">

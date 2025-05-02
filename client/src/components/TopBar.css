@@ -12,7 +12,7 @@
 .logo h1 {
   font-weight: bolder;
   font-size: 1.3em;
-  color: #76B852;
+  color: #76b852;
   margin: 0;
 }
 .logo-n {
@@ -37,18 +37,28 @@
   display: flex;
   align-items: center;
 }
-.nav-links a, .nav-links span {
+.nav-links a,
+.nav-links span {
   text-decoration: none;
   color: rgba(0, 0, 0, 0.5);
   font-weight: 500;
 }
-.nav-links a:hover, .nav-links span:hover {
+.nav-links a:hover,
+.nav-links span:hover {
   color: rgba(0, 0, 0, 0.668);
   font-weight: 500;
 }
 .nav-links a.active {
   font-weight: bold;
   color: rgba(0, 0, 0, 0.668);
+}
+
+
+.logos {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Hamburger menu button */
@@ -66,7 +76,7 @@
 }
 
 /* Mobile behavior */
-@media screen and (max-width: 890px) {
+@media screen and (max-width: 920px) {
   .hamburger {
     display: flex;
   }
@@ -120,7 +130,7 @@
 }
 
 .feedback-button {
-  background-color: #76B852;
+  background-color: #76b852;
   border: none;
   padding: 9px 14px;
   font-size: 1rem;
@@ -133,6 +143,20 @@
   text-decoration: none;
   transition: background 0.2s;
   flex: 1;
+  color: white;
+}
+
+/* On hover */
+.feedback-button:hover {
+  background-color: #5da347;
+  color: white;
+}
+
+/* On active (route is /feedback) */
+.nav-links .feedback-button.active {
+  background-color: #5da347;
+  color: white;
+  font-weight: 500; /* keep same as normal, not bold */
 }
 
 .nav-links .feedback-button {

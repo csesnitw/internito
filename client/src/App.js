@@ -25,72 +25,75 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <TopBar /> {/* TopBar is always visible */}
-        <div className="content"> {/* Dynamic content below TopBar */}
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route
-              path="/admin"
-              element={
-                <FetchUserAndRedirect>
-                  <AdminDashboard />
-                </FetchUserAndRedirect>
-              }
-            />
-            <Route
-              path="/search"
-              element={
-                <ProtectedRoute>
-                  <FetchUserAndRedirect>
-                    <SearchPage />
-                  </FetchUserAndRedirect>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/experiences"
-              element={
-                <ProtectedRoute>
-                  <FetchUserAndRedirect>
-                    <Experiences />
-                  </FetchUserAndRedirect>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/feedback"
-              element={
-                <ProtectedRoute>
-                  <FetchUserAndRedirect>
-                    <Feedback />
-                  </FetchUserAndRedirect>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/addExperiences"
-              element={
-                <ProtectedRoute>
-                  <FetchUserAndRedirect>
-                    <AddExperience />
-                  </FetchUserAndRedirect>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/search/:query"
-              element={
-                <ProtectedRoute>
-                  <FetchUserAndRedirect>
-                    <SearchResults />
-                  </FetchUserAndRedirect>
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/about" element={<About />} /> {/* Add About route */}
-          </Routes>
+        <div className="topbar-fixed">
+          <TopBar />
         </div>
-        <footer>
+        <div className="content-wrapper">
+          <div className="content">
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route
+                path="/admin"
+                element={
+                  <FetchUserAndRedirect>
+                    <AdminDashboard />
+                  </FetchUserAndRedirect>
+                }
+              />
+              <Route
+                path="/search"
+                element={
+                  <ProtectedRoute>
+                    <FetchUserAndRedirect>
+                      <SearchPage />
+                    </FetchUserAndRedirect>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/experiences"
+                element={
+                  <ProtectedRoute>
+                    <FetchUserAndRedirect>
+                      <Experiences />
+                    </FetchUserAndRedirect>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/feedback"
+                element={
+                  <ProtectedRoute>
+                    <FetchUserAndRedirect>
+                      <Feedback />
+                    </FetchUserAndRedirect>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/addExperiences"
+                element={
+                  <ProtectedRoute>
+                    <FetchUserAndRedirect>
+                      <AddExperience />
+                    </FetchUserAndRedirect>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/search/:query"
+                element={
+                  <ProtectedRoute>
+                    <FetchUserAndRedirect>
+                      <SearchResults />
+                    </FetchUserAndRedirect>
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/about" element={<About />} />
+            </Routes>
+          </div>
+          <footer>
             <div className="footer-copyright">
               Copyright © 2025 interNito
             </div>
@@ -101,9 +104,11 @@ function App() {
               Rebuilt by CSES Development Team, NIT Warangal
             </div>
           </footer>
+        </div>
       </div>
     </Router>
   );
 }
+
 
 export default App;
