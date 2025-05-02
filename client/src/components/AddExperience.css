@@ -331,6 +331,7 @@
 
 /* Add/submit buttons */
 .add-exp-add-btn {
+  width: 100%;
   background: #76b852;
   color: #fff;
   border: none;
