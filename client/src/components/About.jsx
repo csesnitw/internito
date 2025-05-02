@@ -15,14 +15,14 @@ function About() {
       role: "Backend Developer",
       image: "/devs/chaitanya.jpeg",
       linkedin: "https://www.linkedin.com/in/chaitanya-hardikar-0ab4821a7/",
-      github: "https://github.com/chaitanya-hardikar",
+      github: "https://github.com/chaitanyahardikar",
     },
     {
       name: "Chirantan Muliya",
       role: "Backend Developer",
       image: "/devs/chirantan.jpeg",
       linkedin: "https://www.linkedin.com/in/chirantan-muliya-961974209/",
-      github: "https://github.com/chirantan-muliya",
+      github: "https://github.com/chirantan24",
     },
     {
       name: "Divya Soni",
@@ -36,7 +36,7 @@ function About() {
       role: "Frontend Developer",
       image: "/devs/abhishek.jpeg",
       linkedin: "https://www.linkedin.com/in/abhishek-upadhayayula-a541ba1b8/",
-      github: "https://github.com/abhishek-upadhyayula",
+      github: "https://github.com",
     },
   ];
 
