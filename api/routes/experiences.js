@@ -61,7 +61,6 @@ router.get("/", async (req, res) => {
 router.get("/user/:id",async (req,res) => {
   try {
     const { id } = req.params;
-    console.log(id)
     const experiences = await Experience.find({user: id}).sort({ date: -1 });
     if (!experiences) {
       return res.status(404).json({ message: "Experience not found" });
