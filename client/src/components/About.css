@@ -1,5 +1,5 @@
 .about-container {
-  padding: 40px 20px 35px 20px;
+  padding: 40px 20px 20px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,12 +45,11 @@
 .about-intro-text {
   background-color: #fff;
   border-radius: 14px;
-  border: 1px solid #e0e0e0;
+  border: var(--border);
   padding: 1.2em 2em;
   display: flex;
   flex-direction: column;
   gap: 0.9em;
-  box-shadow: 0 2px 16px rgba(67, 160, 71, 0.06);
   font-size: 1.08rem;
   color: #333;
 }
@@ -97,12 +96,11 @@
 .developer-card {
   background: #fff;
   border-radius: 14px;
-  border: 1px solid #e0e0e0;
   padding: 24px 18px 18px 18px;
   text-align: center;
   width: 240px;
   min-width: 200px;
-  box-shadow: 0 2px 16px rgba(67, 160, 71, 0.06);
+  border: var(--border);
   transition: transform 0.25s cubic-bezier(.4,2,.6,1), box-shadow 0.25s cubic-bezier(.4,2,.6,1);
   display: flex;
   flex-direction: column;
@@ -120,11 +118,11 @@
 }
 
 .card-image img {
-  width: 90px;
-  height: 90px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2.5px solid #43a04722;
+  border: var(--border);
   background: #f7f8fa;
 }
 
@@ -166,6 +164,64 @@
 .developer-card a:hover {
   background-color: #388e3c;
 }
+
+.dev-links {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.dev-btn {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  border-radius: 6px;
+  font-size: 0.97rem;
+  padding: 7px 16px 7px 10px;
+  text-decoration: none;
+  border: none;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  box-shadow: 0 1px 4px rgba(67, 160, 71, 0.07);
+  outline: none;
+  cursor: pointer;
+}
+
+.dev-btn.linkedin {
+  background: #0077B5;
+  color: #fff;
+}
+
+.dev-btn.linkedin:hover,
+.dev-btn.linkedin:focus {
+  background: #005983;
+  color: #fff;
+}
+
+.dev-btn.github {
+  background: #181717;
+  color: #fff;
+}
+
+.dev-btn.github:hover,
+.dev-btn.github:focus {
+  background: #000;
+  color: #fff;
+}
+
+.dev-btn svg {
+  margin-left: 0;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+svg {
+  margin: 0;
+}
+
+
 
 @media (max-width: 900px) {
   .about-intro,
@@ -216,3 +272,65 @@
     padding: 12px 2px 10px 2px;
   }
 }
+
+/* ...existing code... */
+
+.about-intro-text {
+  background-color: #fff;
+  border-radius: 14px;
+  padding: 1.2em 2em;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2em;
+  font-size: 1.08rem;
+  color: #333;
+  position: relative;
+  border: var(--border);
+  border-left: 6px solid #76B852;
+}
+
+.about-intro-text .about-emoji {
+  font-size: 1.3em;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.about-intro-text .about-highlight {
+  color: #222;
+  font-weight: 600;
+  background: #f6fff4;
+  padding: 2px 6px;
+  border-radius: 5px;
+}
+
+.about-intro-text .about-highlight-green {
+  color: #43a047;
+  font-weight: 700;
+  background: #eafbe7;
+  padding: 2px 6px;
+  border-radius: 5px;
+}
+
+.about-intro-text .about-small {
+  font-size: 0.98em;
+  color: #666;
+  display: block;
+  margin-top: 6px;
+}
+
+.about-intro-text .about-quote {
+  margin: 0.7em 0;
+  padding: 0.7em 1.2em;
+  background: #f7f8fa;
+  border-left: 4px solid #76B852;
+  border-radius: 8px;
+  font-size: 1.04em;
+  color: #222;
+  font-style: italic;
+  box-shadow: 0 1px 6px rgba(67, 160, 71, 0.04);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ...existing responsive code... */

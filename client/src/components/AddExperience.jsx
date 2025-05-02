@@ -237,11 +237,11 @@ const AddExperience = () => {
 
   return (
     <div className="add-exp-form-bg">
+      <h2 className="add-exp-title">
+        Fill out the form below to add a{" "}
+        <span className="add-exp-title-green">new experience</span>
+      </h2>
       <form className="add-exp-form" onSubmit={handleSubmit}>
-        <h2 className="add-exp-title">
-          Fill out the form below to add a{" "}
-          <span className="add-exp-title-green">new experience</span>
-        </h2>
         <div className="add-exp-grid">
           <label>Batch</label>
           <select
@@ -373,7 +373,7 @@ const AddExperience = () => {
             )}
             onInput={autoGrow}
             rows={4}
-            style={{ width: "100%", minHeight: 80}}
+            style={{ width: "100%", minHeight: 80 }}
           />
         </div>
 
@@ -503,24 +503,28 @@ const AddExperience = () => {
           {loading ? "Submitting..." : "Submit"}
         </button>
         {loading && (
-          <div className="feedback-loading" style={{ textAlign: "center", marginTop: 8 }}>
-            <span className="spinner" style={{
-              display: "inline-block",
-              width: 22,
-              height: 22,
-              border: "3px solid #76b852",
-              borderTop: "3px solid #eafbe7",
-              borderRadius: "50%",
-              animation: "spin 1s linear infinite"
-            }} />
+          <div
+            className="feedback-loading"
+            style={{ textAlign: "center", marginTop: 8 }}
+          >
+            <span
+              className="spinner"
+              style={{
+                display: "inline-block",
+                width: 22,
+                height: 22,
+                border: "3px solid #76b852",
+                borderTop: "3px solid #eafbe7",
+                borderRadius: "50%",
+                animation: "spin 1s linear infinite",
+              }}
+            />
           </div>
         )}
         {(errorMessage || successMessage) && (
           <div
             className={`feedback-status ${
-              successMessage
-                ? "success"
-                : "error"
+              successMessage ? "success" : "error"
             }`}
             style={{ marginTop: 10 }}
           >
