@@ -4,7 +4,7 @@ A collaborative MERN stack platform for NIT Warangal students to share and disco
 
 ---
 
-## 🚀 Features
+## Features
 
 - Share and browse real interview experiences  
 - Search by company or CGPA  
@@ -16,7 +16,7 @@ A collaborative MERN stack platform for NIT Warangal students to share and disco
 
 ---
 
-## 🛠️ Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -26,7 +26,7 @@ A collaborative MERN stack platform for NIT Warangal students to share and disco
 
 ---
 
-### 🚧 Clone the repo
+### Clone the Repository
 
 ```bash
 git clone https://github.com/yourusername/internito.git
@@ -35,7 +35,7 @@ cd internito
 
 ---
 
-### 🔐 Setup Environment Variables
+### Setup Environment Variables
 
 Create a `.env` file inside the `/api` directory with the following content:
 
@@ -49,7 +49,7 @@ FEEDBACK_MAIL_PASS=your-app-password
 
 ---
 
-### 📦 Install Dependencies
+### Install Dependencies
 
 ```bash
 # Backend
@@ -63,7 +63,7 @@ npm install
 
 ---
 
-### ▶️ Run the App
+### Run the Application
 
 ```bash
 # Backend
@@ -80,7 +80,7 @@ npm start
 
 ---
 
-## 🏗️ Folder Structure
+## Folder Structure
 
 ```
 internito/
@@ -90,13 +90,13 @@ internito/
 
 ---
 
-## 👨‍💻 Contributing
+## Contributing
 
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ---
 
-## 🙏 Credits
+## Credits
 
 **Original Developers**  
 - [Sufiyan Ansari](https://github.com/suffisme)  
