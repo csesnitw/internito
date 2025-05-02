@@ -1,6 +1,5 @@
 # interNito
 
-**About:**  
 A collaborative MERN stack platform for NIT Warangal students to share and discover real internship and placement experiences, built by CSES.
 
 ---
@@ -100,16 +99,16 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 ## 🙏 Credits
 
 **Original Developers**  
-- Sufiyan Ansari  
-- Chaitanya Hardikar – Backend Developer  
-- Chirantan Muliya  
-- Divya Soni  
-- Abhishek Upadhyayula  
+- [Sufiyan Ansari](https://github.com/suffisme)  
+- [Chaitanya Hardikar](https://github.com/chaitanyahardikar)  
+- [Chirantan Muliya](https://github.com/chirantan24)  
+- [Divya Soni](https://github.com/divya-soni-14)  
+- [Abhishek Upadhyayula](https://github.com)  
 
 **MERN Rebuild Team**  
-- Devashish Dubal  
-- Chetan Kar  
-- Shubham Pahilwani  
+- [Devashish Dubal](https://github.com/devashishdubal)  
+- [Chetan Kar](https://github.com/chetankar65)  
+- [Shubham Pahilwani](https://github.com/shub2726)  
 
 ---
 
