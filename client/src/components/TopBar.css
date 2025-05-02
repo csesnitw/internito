@@ -81,6 +81,10 @@
     display: flex;
   }
 
+  .nav-links li.feedback-logout-group {
+    flex-wrap: wrap;
+  }
+
   .nav-links {
     z-index: 9999;
     position: absolute;
@@ -115,6 +119,12 @@
   }
 }
 
+.nav-links li.feedback-logout-group {
+  display: flex;
+  gap: 8px; /* Reduce gap between feedback and logout buttons */
+  align-items: center;
+}
+
 .logout-button {
   display: flex;
   align-items: center;
@@ -124,7 +134,7 @@
   border: none;
   padding: 10px 10px 9px 13px;
   font-size: 1rem;
-  border-radius: 20px;
+  border-radius: 11px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -134,7 +144,7 @@
   border: none;
   padding: 8px 14px 9px 14px;
   font-size: 1rem;
-  border-radius: 20px;
+  border-radius: 11px;
   cursor: pointer;
   display: flex;
   align-items: center;

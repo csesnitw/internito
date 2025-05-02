@@ -159,16 +159,14 @@ function TopBar() {
                   About
                 </NavLink>
               </li>
-              <li>
+              <li className="feedback-logout-group">
                 <NavLink
-                  to="/feedback" // Change to "/feedback" when ready
+                  to="/feedback"
                   onClick={() => setMenuOpen(false)}
                   className="feedback-button"
                 >
                   Feedback
                 </NavLink>
-              </li>
-              <li>
                 <button onClick={handleLogout} className="logout-button">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
