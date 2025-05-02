@@ -4,12 +4,26 @@ import "./Feedback.css";
 const Feedback = () => {
   const [feedback, setFeedback] = useState("");
   const [status, setStatus] = useState("");
-  const [loading, setLoading] = useState(false); // <-- loading state
+  const [loading, setLoading] = useState(false);
+  const [submitAttempted, setSubmitAttempted] = useState(false);
+
+  const isValid = feedback.trim().length > 0;
+
+  const getTextareaClass = () => {
+    if (!submitAttempted) return "feedback-textarea";
+    if (isValid) return "feedback-textarea valid";
+    return "feedback-textarea invalid";
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitAttempted(true);
     setStatus("");
-    setLoading(true); // Start loading
+    if (!isValid) {
+      setStatus("Please enter your feedback.");
+      return;
+    }
+    setLoading(true);
     try {
       const res = await fetch(
         `${process.env.REACT_APP_API_URL || "http://localhost:8000"}/api/feedback`,
@@ -24,29 +38,38 @@ const Feedback = () => {
       if (res.ok) {
         setStatus("Thank you for your feedback!");
         setFeedback("");
+        setSubmitAttempted(false);
       } else {
         setStatus(data.message || "Failed to send feedback.");
       }
     } catch {
       setStatus("Failed to send feedback.");
     }
-    setLoading(false); // Stop loading
+    setLoading(false);
   };
+
+  function autoGrow(e) {
+    e.target.style.height = "auto";
+    e.target.style.height = e.target.scrollHeight + "px";
+  }
 
   return (
     <div className="feedback-bg">
-      <form className="feedback-form" onSubmit={handleSubmit}>
-        <h2 className="feedback-title">We value your feedback!</h2>
+      <form className="feedback-form feedback-form-wide" onSubmit={handleSubmit}>
+        <h2 className="feedback-title">
+          We value your <span className="feedback-title-green">Feedback</span>!
+        </h2>
         <p className="feedback-desc">
           Please let us know your thoughts, suggestions, or issues below.
         </p>
         <textarea
-          className="feedback-textarea"
+          className={getTextareaClass()}
           value={feedback}
           onChange={e => setFeedback(e.target.value)}
           placeholder="Enter your feedback here..."
-          rows={6}
-          required
+          rows={4}
+          style={{ minHeight: 170, overflow: "hidden", resize: "none", background: "#fff" }}
+          onInput={autoGrow}
           disabled={loading}
         />
         <button className="feedback-submit" type="submit" disabled={loading}>
@@ -75,7 +98,6 @@ const Feedback = () => {
           </div>
         )}
       </form>
-      {/* Spinner animation */}
       <style>
         {`
           @keyframes spin {

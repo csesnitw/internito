@@ -4,11 +4,23 @@ import { NAMES } from "../constants/companies";
 import "./AddExperience.css";
 
 const BRANCHES = [
-  "CSE", "ECE", "EEE", "MECH", "CHEM", "CIVIL", "MME", "BIOTECH",
+  "CSE",
+  "ECE",
+  "EEE",
+  "MECH",
+  "CHEM",
+  "CIVIL",
+  "MME",
+  "BIOTECH",
 ];
 
 const BATCHES = [
-  "2017-21", "2018-22", "2019-23", "2020-24", "2021-25", "2022-26"
+  "2017-21",
+  "2018-22",
+  "2019-23",
+  "2020-24",
+  "2021-25",
+  "2022-26",
 ];
 
 function autoGrow(e) {
@@ -17,11 +29,18 @@ function autoGrow(e) {
 }
 
 const REQUIRED_FIELDS = [
-  "batch", "company", "cgpaCutoff", "jobDescription", "numberOfSelections", "OT_description", "other_comments"
+  "batch",
+  "company",
+  "cgpaCutoff",
+  "jobDescription",
+  "numberOfSelections",
+  "OT_description",
+  "other_comments",
 ];
 
 const AddExperience = () => {
   const user = useSelector((state) => state.auth.user);
+  const [loading, setLoading] = useState(false); // <-- Add loading state
   const [experience, setExperience] = useState({
     company: "",
     batch: "",
@@ -139,7 +158,9 @@ const AddExperience = () => {
   };
 
   // Validation for OT Questions and Interview Rounds
-  const isOTQuestionsValid = experience.OT_questions.every((q) => q.trim() !== "");
+  const isOTQuestionsValid = experience.OT_questions.every(
+    (q) => q.trim() !== ""
+  );
   const areRoundsValid = experience.interviewRounds.every(
     (r) => r.title.trim() !== "" && r.description.trim() !== ""
   );
@@ -150,6 +171,7 @@ const AddExperience = () => {
     setErrorMessage("");
     setSuccessMessage("");
     setSubmitAttempted(true);
+    setLoading(true);
 
     // Validate all fields
     let valid = true;
@@ -162,13 +184,16 @@ const AddExperience = () => {
 
     if (!valid) {
       setErrorMessage("Please fill all required fields.");
+      setLoading(false);
       return;
     }
 
     // Prepare data for backend
     const payload = {
       ...experience,
-      numberOfSelections: dontRememberSelections ? -1 : experience.numberOfSelections,
+      numberOfSelections: dontRememberSelections
+        ? -1
+        : experience.numberOfSelections,
     };
 
     try {
@@ -185,7 +210,7 @@ const AddExperience = () => {
       );
       const data = await response.json();
       if (response.ok) {
-        setSuccessMessage("Experience submitted for review!");
+        setSuccessMessage("Thank you! Experience submitted for review.");
         setExperience({
           company: "",
           batch: "",
@@ -207,13 +232,15 @@ const AddExperience = () => {
     } catch (error) {
       setErrorMessage("An unexpected error occurred. Please try again later.");
     }
+    setLoading(false);
   };
 
   return (
     <div className="add-exp-form-bg">
       <form className="add-exp-form" onSubmit={handleSubmit}>
         <h2 className="add-exp-title">
-          Fill out the form below to add a new experience
+          Fill out the form below to add a{" "}
+          <span className="add-exp-title-green">new experience</span>
         </h2>
         <div className="add-exp-grid">
           <label>Batch</label>
@@ -225,7 +252,9 @@ const AddExperience = () => {
           >
             <option value="">Select Batch</option>
             {BATCHES.map((batch) => (
-              <option key={batch} value={batch}>{batch}</option>
+              <option key={batch} value={batch}>
+                {batch}
+              </option>
             ))}
           </select>
 
@@ -286,14 +315,16 @@ const AddExperience = () => {
             ))}
           </div>
           <label>Job Description</label>
-          <textarea
+          <input
+            type="text"
             name="jobDescription"
             value={experience.jobDescription}
             onChange={handleChange}
             placeholder="Job Description"
-            className={getTextareaClass("jobDescription", experience.jobDescription)}
-            onInput={autoGrow}
-            rows={2}
+            className={getInputClass(
+              "jobDescription",
+              experience.jobDescription
+            )}
             style={{ width: "100%" }}
           />
 
@@ -302,11 +333,16 @@ const AddExperience = () => {
             <input
               type="number"
               name="numberOfSelections"
-              value={dontRememberSelections ? "" : experience.numberOfSelections}
+              value={
+                dontRememberSelections ? "" : experience.numberOfSelections
+              }
               onChange={handleChange}
               placeholder="Number of Selections"
               min="0"
-              className={getInputClass("numberOfSelections", experience.numberOfSelections)}
+              className={getInputClass(
+                "numberOfSelections",
+                experience.numberOfSelections
+              )}
               disabled={dontRememberSelections}
               style={{ flex: 1 }}
             />
@@ -331,10 +367,13 @@ const AddExperience = () => {
             value={experience.OT_description}
             onChange={handleChange}
             placeholder="Describe the Online Test (pattern, duration, etc.)"
-            className={getTextareaClass("OT_description", experience.OT_description)}
+            className={getTextareaClass(
+              "OT_description",
+              experience.OT_description
+            )}
             onInput={autoGrow}
-            rows={2}
-            style={{ width: "100%" }}
+            rows={4}
+            style={{ width: "100%", minHeight: 80}}
           />
         </div>
 
@@ -348,17 +387,15 @@ const AddExperience = () => {
                   key={idx}
                   className={
                     "add-exp-ot-question-card" +
-                    (submitAttempted
-                      ? isValid
-                        ? " valid"
-                        : " invalid"
-                      : "")
+                    (submitAttempted ? (isValid ? " valid" : " invalid") : "")
                   }
                 >
                   <input
                     type="text"
                     value={q}
-                    onChange={(e) => handleOTQuestionChange(idx, e.target.value)}
+                    onChange={(e) =>
+                      handleOTQuestionChange(idx, e.target.value)
+                    }
                     placeholder={`Question ${idx + 1} of OT`}
                     className="plain-input"
                   />
@@ -424,8 +461,8 @@ const AddExperience = () => {
                   placeholder={`Describe ${round.title || `Round ${idx + 1}`}`}
                   className="plain-textarea"
                   onInput={autoGrow}
-                  rows={2}
-                  style={{ width: "100%" }}
+                  rows={4}
+                  style={{ width: "100%", minHeight: 80 }}
                 />
                 {experience.interviewRounds.length > 1 && (
                   <button
@@ -453,22 +490,53 @@ const AddExperience = () => {
             value={experience.other_comments}
             onChange={handleChange}
             placeholder="Final Comments"
-            className={getTextareaClass("other_comments", experience.other_comments)}
+            className={getTextareaClass(
+              "other_comments",
+              experience.other_comments
+            )}
             onInput={autoGrow}
-            rows={2}
-            style={{ width: "100%" }}
+            rows={4}
+            style={{ width: "100%", minHeight: 80 }}
           />
         </div>
-        <button type="submit" className="add-exp-submit-btn">
-          Submit
+        <button type="submit" className="add-exp-submit-btn" disabled={loading}>
+          {loading ? "Submitting..." : "Submit"}
         </button>
-        {errorMessage && (
-          <p style={{ color: "red", marginTop: 10 }}>{errorMessage}</p>
+        {loading && (
+          <div className="feedback-loading" style={{ textAlign: "center", marginTop: 8 }}>
+            <span className="spinner" style={{
+              display: "inline-block",
+              width: 22,
+              height: 22,
+              border: "3px solid #76b852",
+              borderTop: "3px solid #eafbe7",
+              borderRadius: "50%",
+              animation: "spin 1s linear infinite"
+            }} />
+          </div>
         )}
-        {successMessage && (
-          <p style={{ color: "green", marginTop: 10 }}>{successMessage}</p>
+        {(errorMessage || successMessage) && (
+          <div
+            className={`feedback-status ${
+              successMessage
+                ? "success"
+                : "error"
+            }`}
+            style={{ marginTop: 10 }}
+          >
+            {successMessage || errorMessage}
+          </div>
         )}
       </form>
+      {/* Spinner animation */}
+      <style>
+        {`
+          @keyframes spin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+          }
+        `}
+      </style>
     </div>
   );
 };

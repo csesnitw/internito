@@ -1,7 +1,7 @@
 /* Background and form container */
 .add-exp-form-bg {
   background: #e5e5e5;
-  padding: 40px 20px;
+  padding: 40px 20px 35px 20px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -27,6 +27,10 @@
   margin-bottom: 28px;
   font-weight: 600;
   font-family: 'Poppins', Arial, sans-serif;
+}
+.add-exp-title-green {
+  color: var(--green);
+  font-weight: 700;
 }
 
 .add-exp-grid {
@@ -75,7 +79,6 @@
 .add-exp-grid select:focus {
   border: 1.5px solid #76b852;
   outline: none;
-  /* Keep the background image for the arrow */
   background: #fff url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 0.8em center/1.1em;
   box-shadow: 0 2px 8px rgba(118, 184, 82, 0.07);
 }
@@ -88,7 +91,6 @@
   background: #fff6f6 url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 0.8em center/1.1em !important;
 }
 
-/* Remove background from the generic focus rule for select */
 .add-exp-grid input:focus,
 .add-exp-grid textarea:focus {
   border: 1.5px solid #76b852;
@@ -100,6 +102,8 @@
 .add-exp-grid input[disabled] {
   background: #f5f5f5;
   color: #888;
+  cursor: not-allowed;
+  opacity: 1;
 }
 
 .branches-list {
@@ -331,9 +335,9 @@
   color: #fff;
   border: none;
   border-radius: 6px;
+  margin-top: -8px;
   padding: 7px 18px;
   font-size: 1rem;
-  margin-top: 8px;
   cursor: pointer;
   transition: background 0.2s;
   font-weight: 500;
@@ -351,7 +355,7 @@
   width: 100%;
   font-size: 1.1rem;
   font-weight: 500;
-  margin-top: 18px;
+  margin-top: 12px;
   cursor: pointer;
   transition: background 0.2s;
 }
@@ -360,29 +364,33 @@
 }
 
 /* Consistent textarea style for all major textareas (except inside interview rounds/OT cards) */
-.add-exp-textarea {
+.add-exp-textarea,
+.add-exp-grid textarea {
   border: 1.5px solid #ccc;
   background: #fff;
   font-size: 1rem;
   font-family: inherit;
   outline: none;
   padding: 10px 14px;
-  min-height: 44px;
+  min-height: 80px;
   border-radius: 8px;
   transition: background 0.2s, box-shadow 0.2s, border 0.2s;
-  resize: none;
+  resize: none !important;
   color: #333;
   width: 100%;
   box-sizing: border-box;
+  overflow: hidden !important;
 }
 
-.add-exp-textarea:focus {
+.add-exp-textarea:focus,
+.add-exp-grid textarea:focus {
   border: 1.5px solid #76b852;
   background: #fff;
   box-shadow: 0 2px 8px rgba(118, 184, 82, 0.07);
 }
 
-.add-exp-textarea::placeholder {
+.add-exp-textarea::placeholder,
+.add-exp-grid textarea::placeholder {
   color: #aaa;
   opacity: 1;
   font-style: italic;
@@ -414,7 +422,8 @@
   box-sizing: border-box;
   resize: none;
   color: #333;
-  min-height: 44px;
+  min-height: 80px;
+  overflow: hidden !important;
 }
 
 .add-exp-grid-textarea:focus {
@@ -517,40 +526,4 @@
     min-width: 98%;
     margin-bottom: 6px;
   }
-}
-
-/* ...existing styles... */
-
-.branches-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 8px;
-  row-gap: 10px;
-}
-
-@media (max-width: 700px) {
-  .branches-list {
-    gap: 6px 0;
-    row-gap: 10px;
-    justify-content: flex-start;
-  }
-  .modern-checkbox-label {
-    min-width: 48%;
-    margin-right: 0;
-    margin-bottom: 6px;
-  }
-}
-
-@media (max-width: 480px) {
-  .modern-checkbox-label {
-    min-width: 98%;
-    margin-bottom: 6px;
-  }
-}
-
-.add-exp-grid input[disabled] {
-  background: #f5f5f5;
-  color: #888;
-  cursor: not-allowed;
-  opacity: 1;
 }
