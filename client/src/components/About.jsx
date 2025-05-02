@@ -1,5 +1,5 @@
 import React from 'react';
-import './About.css'; // Add styles for the About page
+import './About.css';
 
 function About() {
   const originalDevelopers = [
@@ -39,19 +39,19 @@ function About() {
     {
       name: 'Devashish Dubal',
       role: 'MERN Developer',
-      image: '/devs/sufiyan.jpg', // Placeholder image
+      image: '/devs/sufiyan.jpg',
       linkedin: 'https://www.linkedin.com/',
     },
     {
       name: 'Chetan Kar',
       role: 'MERN Developer',
-      image: '/devs/sufiyan.jpg', // Placeholder image
+      image: '/devs/sufiyan.jpg',
       linkedin: 'https://www.linkedin.com/',
     },
     {
       name: 'Shubham Pahilwani',
       role: 'MERN Developer',
-      image: '/devs/sufiyan.jpg', // Placeholder image
+      image: '/devs/sufiyan.jpg',
       linkedin: 'https://www.linkedin.com/',
     },
   ];
@@ -59,19 +59,26 @@ function About() {
   return (
     <div className="about-container">
       <section className="about-intro">
-        <h1>Why interNito?</h1>
+        <h1>
+          <span className="about-why">Why</span>{" "}
+          <span className="about-internito">interNito</span>
+          <span className="about-q">?</span>
+        </h1>
         <div className="about-intro-text">
           <p>
-          Internships are tough — and their interviews even tougher. Unlike exams, you don't get second chances if something goes wrong. So how do you prepare for something you've never done before and still ace it like a pro? By learning from those who've already done it. That's the idea behind interNito. Originally developed using HTML and Django, interNito was created to tackle the real-world challenge of internship preparation, bridging the gap between coursework and career steps. Now, rebuilt in the MERN stack by the CSES Development Team, interNito continues its mission with a stronger, more dynamic platform.
+            Internships are tough — and their interviews even tougher. Unlike exams, you don't get second chances if something goes wrong. So how do you prepare for something you've never done before and still ace it like a pro? By learning from those who've already done it. That's the idea behind <span className="about-internito-inline">interNito</span>.
+            Originally developed using HTML and Django, interNito was created to tackle the real-world challenge of internship preparation, bridging the gap between coursework and career steps. Now, rebuilt in the MERN stack by the CSES Development Team, interNito continues its mission with a stronger, more dynamic platform.
           </p>
           <p>
-          If you're a senior who has already completed the internship journey, interNito gives you a space to share your experiences — what worked, what didn't, the questions you faced, and the challenges you overcame. And if you're a junior gearing up for your own process, you no longer need to search endlessly. How to prepare, how to perform, even how to stay calm during interviews — everything you need is right here. (And yes, for breathing tips: just stay natural!)
+            If you're a senior who has already completed the internship journey, interNito gives you a space to share your experiences — what worked, what didn't, the questions you faced, and the challenges you overcame. And if you're a junior gearing up for your own process, you no longer need to search endlessly. How to prepare, how to perform, even how to stay calm during interviews — everything you need is right here. (And yes, for breathing tips: just stay natural!)
           </p>
         </div>
       </section>
 
       <section className="developers-section">
-        <h2>Original Developers</h2>
+        <h2>
+          <span className="about-section-title">Original Developers</span>
+        </h2>
         <div className="developer-cards">
           {originalDevelopers.map((dev, index) => (
             <div className="developer-card" key={index}>
@@ -92,7 +99,9 @@ function About() {
       </section>
 
       <section className="developers-section">
-        <h2>MERN Rebuild Team</h2>
+        <h2>
+          <span className="about-section-title">MERN Rebuild Team</span>
+        </h2>
         <div className="developer-cards">
           {rebuildTeam.map((dev, index) => (
             <div className="developer-card" key={index}>

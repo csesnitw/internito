@@ -69,7 +69,7 @@ const Feedback = () => {
           onChange={e => setFeedback(e.target.value)}
           placeholder="Enter your feedback here..."
           rows={4}
-          style={{ minHeight: 170, overflow: "hidden", resize: "none", background: "#fff" }}
+          style={{ minHeight: 190, overflow: "hidden", resize: "none", background: "#fff" }}
           onInput={autoGrow}
           disabled={loading}
         />

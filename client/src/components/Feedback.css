@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
 .feedback-bg {
-  min-height: 80vh;
   padding: 40px 20px 35px 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Poppins', Arial, sans-serif;
+  
 }
 
 .feedback-form {
