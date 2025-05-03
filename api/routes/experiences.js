@@ -109,7 +109,7 @@ router.post("/addExperience", async (req, res) => {
       other_comments || ""
     ].join(" ");
     const sentimentScore = getSentiment(text);
-    if (sentimentScore < 0) {
+    if (sentimentScore < -2) {
       return res.status(400).json({ error: true, message: 'Sentiment score is negative. Please check your input.' });
     }
 
