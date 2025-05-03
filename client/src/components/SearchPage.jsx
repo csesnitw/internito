@@ -34,10 +34,6 @@ const COMPANY_LOGOS = [
     name: "Oracle",
   },
   {
-    url: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Morgan_Stanley_Logo_2024.svg",
-    name: "Morgan Stanley",
-  },
-  {
     url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Mastercard_2019_logo.svg/1200px-Mastercard_2019_logo.svg.png",
     name: "Mastercard",
   },
@@ -46,16 +42,16 @@ const COMPANY_LOGOS = [
     name: "Visa",
   },
   {
-    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Qualcomm-Logo.svg/1200px-Qualcomm-Logo.svg.png",
-    name: "Qualcomm",
-  },
-  {
     url: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Samsung_Logo.svg/2560px-Samsung_Logo.svg.png",
     name: "Samsung",
   },
   {
     url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Wells_Fargo_Bank.svg/453px-Wells_Fargo_Bank.svg.png",
     name: "Wells Fargo",
+  },
+  {
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Qualcomm-Logo.svg/1200px-Qualcomm-Logo.svg.png",
+    name: "Qualcomm",
   },
 ];
 

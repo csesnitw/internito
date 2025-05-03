@@ -295,7 +295,7 @@ svg {
   margin-right: 4px;
 }
 
-.about-intro-text .about-highlight {
+.about-highlight {
   color: #222;
   font-weight: 600;
   background: #f6fff4;
@@ -303,7 +303,7 @@ svg {
   border-radius: 5px;
 }
 
-.about-intro-text .about-highlight-green {
+.about-highlight-green {
   color: #43a047;
   font-weight: 700;
   background: #eafbe7;
