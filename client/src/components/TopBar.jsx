@@ -14,7 +14,7 @@ function TopBar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    console.log("User details:", user);
+    //console.log("User details:", user);
   }, [user]);
 
   const handleLogout = async () => {
@@ -101,9 +101,13 @@ function TopBar() {
               <li>
                 <span>
                   {loading ? null : user && user.firstName ? (
-                    <>
+                    <NavLink
+                      to="/user"
+                      onClick={() => setMenuOpen(false)}
+                      className={({ isActive }) => (isActive ? "active" : "")}
+                    >
                       Hello <strong>{user.firstName}</strong>!
-                    </>
+                    </NavLink>
                   ) : (
                     ""
                   )}

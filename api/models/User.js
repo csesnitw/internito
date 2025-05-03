@@ -35,6 +35,15 @@ const userSchema = new mongoose.Schema({
     },
     yearOfStudy: {
         type: Number
+    },
+    linkedIn: {
+        type: String
+    },
+    github: {
+        type: String
+    },
+    resume: {
+        type: String
     }
 });
 

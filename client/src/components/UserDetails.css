@@ -1,0 +1,189 @@
+.user-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.user-card {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.user-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: black;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.user-card p {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+
+.label {
+  font-weight: 600;
+  color: #374151;
+  /* gray-700 */
+}
+
+.dashboard-main {
+  display: flex;
+  padding: 2rem;
+  gap: 2rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.dashboard-left {
+  width: 100%;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.dashboard-right {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-card,
+.write-new-card {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  min-width: 250px;
+  flex-grow: 1;
+}
+
+.write-new-card .card-text{
+  margin-bottom: 10px;
+}
+
+.experiences-section h1 {
+  margin-bottom: 1rem;
+}
+
+.experiences-results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.experiences-card {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  width: calc(33.333% - 1rem);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  min-width: 250px;
+  flex-grow: 1;
+}
+
+.read-more-btn {
+  background: white;
+  color: #76B852;
+  border: 1.5px solid #76B852;
+  font-weight: 600;
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 25px;
+  padding: 10px 0;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-exp-form-bg {
+  background: #e5e5e5;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.add-exp-form {
+  background: #fff;
+  border-radius: 28px;
+  max-width: 1100px;
+  width: 100%;
+  padding: 32px 32px 24px 32px;
+  border: var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.add-exp-grid label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #222;
+  text-align: left;
+}
+
+.add-exp-grid {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 18px 24px;
+  width: 100%;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+.add-exp-grid label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #222;
+  text-align: left;
+}
+
+.add-exp-grid input,
+.add-exp-grid select {
+  font-size: 1rem;
+  padding: 8px 12px;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  width: 100%;
+  background: #fafafa;
+  font-family: inherit;
+}
+
+.add-exp-submit-btn {
+  background: #76b852;
+  color: #fff;
+  border: 1px solid #76b852;
+  border-radius: 20px;
+  padding: 10px 0;
+  width: 100%;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-top: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.add-exp-submit-btn:hover {
+  background: #5fa143;
+}
+
+@media (max-width: 1000px) {
+  .dashboard-main {
+    flex-direction: column;
+  }
+
+  .dashboard-left,
+  .dashboard-right {
+    width: 100%;
+  }
+
+  .experiences-card {
+    width: 100%;
+  }
+}

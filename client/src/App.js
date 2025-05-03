@@ -13,6 +13,7 @@ import SearchPage from './components/SearchPage';
 import About from './components/About';
 import './App.css';
 import AdminDashboard from './components/AdminDashboard';
+import UserDashboard from './components/UserDasboard';
 import Feedback from './components/Feedback';
 import ScrollToTop from './components/ScrollToTop';
 
@@ -38,6 +39,7 @@ function App() {
                 element={<FetchUserAndRedirect />}
               >
                 <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/user" element={<UserDashboard />}/>
                 <Route path="/search" element={
                   <ProtectedRoute>
                     <SearchPage />

@@ -17,6 +17,7 @@ const dotenv = require("dotenv");  /// This library is commonly used for setting
 
 const passportSetup = require("./passport-setup"); /// importing our student authentication middleware written in another file
 const experience_router = require("./routes/experiences"); /// importing our experience routes written in another file
+const User = require("./models/User");
 const feedbackRouter = require("./routes/feedback");
 /* 
 Status codes returned in the responses of various API endpoints are mostly in line with
@@ -132,6 +133,21 @@ made to the '/api/user' endpoint, the server will respond with a status code of 
 stored in the `req.user` object back to the client. */
 app.get('/api/user', (req, res) => {
     res.status(200).send(req.user)
+})
+
+app.put('/api/user/modify/:userId', (req, res) => {
+    const { userId } = req.params;
+    const {linkedIn, github, resume } = req.body;
+
+    User.findOneAndUpdate(
+        { _id: userId },
+        { $set: { linkedIn, github, resume } },
+        { new: true } //new returns the updated document
+    ).then((user) => {
+        res.status(200).json({ success: true, user: user });
+    }).catch((err) => {
+        res.status(500).json({ error: true, message: err });
+    });
 })
 
 /* The below code is a route handler for the "/api/logout" endpoint in a Node.js application using Express
