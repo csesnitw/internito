@@ -89,6 +89,19 @@
   flex-grow: 1;
 }
 
+.read-more-btn {
+  background: white;
+  color: #76B852;
+  border: 1.5px solid #76B852;
+  font-weight: 600;
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 25px;
+  padding: 10px 0;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
 .add-exp-form-bg {
   background: #e5e5e5;
   padding: 40px 20px;
@@ -141,6 +154,23 @@
   width: 100%;
   background: #fafafa;
   font-family: inherit;
+}
+
+.add-exp-submit-btn {
+  background: #76b852;
+  color: #fff;
+  border: 1px solid #76b852;
+  border-radius: 20px;
+  padding: 10px 0;
+  width: 100%;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-top: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.add-exp-submit-btn:hover {
+  background: #5fa143;
 }
 
 @media (max-width: 1000px) {

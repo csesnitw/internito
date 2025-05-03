@@ -223,7 +223,7 @@ const UserDashboard = () => {
                 />
               </div>
 
-              <button type="submit">Submit</button>
+              <button type="submit" className="add-exp-submit-btn">Submit</button>
             </form>
             {errorMessage && (
               <p style={{ color: "red", marginTop: 10 }}>{errorMessage}</p>
