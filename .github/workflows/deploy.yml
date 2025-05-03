@@ -25,7 +25,8 @@ jobs:
           cd internito
 
           # Pull the latest code using Deploy Key
-          GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key" git pull origin main
+          #  GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key" git pull origin main
+          git pull origin main
 
           # Update frontend (client)
           cd client
