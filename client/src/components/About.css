@@ -240,7 +240,7 @@ svg {
     font-size: 1.5rem;
   }
   .about-intro-text p {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
   
   .developers-section h2 {
@@ -262,14 +262,14 @@ svg {
     padding: 16px 0 16px 0;
   }
   .about-intro h1 {
-    font-size: 1.1rem;
+    margin-top: 0.7em;
   }
   .about-intro-text {
     font-size: 0.97rem;
     padding: 0.7em 0.2em;
   }
   .developer-card {
-    padding: 12px 2px 10px 2px;
+    padding: 13px 2px 14px 2px;
   }
 }
 

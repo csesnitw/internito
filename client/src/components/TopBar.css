@@ -82,7 +82,15 @@
   }
 
   .nav-links li.feedback-logout-group {
-    flex-wrap: wrap;
+    flex-direction: column;
+  }
+
+  .feedback-button {
+    width: 100%;
+  }
+
+  .logout-button {
+    width: 100%;
   }
 
   .nav-links {

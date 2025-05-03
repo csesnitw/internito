@@ -489,11 +489,8 @@
 
 @media (max-width: 480px) {
   .add-exp-form {
-    padding: 8px 0 8px 0;
+    padding: 8px 10px 12px 10px;
     border-radius: 8px;
-  }
-  .add-exp-title {
-    font-size: 1.05rem;
   }
   .add-exp-grid input,
   .add-exp-grid select,
@@ -517,7 +514,7 @@
     justify-content: flex-start;
   }
   .modern-checkbox-label {
-    min-width: 48%;
+    min-width: 30%;
     margin-right: 0;
     margin-bottom: 6px;
   }
@@ -525,7 +522,7 @@
 
 @media (max-width: 480px) {
   .modern-checkbox-label {
-    min-width: 98%;
+    min-width: 30%;
     margin-bottom: 6px;
   }
 }
