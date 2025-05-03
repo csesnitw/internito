@@ -28,7 +28,7 @@ html, body, #root, .App {
 
 .content-wrapper {
   margin-top: 60px; /* Adjust based on TopBar height */
-  height: calc(100% - 60px);
+  height: 100%;
   overflow-y: auto;
   background-color: #E5E5E5;
   display: flex;
