@@ -127,4 +127,7 @@ footer .footer-heart:hover {
   footer .footer-heart {
     font-size: 0.95em;
   }
+  footer {
+    margin-bottom: 50px;
+  }
 }
