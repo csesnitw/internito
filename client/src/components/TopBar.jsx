@@ -7,6 +7,7 @@ import "./TopBar.css";
 function TopBar() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
+  const loading = useSelector((state) => state.auth.loading);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -40,14 +41,29 @@ function TopBar() {
 
   return (
     <header className="topbar">
-      <div
-        className="logo"
-        style={{ cursor: "pointer" }}
-        onClick={() => navigate("/search")}
-      >
-        <h1>
-          inter<span className="logo-n">N</span>ito
-        </h1>
+      <div className="logos">
+        <div className="csesLogo">
+          <a
+            href="https://www.instagram.com/cses_nitw/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="/csesLogo.png"
+              alt="CSES Logo"
+              style={{ width: "40px", height: "auto", marginLeft: "-7px" }}
+            />
+          </a>
+        </div>
+        <div
+          className="logo"
+          style={{ cursor: "pointer" }}
+          onClick={() => navigate("/search")}
+        >
+          <h1>
+            inter<span className="logo-n">N</span>ito
+          </h1>
+        </div>
       </div>
 
       {/* Hamburger icon */}
@@ -84,7 +100,7 @@ function TopBar() {
             <>
               <li>
                 <span>
-                  {user && user.firstName ? (
+                  {loading ? null : user && user.firstName ? (
                     <NavLink
                       to="/user"
                       onClick={() => setMenuOpen(false)}
@@ -97,7 +113,7 @@ function TopBar() {
                   )}
                 </span>
               </li>
-              {user && (user.username == "dv22csb0f38") ? (
+              {user && user.username === "dv22csb0f38" ? (
                 <li>
                   <span>
                     <NavLink
@@ -148,16 +164,14 @@ function TopBar() {
                   About
                 </NavLink>
               </li>
-              <li>
+              <li className="feedback-logout-group">
                 <NavLink
-                  to="/about" // Change to "/feedback" when ready
+                  to="/feedback"
                   onClick={() => setMenuOpen(false)}
                   className="feedback-button"
                 >
                   Feedback
                 </NavLink>
-              </li>
-              <li>
                 <button onClick={handleLogout} className="logout-button">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

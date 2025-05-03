@@ -18,7 +18,7 @@ const dotenv = require("dotenv");  /// This library is commonly used for setting
 const passportSetup = require("./passport-setup"); /// importing our student authentication middleware written in another file
 const experience_router = require("./routes/experiences"); /// importing our experience routes written in another file
 const User = require("./models/User");
-
+const feedbackRouter = require("./routes/feedback");
 /* 
 Status codes returned in the responses of various API endpoints are mostly in line with
 RESTFul API Practices
@@ -75,6 +75,7 @@ mongoose.connect(process.env.mongo_link); // connects to our mongodb database
 app.use(express.json()); /* The above code is configuring an Express application to use the built-in middleware express.json().
 This middleware is used to parse incoming requests with JSON payloads. */
 
+app.use("/api/feedback", feedbackRouter);
 app.use("/api/experiences", experience_router); // Update the experiences route to include /api
 
 /// Basic endpoint to see if our backend server is running without any complications
@@ -123,7 +124,7 @@ app.get('/api/auth/google/callback',
     passport.authenticate('google', { failureRedirect: `${process.env.REACT_APP_CLIENT_URL || 'http://localhost:3000'}/` }),
     (req, res) => {
         // Redirect to the frontend experiences page after successful login
-        res.redirect(`${process.env.REACT_APP_CLIENT_URL || 'http://localhost:3000'}/experiences`);
+        res.redirect(`${process.env.REACT_APP_CLIENT_URL || 'http://localhost:3000'}/search`);
     }
 );
 

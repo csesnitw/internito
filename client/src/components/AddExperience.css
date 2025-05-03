@@ -1,10 +1,11 @@
-/* AddExperience form styling */
+/* Background and form container */
 .add-exp-form-bg {
   background: #e5e5e5;
-  padding: 40px 20px;
+  padding: 40px 20px 35px 20px;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  align-items: flex-start;
 }
 
 .add-exp-form {
@@ -17,13 +18,20 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-shadow: 0 4px 24px rgba(118, 184, 82, 0.07);
 }
 
 .add-exp-title {
+  line-height: 1.1;
   text-align: center;
   font-size: 2rem;
   margin-bottom: 28px;
   font-weight: 600;
+  font-family: 'Poppins', Arial, sans-serif;
+}
+.add-exp-title-green {
+  color: var(--green);
+  font-weight: 700;
 }
 
 .add-exp-grid {
@@ -40,30 +48,128 @@
   font-weight: 500;
   color: #222;
   text-align: left;
+  font-family: 'Poppins', Arial, sans-serif;
 }
 
 .add-exp-grid input,
-.add-exp-grid select {
+.add-exp-grid select,
+.add-exp-grid textarea {
   font-size: 1rem;
-  padding: 8px 12px;
-  border: 1px solid #d0d0d0;
-  border-radius: 6px;
+  padding: 10px 14px;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
   width: 100%;
-  background: #fafafa;
-  font-family: inherit;
+  background: #fff;
+  font-family: 'Poppins', Arial, sans-serif;
+  transition: border 0.2s, box-shadow 0.2s, background 0.2s;
+  box-sizing: border-box;
+  resize: none;
+  color: #333;
+  outline: none;
+  min-height: 44px;
+}
+
+.add-exp-grid select {
+  padding-right: 2.2em; /* Add more space for the arrow */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: #fff url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 0.8em center/1.1em;
+}
+
+.add-exp-grid select:focus {
+  border: 1.5px solid #76b852;
+  outline: none;
+  background: #fff url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 0.8em center/1.1em;
+  box-shadow: 0 2px 8px rgba(118, 184, 82, 0.07);
+}
+
+.add-exp-grid select.valid,
+.add-exp-grid select.invalid {
+  background: #f6fff4 url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 0.8em center/1.1em !important;
+}
+.add-exp-grid select.invalid {
+  background: #fff6f6 url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 0.8em center/1.1em !important;
+}
+
+.add-exp-grid input:focus,
+.add-exp-grid textarea:focus {
+  border: 1.5px solid #76b852;
+  outline: none;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(118, 184, 82, 0.07);
 }
 
 .add-exp-grid input[disabled] {
   background: #f5f5f5;
   color: #888;
+  cursor: not-allowed;
+  opacity: 1;
 }
 
 .branches-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 16px;
+  gap: 8px 8px;
+  row-gap: 10px;
 }
 
+/* Modern checkboxes */
+.modern-checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 18px;
+  font-size: 1rem;
+  font-family: 'Poppins', Arial, sans-serif;
+  user-select: none;
+  position: relative;
+}
+
+.modern-checkbox {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.modern-checkbox-custom {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #bbb;
+  border-radius: 6px;
+  background: #fff;
+  margin-right: 8px;
+  transition: border 0.2s, background 0.2s;
+  display: inline-block;
+  position: relative;
+}
+
+.modern-checkbox:checked + .modern-checkbox-custom {
+  border: 2px solid #76b852;
+  background: #76b852;
+}
+
+.modern-checkbox:checked + .modern-checkbox-custom:after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 6px;
+  height: 12px;
+  border: solid #fff;
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+}
+
+.modern-checkbox-text {
+  color: #222;
+  font-size: 1rem;
+  font-family: inherit;
+  margin-left: 2px;
+}
+
+/* Section and label */
 .add-exp-section {
   width: 100%;
   margin-bottom: 18px;
@@ -77,52 +183,169 @@
   font-weight: 500;
   margin-bottom: 8px;
   color: #222;
+  font-family: 'Poppins', Arial, sans-serif;
 }
 
-.add-exp-row-flex {
+/* OT Questions Modern Card UI */
+.add-exp-ot-questions-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.add-exp-ot-question-card {
+  position: relative;
   display: flex;
   align-items: center;
-  width: 100%;
-  margin-bottom: 8px;
+  background: #fff;
+  border: 1.5px solid #ccc;
+  border-radius: 7px;
+  padding: 12px 16px;
+  gap: 8px;
+  transition: box-shadow 0.2s, border 0.2s, background 0.2s;
+  box-shadow: 0 1px 4px rgba(118, 184, 82, 0.04);
 }
 
+.add-exp-ot-question-card input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  padding: 6px 0;
+}
+
+.add-exp-ot-question-card:focus-within {
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(118, 184, 82, 0.10);
+  border-color: #76b852;
+}
+
+/* Validation states for OT question card */
+.add-exp-ot-question-card.valid {
+  background: #f6fff4 !important;
+  border: 1.5px solid #76b852 !important;
+}
+.add-exp-ot-question-card.invalid {
+  background: #fff6f6 !important;
+  border: 1.5px solid #e74c3c !important;
+}
+
+.add-exp-remove-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  color: #e74c3c;
+  border: none;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+  z-index: 2;
+}
+
+.add-exp-remove-btn {
+  background: #ffeaea;
+}
+.add-exp-remove-btn:hover {
+  background: #f8d8d8;
+  color: #c0392b;
+}
+
+/* Interview Rounds Modern Card UI */
+.add-exp-round {
+  position: relative;
+  border: 1.5px solid #ccc;
+  border-radius: 10px;
+  padding: 18px 18px 14px 18px;
+  margin-bottom: 18px;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(118, 184, 82, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: box-shadow 0.2s, border 0.2s, background 0.2s;
+}
+
+.add-exp-round.valid {
+  background: #f6fff4 !important;
+  border: 1.5px solid #76b852 !important;
+}
+.add-exp-round.invalid {
+  background: #fff6f6 !important;
+  border: 1.5px solid #e74c3c !important;
+}
+
+.add-exp-round:focus-within {
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(118, 184, 82, 0.10);
+  border-color: #76b852;
+}
+
+.add-exp-round input,
+.add-exp-round textarea {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  color: #222;
+  font-size: 1rem;
+  font-family: inherit;
+  padding: 0;
+  resize: none;
+}
+
+.add-exp-round input:focus,
+.add-exp-round textarea:focus {
+  background: transparent !important;
+  outline: none !important;
+}
+
+.add-exp-round-divider {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 8px 0 8px 0;
+  width: 100%;
+}
+
+.add-exp-round textarea::placeholder {
+  color: #aaa;
+  opacity: 1;
+  font-style: italic;
+}
+
+.add-exp-round .add-exp-remove-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  margin: 0;
+}
+
+/* Add/submit buttons */
 .add-exp-add-btn {
+  width: 100%;
   background: #76b852;
   color: #fff;
   border: none;
   border-radius: 6px;
-  padding: 6px 18px;
+  margin-top: -8px;
+  padding: 7px 18px;
   font-size: 1rem;
-  margin-top: 6px;
   cursor: pointer;
   transition: background 0.2s;
+  font-weight: 500;
 }
 .add-exp-add-btn:hover {
   background: #5fa143;
-}
-
-.add-exp-remove-btn {
-  background: #e74c3c;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 4px 10px;
-  font-size: 1rem;
-  margin-left: 8px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.add-exp-remove-btn:hover {
-  background: #c0392b;
-}
-
-.add-exp-round {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 10px;
-  width: 100%;
-  background: #fafafa;
 }
 
 .add-exp-submit-btn {
@@ -134,10 +357,175 @@
   width: 100%;
   font-size: 1.1rem;
   font-weight: 500;
-  margin-top: 18px;
+  margin-top: 12px;
   cursor: pointer;
   transition: background 0.2s;
 }
 .add-exp-submit-btn:hover {
   background: #5fa143;
+}
+
+/* Consistent textarea style for all major textareas (except inside interview rounds/OT cards) */
+.add-exp-textarea,
+.add-exp-grid textarea {
+  border: 1.5px solid #ccc;
+  background: #fff;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  padding: 10px 14px;
+  min-height: 80px;
+  border-radius: 8px;
+  transition: background 0.2s, box-shadow 0.2s, border 0.2s;
+  resize: none !important;
+  color: #333;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden !important;
+}
+
+.add-exp-textarea:focus,
+.add-exp-grid textarea:focus {
+  border: 1.5px solid #76b852;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(118, 184, 82, 0.07);
+}
+
+.add-exp-textarea::placeholder,
+.add-exp-grid textarea::placeholder {
+  color: #aaa;
+  opacity: 1;
+  font-style: italic;
+}
+
+/* Validation states for grid inputs and textareas */
+.add-exp-grid-input.valid,
+.add-exp-grid-textarea.valid,
+.add-exp-textarea.valid {
+  background: #f6fff4 !important;
+  border: 1.5px solid #76b852 !important;
+}
+.add-exp-grid-input.invalid,
+.add-exp-grid-textarea.invalid,
+.add-exp-textarea.invalid {
+  background: #fff6f6 !important;
+  border: 1.5px solid #e74c3c !important;
+}
+
+.add-exp-grid-textarea {
+  font-size: 1rem;
+  padding: 10px 14px;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+  background: #fff;
+  font-family: 'Poppins', Arial, sans-serif;
+  transition: border 0.2s, box-shadow 0.2s, background 0.2s;
+  box-sizing: border-box;
+  resize: none;
+  color: #333;
+  min-height: 80px;
+  overflow: hidden !important;
+}
+
+.add-exp-grid-textarea:focus {
+  border: 1.5px solid #76b852;
+  outline: none;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(118, 184, 82, 0.07);
+}
+
+/* Plain input/textarea for inside cards (for OT and Interview rounds) */
+.plain-input,
+.plain-textarea {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  color: #222;
+  font-size: 1rem;
+  font-family: inherit;
+  padding: 0;
+  resize: none;
+}
+
+.plain-input:focus,
+.plain-textarea:focus {
+  background: transparent !important;
+  outline: none !important;
+}
+
+/* Responsive adjustments for AddExperience form */
+@media (max-width: 700px) {
+  .add-exp-form {
+    padding: 18px 4vw 18px 4vw;
+    border-radius: 16px;
+    max-width: 100vw;
+  }
+  .add-exp-title {
+    font-size: 1.3rem;
+    margin-bottom: 18px;
+  }
+  .add-exp-grid {
+    grid-template-columns: 1fr;
+    gap: 10px 0;
+  }
+  .add-exp-grid label {
+    margin-bottom: 2px;
+  }
+  .add-exp-section {
+    margin-bottom: 12px;
+  }
+  .add-exp-add-btn,
+  .add-exp-submit-btn {
+    font-size: 1rem;
+    padding: 9px 0;
+  }
+  .add-exp-ot-question-card,
+  .add-exp-round {
+    padding: 12px 8px 10px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-exp-form {
+    padding: 8px 0 8px 0;
+    border-radius: 8px;
+  }
+  .add-exp-title {
+    font-size: 1.05rem;
+  }
+  .add-exp-grid input,
+  .add-exp-grid select,
+  .add-exp-grid textarea,
+  .add-exp-grid-textarea,
+  .add-exp-textarea {
+    font-size: 0.98rem;
+    padding: 8px 8px;
+    min-height: 36px;
+  }
+  .add-exp-ot-question-card,
+  .add-exp-round {
+    font-size: 0.98rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .branches-list {
+    gap: 6px 0;
+    row-gap: 10px;
+    justify-content: flex-start;
+  }
+  .modern-checkbox-label {
+    min-width: 48%;
+    margin-right: 0;
+    margin-bottom: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modern-checkbox-label {
+    min-width: 98%;
+    margin-bottom: 6px;
+  }
 }

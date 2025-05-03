@@ -8,12 +8,14 @@ import Experiences from './components/Experiences';
 import ProtectedRoute from './components/ProtectedRoute';
 import FetchUserAndRedirect from './components/FetchUserAndRedirect';
 import AddExperience from './components/AddExperience';
-import SearchResults from './components/SearchResults'; // Import the SearchResults component
-import SearchPage from './components/SearchPage'; // Import the SearchPage component
-import About from './components/About'; // Import the About component
-import './App.css'; // Import your CSS file
+import SearchResults from './components/SearchResults';
+import SearchPage from './components/SearchPage';
+import About from './components/About';
+import './App.css';
 import AdminDashboard from './components/AdminDashboard';
 import UserDashboard from './components/UserDasboard';
+import Feedback from './components/Feedback';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   const dispatch = useDispatch();
@@ -25,63 +27,49 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <TopBar /> {/* TopBar is always visible */}
-        <div className="content"> {/* Dynamic content below TopBar */}
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/user" element={<UserDashboard />}/>
-            <Route path="/admin">
-            <Route index element={
-                <FetchUserAndRedirect>
-                  <AdminDashboard />
-                </FetchUserAndRedirect>
-              } />
-            <Route path="experiences/:id" element={<>Not created yet!</>}/>
-            </Route>
-            <Route
-              path="/search"
-              element={
-                <ProtectedRoute>
-                  <FetchUserAndRedirect>
-                    <SearchPage />
-                  </FetchUserAndRedirect>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/experiences"
-              element={
-                <ProtectedRoute>
-                  <FetchUserAndRedirect>
-                    <Experiences />
-                  </FetchUserAndRedirect>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/addExperiences"
-              element={
-                <ProtectedRoute>
-                  <FetchUserAndRedirect>
-                    <AddExperience />
-                  </FetchUserAndRedirect>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/search/:query"
-              element={
-                <ProtectedRoute>
-                  <FetchUserAndRedirect>
-                    <SearchResults />
-                  </FetchUserAndRedirect>
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/about" element={<About />} /> {/* Add About route */}
-          </Routes>
+        <ScrollToTop />
+        <div className="topbar-fixed">
+          <TopBar />
         </div>
-        <footer>
+        <div className="content-wrapper">
+          <div className="content">
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route
+                element={<FetchUserAndRedirect />}
+              >
+                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/user" element={<UserDashboard />}/>
+                <Route path="/search" element={
+                  <ProtectedRoute>
+                    <SearchPage />
+                  </ProtectedRoute>
+                } />
+                <Route path="/experiences" element={
+                  <ProtectedRoute>
+                    <Experiences />
+                  </ProtectedRoute>
+                } />
+                <Route path="/feedback" element={
+                  <ProtectedRoute>
+                    <Feedback />
+                  </ProtectedRoute>
+                } />
+                <Route path="/addExperiences" element={
+                  <ProtectedRoute>
+                    <AddExperience />
+                  </ProtectedRoute>
+                } />
+                <Route path="/search/:query" element={
+                  <ProtectedRoute>
+                    <SearchResults />
+                  </ProtectedRoute>
+                } />
+                <Route path="/about" element={<About />} />
+              </Route>
+            </Routes>
+          </div>
+          <footer>
             <div className="footer-copyright">
               Copyright © 2025 interNito
             </div>
@@ -92,6 +80,7 @@ function App() {
               Rebuilt by CSES Development Team, NIT Warangal
             </div>
           </footer>
+        </div>
       </div>
     </Router>
   );

@@ -2,19 +2,18 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { login, setUser } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
-import './Login.css'; // Add styles for the Login page
+import './Login.css';
 
 function Login() {
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   // Function to handle Google login redirect
   const handleLogin = () => {
     const redirectUri = `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/auth/google`;
-    window.location.href = redirectUri; // Redirect to Google login
+    window.location.href = redirectUri;
   };
 
-  // Fetch user details after redirect from Google login
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -41,13 +40,18 @@ function Login() {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h1>Login to Your Account</h1>
+        <h1>
+          Login to <span style={{ color: "#76B852" }}>interNito</span>
+        </h1>
         <button className="google-login-btn" onClick={handleLogin}>
           Login with Google
         </button>
-        <p>
-          *Use your NITW student email only.
-        </p>
+        <div className="login-note">
+          <span className="login-note-icon">!</span>
+          <span>
+            Use your <span className="login-note-green">NITW student email</span> only.
+          </span>
+        </div>
       </div>
     </div>
   );

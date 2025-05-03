@@ -1,33 +1,33 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setUser } from '../slices/authSlice';
+import React, { useEffect } from "react";
+import { Outlet } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser, setLoading } from "../slices/authSlice";
 
-function FetchUserAndRedirect({ children }) {
+function FetchUserAndRedirect() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
+      dispatch(setLoading(true));
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/login/success`,
-          {
-            credentials: 'include',
-          }
+          `${process.env.REACT_APP_API_URL || "http://localhost:8000"}/api/login/success`,
+          { credentials: "include" }
         );
         const data = await response.json();
         if (data.success) {
           dispatch(setUser(data.user));
+        } else {
+          dispatch(setUser(null));
         }
       } catch (error) {
-        console.error('Error fetching user details:', error);
+        dispatch(setUser(null));
       }
     };
     fetchUser();
-  }, [dispatch, navigate]);
+  }, [dispatch]);
 
-  return <>{children}</>;
+  return <Outlet />;
 }
 
 export default FetchUserAndRedirect;
