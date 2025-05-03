@@ -137,11 +137,7 @@
 @media (max-width: 480px) {
   .feedback-form,
   .feedback-form-wide {
-    padding: 8px 0 8px 0;
     border-radius: 8px;
-  }
-  .feedback-title {
-    font-size: 1.05rem;
   }
   .feedback-textarea {
     font-size: 0.96rem;
