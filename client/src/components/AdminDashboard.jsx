@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './Experiences.css'; // For Experiences-specific styles
+import './AdminDashboard.css'; // For AdminDashboard-specific styles
 
 const AdminDashboard = () => {
   const [experiences, setExperiences] = useState([]);
@@ -10,10 +11,10 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user && user.username !== "dv22csb0f38") { //change this later
-      // Redirect to home page if not admin
-      navigate("/");
-    }
+    // if (user && user.username !== "dv22csb0f38") { //change this later
+    //   // Redirect to home page if not admin
+    //   navigate("/");
+    // }
     // Fetch all experiences from the server
     const fetchExperiences = async () => {
       try {
@@ -67,7 +68,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div>
+    <div className="admin-dash">
       <h1>Admin Dashboard</h1>
       {loading ? (
         <div>Loading...</div>

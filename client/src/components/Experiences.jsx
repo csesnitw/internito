@@ -47,7 +47,7 @@ function Experiences() {
   }, [sortBy]);
 
   return (
-    <div className="exp-page" style={{ minHeight: '100vh', background: '#eaeaea' }}>
+    <div className="exp-page" style={{ minHeight: '100vh', background: '#eaeaea', margin:'40px', marginTop:'20px' }}>
       <h1>All Interview Experiences</h1>
       <div className="experiences-header">
         Current Responses : {sortBy === 'recent'

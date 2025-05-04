@@ -113,7 +113,7 @@ function TopBar() {
                   )}
                 </span>
               </li>
-              {user && user.username === "dv22csb0f38" ? (
+              {user ? (
                 <li>
                   <span>
                     <NavLink
