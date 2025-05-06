@@ -166,7 +166,7 @@ const ExpPage = () => {
                 ""
               ) : (
                 <p>
-                  <span className="label">LinkedIn: {expUser.linkedIn}</span>
+                  <span className="label">LinkedIn: </span>{expUser.linkedIn}
                 </p>
               )}
 
@@ -174,14 +174,14 @@ const ExpPage = () => {
                 ""
               ) : (
                 <p>
-                  <span className="label">GitHub: {expUser.linkedIn}</span>
+                  <span className="label">GitHub:</span> {expUser.github}
                 </p>
               )}
               {expUser.resume === "" || expUser.resume === undefined ? (
                 ""
               ) : (
                 <p>
-                  <span className="label">Resume: {expUser.resume}</span>
+                  <span className="label">Resume: </span>{expUser.resume}
                 </p>
               )}
             </div>
