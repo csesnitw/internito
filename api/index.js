@@ -135,6 +135,15 @@ app.get('/api/user', (req, res) => {
     res.status(200).send(req.user)
 })
 
+app.get('/api/user/:userId', (req, res) => {
+    const { userId } = req.params;
+    User.findById(userId).then((user) => {
+        res.status(200).json({ success: true, user: user });
+    }).catch((err) => {
+        res.status(500).json({ error: true, message: err });
+    });
+})
+
 app.put('/api/user/modify/:userId', (req, res) => {
     const { userId } = req.params;
     const {linkedIn, github, resume } = req.body;

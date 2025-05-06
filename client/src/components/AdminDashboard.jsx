@@ -42,30 +42,6 @@ const AdminDashboard = () => {
     fetchExperiences();
   }, []);
 
-  const handleDecision = async (id, decision) => {
-    try {
-      if (decision === "rejected") {
-        await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences/delete/${id}`, {
-          method: "DELETE",
-        });
-      } else {
-        await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences/verify/${id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ status: decision }),
-        });
-      }
-
-      // Update the state to remove the processed experience
-      setExperiences((prevExperiences) =>
-        prevExperiences.filter((experience) => experience._id !== id)
-      );
-    } catch (error) {
-      console.error("Error updating experience status:", error);
-    }
-  };
 
   return (
     <div className="admin-dash">
@@ -87,7 +63,7 @@ const AdminDashboard = () => {
               </div>
               <button
                 className="read-more-btn"
-                onClick={() => navigate(`/admin/experiences/${exp._id}`)}
+                onClick={() => navigate(`/admin/${exp._id}`)}
               >
                 Read More
               </button>

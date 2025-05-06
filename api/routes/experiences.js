@@ -58,6 +58,21 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/specific/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const experience = await Experience.findById(id);
+    if (!experience) {
+      return res.status(404).json({ message: "Experience not found" });
+    }
+    res.status(200).json(experience);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: "Failed to retrieve experience" });
+  }
+}
+);
+
 router.get("/user/:id",async (req,res) => {
   try {
     const { id } = req.params;

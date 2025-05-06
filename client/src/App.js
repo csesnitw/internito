@@ -16,6 +16,8 @@ import AdminDashboard from './components/AdminDashboard';
 import UserDashboard from './components/UserDasboard';
 import Feedback from './components/Feedback';
 import ScrollToTop from './components/ScrollToTop';
+import ExpPage from './components/ExpPage';
+import AdminExpPage from './components/AdminExpPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -38,8 +40,9 @@ function App() {
               <Route
                 element={<FetchUserAndRedirect />}
               >
-                <Route path="/admin" element={<AdminDashboard />} />
-                <Route path="/user" element={<UserDashboard />}/>
+                <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+                <Route path="/admin/:id" element={<ProtectedRoute><AdminExpPage /></ProtectedRoute>} />
+                <Route path="/user" element={<ProtectedRoute><UserDashboard /></ProtectedRoute>}/>
                 <Route path="/search" element={
                   <ProtectedRoute>
                     <SearchPage />
@@ -48,6 +51,11 @@ function App() {
                 <Route path="/experiences" element={
                   <ProtectedRoute>
                     <Experiences />
+                  </ProtectedRoute>
+                } />
+                 <Route path="/experiences/:id" element={
+                  <ProtectedRoute>
+                    <ExpPage />
                   </ProtectedRoute>
                 } />
                 <Route path="/feedback" element={
