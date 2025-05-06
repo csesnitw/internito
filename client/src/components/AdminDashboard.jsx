@@ -11,10 +11,10 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // if (user && user.username !== "dv22csb0f38") { //change this later
-    //   // Redirect to home page if not admin
-    //   navigate("/");
-    // }
+    if (user && ["dv22csb0f38","dp22csb0f23"].includes(user.username)) { //change this later
+      // Redirect to home page if not admin
+      navigate("/");
+    }
     // Fetch all experiences from the server
     const fetchExperiences = async () => {
       try {
