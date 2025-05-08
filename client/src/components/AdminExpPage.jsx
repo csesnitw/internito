@@ -34,8 +34,13 @@ const ExpPage = () => {
         { credentials: "include" }
       );
       const data = await response.json();
-      setExpUser(data.user);
-      setLoading(false);
+      if (response.ok){
+        setExpUser(data.user);
+        setLoading(false);
+      } else {
+        console.error("Error fetching data:", data.message);
+        setError("Failed to fetch user data");
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
       setError("Failed to fetch user data");
@@ -53,8 +58,13 @@ const ExpPage = () => {
         }/api/experiences/specific/${id}`,
         { credentials: "include" }
       );
-      const data = await response.json();
-      setExp(data);
+      const data = await response.json()
+      if (response.ok){
+        setExp(data);
+      } else {
+        console.error("Error fetching data:", data.message);
+        setError("Failed to fetch data");
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
       setError("Failed to fetch data");
