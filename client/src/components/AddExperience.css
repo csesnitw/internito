@@ -27,7 +27,7 @@
   font-size: 2rem;
   margin-bottom: 28px;
   font-weight: 600;
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: "Poppins", Arial, sans-serif;
 }
 .add-exp-title-green {
   color: var(--green);
@@ -48,7 +48,7 @@
   font-weight: 500;
   color: #222;
   text-align: left;
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: "Poppins", Arial, sans-serif;
 }
 
 .add-exp-grid input,
@@ -60,7 +60,7 @@
   border-radius: 8px;
   width: 100%;
   background: #fff;
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: "Poppins", Arial, sans-serif;
   transition: border 0.2s, box-shadow 0.2s, background 0.2s;
   box-sizing: border-box;
   resize: none;
@@ -74,22 +74,30 @@
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  background: #fff url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 0.8em center/1.1em;
+  background: #fff
+    url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>")
+    no-repeat right 0.8em center/1.1em;
 }
 
 .add-exp-grid select:focus {
   border: 1.5px solid #76b852;
   outline: none;
-  background: #fff url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 0.8em center/1.1em;
+  background: #fff
+    url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>")
+    no-repeat right 0.8em center/1.1em;
   box-shadow: 0 2px 8px rgba(118, 184, 82, 0.07);
 }
 
 .add-exp-grid select.valid,
 .add-exp-grid select.invalid {
-  background: #f6fff4 url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 0.8em center/1.1em !important;
+  background: #f6fff4
+    url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>")
+    no-repeat right 0.8em center/1.1em !important;
 }
 .add-exp-grid select.invalid {
-  background: #fff6f6 url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 0.8em center/1.1em !important;
+  background: #fff6f6
+    url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>")
+    no-repeat right 0.8em center/1.1em !important;
 }
 
 .add-exp-grid input:focus,
@@ -121,7 +129,7 @@
   cursor: pointer;
   margin-right: 18px;
   font-size: 1rem;
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: "Poppins", Arial, sans-serif;
   user-select: none;
   position: relative;
 }
@@ -183,7 +191,7 @@
   font-weight: 500;
   margin-bottom: 8px;
   color: #222;
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: "Poppins", Arial, sans-serif;
 }
 
 /* OT Questions Modern Card UI */
@@ -219,7 +227,7 @@
 
 .add-exp-ot-question-card:focus-within {
   background: #fff;
-  box-shadow: 0 2px 8px rgba(118, 184, 82, 0.10);
+  box-shadow: 0 2px 8px rgba(118, 184, 82, 0.1);
   border-color: #76b852;
 }
 
@@ -287,7 +295,7 @@
 
 .add-exp-round:focus-within {
   background: #fff;
-  box-shadow: 0 2px 12px rgba(118, 184, 82, 0.10);
+  box-shadow: 0 2px 12px rgba(118, 184, 82, 0.1);
   border-color: #76b852;
 }
 
@@ -419,7 +427,7 @@
   border-radius: 8px;
   width: 100%;
   background: #fff;
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: "Poppins", Arial, sans-serif;
   transition: border 0.2s, box-shadow 0.2s, background 0.2s;
   box-sizing: border-box;
   resize: none;
@@ -522,9 +530,16 @@
   }
 }
 
+.add-exp-grid-input {
+  min-width: 300px;
+}
+
 @media (max-width: 480px) {
   .modern-checkbox-label {
     min-width: 98%;
     margin-bottom: 6px;
+  }
+  .modern-checkbox-text {
+    font-size: 0.9rem;
   }
 }
