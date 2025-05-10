@@ -531,7 +531,7 @@
 }
 
 .add-exp-grid-input {
-  min-width: 300px;
+  min-width: 200px;
 }
 
 @media (max-width: 480px) {
