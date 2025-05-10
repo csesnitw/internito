@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { login, setUser } from '../slices/authSlice';
 
 import { useNavigate } from "react-router-dom";
-import "./UserDetails.css";
+import "./UserDetails.module.css";
 import "./Experiences.css"; // For Experiences-specific styles
 
 const UserDashboard = () => {
