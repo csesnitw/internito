@@ -193,6 +193,21 @@ router.delete("/delete/:experienceId", async (req, res) => {
   }
 });
 
+router.put("/edit/:experienceId", async (req, res) => {
+  try {
+    const { experienceId } = req.params;
+    const updated = await Experience.findByIdAndUpdate(
+      experienceId,
+      req.body,
+      { new: true }
+    );
+    if (!updated) return res.status(404).json({ message: "Experience not found" });
+    res.status(200).json(updated);
+  } catch (error) {
+    res.status(400).json({ message: "Failed to update experience" });
+  }
+});
+
 
 // Search all experiences sorted by date
 router.post('/search', async (req, res) => {

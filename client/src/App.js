@@ -18,6 +18,7 @@ import Feedback from './components/Feedback';
 import ScrollToTop from './components/ScrollToTop';
 import ExpPage from './components/ExpPage';
 import AdminExpPage from './components/AdminExpPage';
+import EditExperience from './components/EditExperience';
 
 function App() {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ function App() {
               >
                 <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
                 <Route path="/admin/:id" element={<ProtectedRoute><AdminExpPage /></ProtectedRoute>} />
-                <Route path="/user" element={<ProtectedRoute><UserDashboard /></ProtectedRoute>}/>
+                <Route path="/user" element={<ProtectedRoute><UserDashboard /></ProtectedRoute>} />
                 <Route path="/search" element={
                   <ProtectedRoute>
                     <SearchPage />
@@ -53,7 +54,7 @@ function App() {
                     <Experiences />
                   </ProtectedRoute>
                 } />
-                 <Route path="/experiences/:id" element={
+                <Route path="/experiences/:id" element={
                   <ProtectedRoute>
                     <ExpPage />
                   </ProtectedRoute>
@@ -68,6 +69,7 @@ function App() {
                     <AddExperience />
                   </ProtectedRoute>
                 } />
+                <Route path="/editExperience/:id" element={<ProtectedRoute><EditExperience /></ProtectedRoute>} />
                 <Route path="/search/:query" element={
                   <ProtectedRoute>
                     <SearchResults />

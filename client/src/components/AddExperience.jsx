@@ -1,26 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { NAMES } from "../constants/companies";
 import "./AddExperience.css";
 
 const BRANCHES = [
-  "CSE",
-  "ECE",
-  "EEE",
-  "MECH",
-  "CHEM",
-  "CIVIL",
-  "MME",
-  "BIOTECH",
+  "CSE", "ECE", "EEE", "MECH", "CHEM", "CIVIL", "MME", "BIOTECH",
 ];
-
 const BATCHES = [
-  "2017-21",
-  "2018-22",
-  "2019-23",
-  "2020-24",
-  "2021-25",
-  "2022-26",
+  "2017-21", "2018-22", "2019-23", "2020-24", "2021-25", "2022-26",
+];
+const REQUIRED_FIELDS = [
+  "batch", "company", "cgpaCutoff", "jobDescription", "numberOfSelections", "OT_description", "other_comments",
 ];
 
 function autoGrow(e) {
@@ -28,36 +18,39 @@ function autoGrow(e) {
   e.target.style.height = e.target.scrollHeight + "px";
 }
 
-const REQUIRED_FIELDS = [
-  "batch",
-  "company",
-  "cgpaCutoff",
-  "jobDescription",
-  "numberOfSelections",
-  "OT_description",
-  "other_comments",
-];
+const DEFAULT_EXPERIENCE = {
+  company: "",
+  batch: "",
+  cgpaCutoff: "",
+  experienceType: "Intern",
+  eligibleBranches: [],
+  OT_description: "",
+  OT_questions: [],
+  interviewRounds: [{ title: "Round 1", description: "" }],
+  other_comments: "",
+  jobDescription: "",
+  numberOfSelections: "",
+};
 
-const AddExperience = () => {
+const AddExperience = ({ initialExperience, editMode, experienceId }) => {
   const user = useSelector((state) => state.auth.user);
   const [loading, setLoading] = useState(false);
-  const [experience, setExperience] = useState({
-    company: "",
-    batch: "",
-    cgpaCutoff: "",
-    experienceType: "Intern",
-    eligibleBranches: [],
-    OT_description: "",
-    OT_questions: [], // Start as empty array
-    interviewRounds: [{ title: "Round 1", description: "" }],
-    other_comments: "",
-    jobDescription: "",
-    numberOfSelections: "",
-  });
+  const [experience, setExperience] = useState(DEFAULT_EXPERIENCE);
   const [dontRememberSelections, setDontRememberSelections] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [submitAttempted, setSubmitAttempted] = useState(false);
+
+  // Autofill if editing
+  useEffect(() => {
+    if (initialExperience) {
+      setExperience({
+        ...DEFAULT_EXPERIENCE,
+        ...initialExperience,
+      });
+      setDontRememberSelections(initialExperience.numberOfSelections === -1);
+    }
+  }, [initialExperience]);
 
   // Validation helpers
   const isFieldValid = (name, value) => {
@@ -197,37 +190,42 @@ const AddExperience = () => {
     };
 
     try {
-      const response = await fetch(
-        `${
-          process.env.REACT_APP_API_URL || "http://localhost:8000"
-        }/api/experiences/addExperience`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify(payload),
+      let response, data;
+      if (editMode && experienceId) {
+        response = await fetch(
+          `${process.env.REACT_APP_API_URL || "http://localhost:8000"}/api/experiences/edit/${experienceId}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(payload),
+          }
+        );
+        data = await response.json();
+        if (response.ok) {
+          setSuccessMessage("Experience updated successfully!");
+        } else {
+          setErrorMessage(data.message || "Update failed.");
         }
-      );
-      const data = await response.json();
-      if (response.ok) {
-        setSuccessMessage("Thank you! Experience submitted for review.");
-        setExperience({
-          company: "",
-          batch: "",
-          cgpaCutoff: "",
-          experienceType: "Intern",
-          eligibleBranches: [],
-          OT_description: "",
-          OT_questions: [],
-          interviewRounds: [{ title: "Round 1", description: "" }],
-          other_comments: "",
-          jobDescription: "",
-          numberOfSelections: "",
-        });
-        setDontRememberSelections(false);
-        setSubmitAttempted(false);
       } else {
-        setErrorMessage(data.message || "Submission failed.");
+        response = await fetch(
+          `${process.env.REACT_APP_API_URL || "http://localhost:8000"}/api/experiences/addExperience`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(payload),
+          }
+        );
+        data = await response.json();
+        if (response.ok) {
+          setSuccessMessage("Thank you! Experience submitted for review.");
+          setExperience(DEFAULT_EXPERIENCE);
+          setDontRememberSelections(false);
+          setSubmitAttempted(false);
+        } else {
+          setErrorMessage(data.message || "Submission failed.");
+        }
       }
     } catch (error) {
       setErrorMessage("An unexpected error occurred. Please try again later.");
@@ -238,8 +236,13 @@ const AddExperience = () => {
   return (
     <div className="add-exp-form-bg">
       <h2 className="add-exp-title">
-        Fill out the form below to add a{" "}
-        <span className="add-exp-title-green">new experience</span>
+        {editMode ? (
+          <>Edit <span className="add-exp-title-green">Experience</span></>
+        ) : (
+          <>Fill out the form below to add a{" "}
+            <span className="add-exp-title-green">new experience</span>
+          </>
+        )}
       </h2>
       <form className="add-exp-form" onSubmit={handleSubmit}>
         <div className="about-highlight">
@@ -503,7 +506,13 @@ const AddExperience = () => {
           />
         </div>
         <button type="submit" className="add-exp-submit-btn" disabled={loading}>
-          {loading ? "Submitting..." : "Submit"}
+          {loading
+            ? editMode
+              ? "Saving..."
+              : "Submitting..."
+            : editMode
+            ? "Save Changes"
+            : "Submit"}
         </button>
         {loading && (
           <div

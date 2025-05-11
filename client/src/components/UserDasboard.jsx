@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { login, setUser } from '../slices/authSlice';
-import { useNavigate } from "react-router-dom";
+import { login, setUser } from "../slices/authSlice";
 import styles from "./UserDetails.module.css";
+import { useNavigate } from "react-router-dom";
 import "./Experiences.css"; // For Experiences-specific styles
 
 const UserDashboard = () => {
@@ -57,6 +57,30 @@ const UserDashboard = () => {
     setModClicked((prev) => !prev);
   };
 
+  const handleDeleteExperience = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this experience?"))
+      return;
+    try {
+      const response = await fetch(
+        `${
+          process.env.REACT_APP_API_URL || "http://localhost:8000"
+        }/api/experiences/delete/${id}`,
+        { method: "DELETE", credentials: "include" }
+      );
+      if (response.ok) {
+        setExperiences((prev) => prev.filter((exp) => exp._id !== id));
+      } else {
+        alert("Failed to delete experience.");
+      }
+    } catch (err) {
+      alert("Error deleting experience.");
+    }
+  };
+
+  const handleEditExperience = (exp) => {
+    navigate(`/editExperience/${exp._id}`, { state: { exp } });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!changed) {
@@ -84,7 +108,9 @@ const UserDashboard = () => {
       const data = await response.json();
       if (response.ok) {
         dispatch(setUser(data.user)); // Store user details in Redux
-        setSuccessMessage("User details updated successfully! Please login again to view changes.");
+        setSuccessMessage(
+          "User details updated successfully! Please login again to view changes."
+        );
         setErrorMessage("");
       } else {
         setErrorMessage("Failed to update user details. Please try again.");
@@ -115,7 +141,8 @@ const UserDashboard = () => {
             <span className={styles.label}>Branch:</span> {user.branch}
           </p>
           <p>
-            <span className={styles.label}>Year of Study:</span> {user.yearOfStudy}
+            <span className={styles.label}>Year of Study:</span>{" "}
+            {user.yearOfStudy}
           </p>
           <p>
             <span className={styles.label}>LinkedIn:</span>{" "}
@@ -135,7 +162,10 @@ const UserDashboard = () => {
               ? "-"
               : user.resume}
           </p>
-          <button className={styles["read-more-btn"]} onClick={handleModifyDetails}>
+          <button
+            className={styles["read-more-btn"]}
+            onClick={handleModifyDetails}
+          >
             Modify Details
           </button>
         </div>
@@ -164,7 +194,10 @@ const UserDashboard = () => {
                   <div>No experiences found.</div>
                 ) : (
                   experiences.map((exp) => (
-                    <div key={exp._id} className={`${styles["result-card"]} ${styles["experiences-card"]}`}>
+                    <div
+                      key={exp._id}
+                      className={`${styles["result-card"]} ${styles["experiences-card"]}`}
+                    >
                       <div className="card-desc">
                         {exp.OT_description?.slice(0, 180) || ""}...
                       </div>
@@ -180,6 +213,18 @@ const UserDashboard = () => {
                         onClick={() => navigate(`/experiences/${exp._id}`)}
                       >
                         Read More
+                      </button>
+                      <button
+                        className={styles["edit-btn"]}
+                        onClick={() => handleEditExperience(exp)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className={styles["delete-btn"]}
+                        onClick={() => handleDeleteExperience(exp._id)}
+                      >
+                        Delete
                       </button>
                     </div>
                   ))
@@ -221,7 +266,9 @@ const UserDashboard = () => {
                 />
               </div>
 
-              <button type="submit" className={styles["add-exp-submit-btn"]}>Submit</button>
+              <button type="submit" className={styles["add-exp-submit-btn"]}>
+                Submit
+              </button>
             </form>
             {errorMessage && (
               <p style={{ color: "red", marginTop: 10 }}>{errorMessage}</p>
