@@ -55,14 +55,44 @@ const COMPANY_LOGOS = [
   },
 ];
 
+const BRANCHES = [
+  "CSE",
+  "ECE",
+  "EEE",
+  "MECH",
+  "CHEM",
+  "CIVIL",
+  "MME",
+  "BIOTECH",
+];
+
 function SearchPage() {
   const [searchInput, setSearchInput] = useState("");
+  const [branch, setBranch] = useState("");
+  const [cgpa, setCgpa] = useState("");
   const navigate = useNavigate();
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (searchInput.trim() !== "") {
-      navigate(`/search/${encodeURIComponent(searchInput.trim())}`);
+    if (cgpa) {
+      const cgpaNum = parseFloat(cgpa);
+      if (isNaN(cgpaNum) || cgpaNum <= 0 || cgpaNum >= 10) {
+        alert("CGPA must be a number between 0 and 10.");
+        return;
+      }
+    }
+    // Build query string for params
+    const params = new URLSearchParams();
+    if (branch) params.append("branch", branch);
+    if (cgpa) params.append("cgpa", cgpa);
+
+    // If company is entered, use as path param, else use "all"
+    const companyParam = searchInput.trim() ? encodeURIComponent(searchInput.trim()) : "all";
+    const queryString = params.toString();
+    if (queryString) {
+      navigate(`/search/${companyParam}?${queryString}`);
+    } else {
+      navigate(`/search/${companyParam}`);
     }
   };
 
@@ -75,33 +105,54 @@ function SearchPage() {
               src={logo.url}
               alt={logo.name}
               key={idx}
-              onClick={() => navigate(`/search/${encodeURIComponent(logo.name)}`)} // Navigate on click
-              title={logo.name} // Title attribute for accessibility
+              onClick={() => setSearchInput(logo.name)}
+              title={logo.name}
+              style={{ cursor: "pointer" }}
             />
           ))}
         </Marquee>
       </div>
-
       <h1 className="main-search-title">
         Search Experiences by <span>Company</span>
       </h1>
       <form onSubmit={handleSearch} className="search-form">
-        <input
-          type="text"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          placeholder="Company or Branch or CGPA"
-          className="search-input"
-          list="company-suggestions"
-        />
+        <div className="search-fields-row">
+          <input
+            type="text"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            placeholder="Company"
+            className="search-input search-input-small company-search-input"
+            list="company-suggestions"
+          />
+          <select
+            value={branch}
+            onChange={(e) => setBranch(e.target.value)}
+            className="search-branch-select search-input-small"
+          >
+            <option value="">Branch (optional)</option>
+            {BRANCHES.map((b) => (
+              <option value={b} key={b}>{b}</option>
+            ))}
+          </select>
+          <input
+            type="number"
+            value={cgpa}
+            onChange={(e) => setCgpa(e.target.value)}
+            placeholder="CGPA (optional)"
+            className="search-cgpa-input search-input-small"
+            min="0"
+            max="10"
+            step="0.01"
+          />
+        </div>
         <datalist id="company-suggestions">
           {NAMES.map((name, idx) => (
             <option value={name} key={idx} />
           ))}
         </datalist>
         <div className="search-tips">
-          Enter a company name to search, or enter your CGPA to see the
-          companies you're eligible for.
+          Enter a company name, select branch, or enter your CGPA to filter results.
         </div>
         <button type="submit" className="search-button">
           Search

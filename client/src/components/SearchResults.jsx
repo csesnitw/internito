@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import './SearchPage.css';
 
 function SearchResults() {
   const { query } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [results, setResults] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    const isCgpaSearch = !isNaN(query) && query.trim() !== '';
+    const params = new URLSearchParams(location.search);
+    const branch = params.get("branch") || "";
+    const cgpa = params.get("cgpa") || "";
+
     const fetchResults = async () => {
       setErrorMessage('');
       setResults({});
@@ -19,15 +24,16 @@ function SearchResults() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              company: isCgpaSearch ? '' : query,
-              cgpa: isCgpaSearch ? parseFloat(query) : undefined,
+              company: query === "all" ? "" : query,
+              branch,
+              cgpa,
             }),
           }
         );
         const data = await response.json();
         if (response.ok) {
           if (Object.keys(data).length === 0) {
-            setErrorMessage('No results found. Try selecting a different company or CGPA.');
+            setErrorMessage('No results found. Try selecting a different company, branch, or CGPA.');
           } else {
             setResults(data);
           }
@@ -39,7 +45,7 @@ function SearchResults() {
       }
     };
     fetchResults();
-  }, [query]);
+  }, [query, location.search]);
 
   return (
     <div className="search-page">
@@ -53,13 +59,16 @@ function SearchResults() {
               {experiences.map((experience) => (
                 <div key={experience._id} className="result-card">
                   <h3>{experience.company}</h3>
-                  <p><strong>Position:</strong> {experience.position}</p>
+                  <p><strong>Name:</strong> {experience.name}</p>
                   <p><strong>CGPA Cutoff:</strong> {experience.cgpaCutoff}</p>
                   <p><strong>Batch:</strong> {experience.batch}</p>
                   <p><strong>Experience Type:</strong> {experience.experienceType}</p>
+                  <p><strong>Eligible Branches:</strong> {experience.eligibleBranches?.join(", ")}</p>
                   <p><strong>Online Test:</strong> {experience.OT_description}</p>
-                  <p><strong>Interview:</strong> {experience.interview_description}</p>
                   <p><strong>Other Comments:</strong> {experience.other_comments}</p>
+                  <button onClick={() => navigate(`/experiences/${experience._id}`)}>
+                    Read More
+                  </button>
                 </div>
               ))}
             </div>

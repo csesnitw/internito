@@ -207,24 +207,45 @@ router.post('/search', async (req, res) => {
 
 // Search by company name (regex) and/or CGPA, grouped by company
 router.post('/company', async (req, res) => {
-  const { company, cgpa } = req.body;
+  const { company, cgpa, branch } = req.body;
+
+  // Allowed branches
+  const BRANCHES = [
+    "CSE",
+    "ECE",
+    "EEE",
+    "MECH",
+    "CHEM",
+    "CIVIL",
+    "MME",
+    "BIOTECH",
+  ];
 
   try {
     const query = {};
 
-    // Match company name using regex (case-insensitive)
+    // Company filter (case-insensitive regex)
     if (company) {
       query.company = { $regex: company, $options: "i" };
     }
 
-    // Filter by CGPA cutoff if provided
+    // CGPA filter (must be >0 and <10)
     if (cgpa) {
-      query.cgpaCutoff = { $lte: parseFloat(cgpa) };
+      const cgpaNum = parseFloat(cgpa);
+      if (isNaN(cgpaNum) || cgpaNum <= 0 || cgpaNum >= 10) {
+        return res.status(400).json({ message: "CGPA must be between 0 and 10." });
+      }
+      query.cgpaCutoff = { $lte: cgpaNum };
+    }
+
+    // Branch filter (must be in allowed list, case-insensitive)
+    if (branch && BRANCHES.includes(branch.toUpperCase())) {
+      query.eligibleBranches = { $in: [branch.toUpperCase()] };
     }
 
     const experiences = await Experience.find(query).sort({ date: -1 });
 
-    // Group experiences by company
+    // Group by company
     const groupedByCompany = experiences.reduce((acc, experience) => {
       if (!acc[experience.company]) {
         acc[experience.company] = [];
@@ -239,5 +260,4 @@ router.post('/company', async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch company search results' });
   }
 });
-
 module.exports = router;
