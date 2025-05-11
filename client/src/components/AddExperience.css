@@ -420,6 +420,13 @@
   border: 1.5px solid #e74c3c !important;
 }
 
+
+.add-exp-form .about-highlight {
+  text-align: center;
+  margin-top: -10px;
+  margin-bottom: 18px;
+}
+
 .add-exp-grid-textarea {
   font-size: 1rem;
   padding: 10px 14px;
@@ -491,7 +498,10 @@
   }
   .add-exp-form .about-highlight {
     font-size: 0.9rem;
+    margin-bottom: 8px;
+    margin-top: 0px;
   }
+  
   .add-exp-ot-question-card,
   .add-exp-round {
     padding: 12px 8px 10px 8px;
@@ -545,10 +555,4 @@
   .modern-checkbox-text {
     font-size: 0.9rem;
   }
-}
-
-.add-exp-form .about-highlight {
-  text-align: center;
-  margin-top: -10px;
-  margin-bottom: 18px;
 }
