@@ -1,4 +1,3 @@
-/* General styles for the search page */
 .search-page {
   padding: 60px 20px 35px 20px;
   display: flex;
@@ -22,9 +21,9 @@
   font-size: 0.9rem;
   margin-bottom: 20px;
 }
+
 .search-input:focus {
   border-color: var(--green);
-  border-width: 2px;
   transition: var(--transition);
 }
 
@@ -104,7 +103,6 @@
   }
 }
 
-/* --- SEARCH BAR ROW --- */
 .search-fields-row {
   display: flex;
   gap: 15px;
@@ -119,31 +117,26 @@
 .search-branch-select,
 .search-cgpa-input {
   background: #fff;
-  border: var(--border);
+  border: 1px solid var(--border-color, #bbb);
   border-radius: 25px;
   outline: none;
   margin-bottom: 0;
   padding: 12px 15px;
   font-size: 1rem;
-  transition: border-color 0.3s;
+  transition: border-color 0.2s, box-shadow 0.2s;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+  box-sizing: border-box;
 }
 
-/* Company input with custom arrow (matches select) */
 .company-search-input {
   flex: 3 1 0;
   max-width: 320px;
   background: #fff url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 14px center/18px 18px;
   padding-right: 38px;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
 }
 
-
-/* Remove default datalist arrow in all browsers */
 .company-search-input::-webkit-calendar-picker-indicator,
 .company-search-input::-webkit-search-decoration,
 .company-search-input::-webkit-search-cancel-button,
@@ -159,25 +152,25 @@
   height: 0;
 }
 
-/* Hide the dropdown arrow in Chromium for datalist */
 input[list]::-webkit-list-button {
   display: none !important;
 }
 
-/* Hide the dropdown arrow in Firefox for datalist */
 input[list]::-moz-list-button {
   display: none !important;
 }
 
-/* Keep custom arrow on focus for company input */
 .company-search-input:focus {
   background: #fff url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 14px center/18px 18px;
   border-color: var(--green);
-  border-width: 2px;
+  box-shadow: 0 0 0 1px var(--green) inset;
 }
 
+.company-search-input::placeholder {
+  color: #888;
+  opacity: 1;
+}
 
-/* Branch select with custom arrow */
 .search-branch-select {
   flex: 2 1 0;
   max-width: 220px;
@@ -185,19 +178,14 @@ input[list]::-moz-list-button {
   padding-right: 38px;
   background: #fff url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 14px center/18px 18px;
   cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
 }
 
-/* Keep arrow visible on focus for select */
 .search-branch-select:focus {
   background: #fff url("data:image/svg+xml;utf8,<svg fill='gray' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 14px center/18px 18px;
   border-color: var(--green);
-  border-width: 2px;
+  box-shadow: 0 0 0 1.1px var(--green) inset;
 }
 
-/* Remove default arrow in some browsers */
 .search-branch-select::-ms-expand {
   display: none;
 }
@@ -207,7 +195,12 @@ input[list]::-moz-list-button {
   max-width: 220px;
 }
 
-/* Responsive: stack on small screens */
+.search-cgpa-input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 1px var(--green) inset;
+  background: #fff;
+}
+
 @media (max-width: 700px) {
   .search-fields-row {
     flex-direction: column;
@@ -226,15 +219,12 @@ input[list]::-moz-list-button {
   }
 }
 
-/* ...rest of your existing styles... */
-/* Gray when placeholder is selected, black otherwise */
 .search-branch-select:invalid {
   color: #888;
 }
 .search-branch-select {
   color: #222;
 }
-/* Make sure the placeholder option is gray in the dropdown too */
 .search-branch-select option[value=""] {
   color: #888 !important;
 }

@@ -55,10 +55,10 @@ const Feedback = () => {
 
   return (
     <div className="feedback-bg">
+      <h2 className="feedback-title" style={{ marginBottom: 0 }}>
+        We value your <span className="feedback-title-green">Feedback</span>!
+      </h2>
       <form className="feedback-form feedback-form-wide" onSubmit={handleSubmit}>
-        <h2 className="feedback-title">
-          We value your <span className="feedback-title-green">Feedback</span>!
-        </h2>
         <p className="feedback-desc">
           Please let us know your thoughts, suggestions, or issues below.
           <br></br>P.S. We actually read it!
@@ -69,7 +69,7 @@ const Feedback = () => {
           onChange={e => setFeedback(e.target.value)}
           placeholder="Enter your feedback here..."
           rows={4}
-          style={{ minHeight: 190, overflow: "hidden", resize: "none", background: "#fff" }}
+          style={{ minHeight: 190, overflow: "hidden", resize: "none"}}
           onInput={autoGrow}
           disabled={loading}
         />

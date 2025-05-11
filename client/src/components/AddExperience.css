@@ -1,7 +1,7 @@
 /* Background and form container */
 .add-exp-form-bg {
   background: #e5e5e5;
-  padding: 40px 20px 35px 20px;
+  padding: 46px 20px 35px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,7 +24,7 @@
 .add-exp-title {
   line-height: 1.1;
   text-align: center;
-  font-size: 2rem;
+  font-size: 2.3rem;
   margin-bottom: 28px;
   font-weight: 600;
   font-family: "Poppins", Arial, sans-serif;

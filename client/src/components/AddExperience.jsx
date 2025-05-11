@@ -40,7 +40,7 @@ const REQUIRED_FIELDS = [
 
 const AddExperience = () => {
   const user = useSelector((state) => state.auth.user);
-  const [loading, setLoading] = useState(false); // <-- Add loading state
+  const [loading, setLoading] = useState(false);
   const [experience, setExperience] = useState({
     company: "",
     batch: "",
@@ -48,7 +48,7 @@ const AddExperience = () => {
     experienceType: "Intern",
     eligibleBranches: [],
     OT_description: "",
-    OT_questions: [""],
+    OT_questions: [], // Start as empty array
     interviewRounds: [{ title: "Round 1", description: "" }],
     other_comments: "",
     jobDescription: "",
@@ -158,9 +158,9 @@ const AddExperience = () => {
   };
 
   // Validation for OT Questions and Interview Rounds
-  const isOTQuestionsValid = experience.OT_questions.every(
-    (q) => q.trim() !== ""
-  );
+  const isOTQuestionsValid =
+    experience.OT_questions.length === 0 ||
+    experience.OT_questions.every((q) => q.trim() !== "");
   const areRoundsValid = experience.interviewRounds.every(
     (r) => r.title.trim() !== "" && r.description.trim() !== ""
   );
@@ -218,7 +218,7 @@ const AddExperience = () => {
           experienceType: "Intern",
           eligibleBranches: [],
           OT_description: "",
-          OT_questions: [""],
+          OT_questions: [],
           interviewRounds: [{ title: "Round 1", description: "" }],
           other_comments: "",
           jobDescription: "",
@@ -242,7 +242,9 @@ const AddExperience = () => {
         <span className="add-exp-title-green">new experience</span>
       </h2>
       <form className="add-exp-form" onSubmit={handleSubmit}>
-        <div className="about-highlight">Keep your experiences relevant and avoid overly negative rants.</div>
+        <div className="about-highlight">
+          Keep your experiences relevant and avoid overly negative rants.
+        </div>
         <div className="add-exp-grid">
           <label>Batch</label>
           <select
@@ -374,33 +376,33 @@ const AddExperience = () => {
             )}
             onInput={autoGrow}
             rows={4}
-            style={{ width: "100%", minHeight: 80 }}
+            style={{ width: "100%", minHeight: 150 }}
           />
         </div>
 
         <div className="add-exp-section">
           <label>Online Test Questions</label>
-          <div className="add-exp-ot-questions-list">
-            {experience.OT_questions.map((q, idx) => {
-              const isValid = q.trim() !== "";
-              return (
-                <div
-                  key={idx}
-                  className={
-                    "add-exp-ot-question-card" +
-                    (submitAttempted ? (isValid ? " valid" : " invalid") : "")
-                  }
-                >
-                  <input
-                    type="text"
-                    value={q}
-                    onChange={(e) =>
-                      handleOTQuestionChange(idx, e.target.value)
+          {experience.OT_questions.length > 0 && (
+            <div className="add-exp-ot-questions-list">
+              {experience.OT_questions.map((q, idx) => {
+                const isValid = q.trim() !== "";
+                return (
+                  <div
+                    key={idx}
+                    className={
+                      "add-exp-ot-question-card" +
+                      (submitAttempted ? (isValid ? " valid" : " invalid") : "")
                     }
-                    placeholder={`Question ${idx + 1} of OT`}
-                    className="plain-input"
-                  />
-                  {experience.OT_questions.length > 1 && (
+                  >
+                    <input
+                      type="text"
+                      value={q}
+                      onChange={(e) =>
+                        handleOTQuestionChange(idx, e.target.value)
+                      }
+                      placeholder={`Question ${idx + 1} of OT`}
+                      className="plain-input"
+                    />
                     <button
                       type="button"
                       className="add-exp-remove-btn"
@@ -410,11 +412,11 @@ const AddExperience = () => {
                     >
                       ×
                     </button>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
           <button
             type="button"
             className="add-exp-add-btn"
@@ -463,7 +465,7 @@ const AddExperience = () => {
                   className="plain-textarea"
                   onInput={autoGrow}
                   rows={4}
-                  style={{ width: "100%", minHeight: 80 }}
+                  style={{ width: "100%", minHeight: 150 }}
                 />
                 {experience.interviewRounds.length > 1 && (
                   <button
@@ -497,7 +499,7 @@ const AddExperience = () => {
             )}
             onInput={autoGrow}
             rows={4}
-            style={{ width: "100%", minHeight: 80 }}
+            style={{ width: "100%", minHeight: 130 }}
           />
         </div>
         <button type="submit" className="add-exp-submit-btn" disabled={loading}>
@@ -533,7 +535,6 @@ const AddExperience = () => {
           </div>
         )}
       </form>
-      {/* Spinner animation */}
       <style>
         {`
           @keyframes spin {
