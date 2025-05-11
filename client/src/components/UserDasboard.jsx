@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 import { login, setUser } from '../slices/authSlice';
-
 import { useNavigate } from "react-router-dom";
-import "./UserDetails.module.css";
+import styles from "./UserDetails.module.css";
 import "./Experiences.css"; // For Experiences-specific styles
 
 const UserDashboard = () => {
@@ -44,6 +42,7 @@ const UserDashboard = () => {
       }
     };
     fetchExperiences();
+    // eslint-disable-next-line
   }, []);
 
   const handleChange = (e) => {
@@ -83,7 +82,6 @@ const UserDashboard = () => {
       );
 
       const data = await response.json();
-      console.log(data.user)
       if (response.ok) {
         dispatch(setUser(data.user)); // Store user details in Redux
         setSuccessMessage("User details updated successfully! Please login again to view changes.");
@@ -99,54 +97,54 @@ const UserDashboard = () => {
   };
 
   return (
-    <div className="dashboard-main">
-      <div className="dashboard-left">
-        <div className="user-card">
-          <h1 className="user-title">User Details</h1>
+    <div className={styles["dashboard-main"]}>
+      <div className={styles["dashboard-left"]}>
+        <div className={styles["user-card"]}>
+          <h1 className={styles["user-title"]}>User Details</h1>
           <p>
-            <span className="label">Name:</span> {user.firstName}{" "}
+            <span className={styles.label}>Name:</span> {user.firstName}{" "}
             {user.lastName}
           </p>
           <p>
-            <span className="label">Email:</span> {user.email}
+            <span className={styles.label}>Email:</span> {user.email}
           </p>
           <p>
-            <span className="label">Roll No:</span> {user.rollNo}
+            <span className={styles.label}>Roll No:</span> {user.rollNo}
           </p>
           <p>
-            <span className="label">Branch:</span> {user.branch}
+            <span className={styles.label}>Branch:</span> {user.branch}
           </p>
           <p>
-            <span className="label">Year of Study:</span> {user.yearOfStudy}
+            <span className={styles.label}>Year of Study:</span> {user.yearOfStudy}
           </p>
           <p>
-            <span className="label">LinkedIn:</span>{" "}
+            <span className={styles.label}>LinkedIn:</span>{" "}
             {user.linkedIn === "" || user.linkedIn === undefined
               ? "-"
               : user.linkedIn}
           </p>
           <p>
-            <span className="label">GitHub:</span>{" "}
+            <span className={styles.label}>GitHub:</span>{" "}
             {user.github === "" || user.github === undefined
               ? "-"
               : user.github}
           </p>
           <p>
-            <span className="label">Resume:</span>{" "}
+            <span className={styles.label}>Resume:</span>{" "}
             {user.resume === "" || user.resume === undefined
               ? "-"
               : user.resume}
           </p>
-          <button className="read-more-btn" onClick={handleModifyDetails}>
+          <button className={styles["read-more-btn"]} onClick={handleModifyDetails}>
             Modify Details
           </button>
         </div>
 
-        <div className="write-new-card">
-          <div className="user-title">Have something to write?</div>
+        <div className={styles["write-new-card"]}>
+          <div className={styles["user-title"]}>Have something to write?</div>
           <div className="card-text">Share your interview experience</div>
           <button
-            className="read-more-btn"
+            className={styles["read-more-btn"]}
             onClick={() => navigate("/addExperiences")}
           >
             Write Now!!
@@ -154,19 +152,19 @@ const UserDashboard = () => {
         </div>
       </div>
 
-      <div className="dashboard-right">
+      <div className={styles["dashboard-right"]}>
         {!ModClicked ? (
-          <div className="experiences-section">
+          <div className={styles["experiences-section"]}>
             <h1>Your Experiences</h1>
             {loading ? (
               <div>Loading...</div>
             ) : (
-              <div className="experiences-results">
+              <div className={styles["experiences-results"]}>
                 {!experiences || experiences.length === 0 ? (
                   <div>No experiences found.</div>
                 ) : (
                   experiences.map((exp) => (
-                    <div key={exp._id} className="result-card experiences-card">
+                    <div key={exp._id} className={`${styles["result-card"]} ${styles["experiences-card"]}`}>
                       <div className="card-desc">
                         {exp.OT_description?.slice(0, 180) || ""}...
                       </div>
@@ -178,7 +176,7 @@ const UserDashboard = () => {
                         </span>
                       </div>
                       <button
-                        className="read-more-btn"
+                        className={styles["read-more-btn"]}
                         onClick={() => navigate(`/experiences/${exp._id}`)}
                       >
                         Read More
@@ -190,11 +188,11 @@ const UserDashboard = () => {
             )}
           </div>
         ) : (
-          <div className="experiences-section">
+          <div className={styles["experiences-section"]}>
             <h1>Modify your details</h1>
-            <form onSubmit={handleSubmit} className="add-exp-form">
-              <h2 className="add-exp-title">Enter your Links</h2>
-              <div className="add-exp-grid">
+            <form onSubmit={handleSubmit} className={styles["add-exp-form"]}>
+              <h2 className={styles["add-exp-title"]}>Enter your Links</h2>
+              <div className={styles["add-exp-grid"]}>
                 <label>LinkedIn</label>
                 <input
                   type="url"
@@ -223,7 +221,7 @@ const UserDashboard = () => {
                 />
               </div>
 
-              <button type="submit" className="add-exp-submit-btn">Submit</button>
+              <button type="submit" className={styles["add-exp-submit-btn"]}>Submit</button>
             </form>
             {errorMessage && (
               <p style={{ color: "red", marginTop: 10 }}>{errorMessage}</p>
