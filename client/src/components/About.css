@@ -154,7 +154,7 @@
   background-color: var(--green);
   color: white;
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: 30px;
   font-size: 0.97rem;
   font-weight: 500;
   transition: background-color 0.2s;
@@ -176,7 +176,7 @@
   display: inline-flex;
   align-items: center;
   font-weight: 500;
-  border-radius: 6px;
+  border-radius: 30px;
   font-size: 0.97rem;
   padding: 7px 16px 7px 10px;
   text-decoration: none;
@@ -205,7 +205,7 @@
 
 .dev-btn.github:hover,
 .dev-btn.github:focus {
-  background: #000;
+  background: #2f2f2f;
   color: #fff;
 }
 

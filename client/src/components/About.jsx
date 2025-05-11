@@ -210,7 +210,7 @@ function About() {
       </section>
       <section className="developers-section">
         <h2>
-          <span className="about-section-title">MERN Rebuild Team</span>
+          <span className="about-section-title">Rebuild Team</span>
         </h2>
         <div className="developer-cards">
           {rebuildTeam.map((dev, index) => (

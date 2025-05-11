@@ -489,6 +489,9 @@
     font-size: 1rem;
     padding: 9px 0;
   }
+  .add-exp-form .about-highlight {
+    font-size: 0.9rem;
+  }
   .add-exp-ot-question-card,
   .add-exp-round {
     padding: 12px 8px 10px 8px;
@@ -500,7 +503,7 @@
     border-radius: 8px;
   }
   .add-exp-title {
-    font-size: 1.05rem;
+    font-size: 1.3rem;
   }
   .add-exp-grid input,
   .add-exp-grid select,
@@ -542,4 +545,10 @@
   .modern-checkbox-text {
     font-size: 0.9rem;
   }
+}
+
+.add-exp-form .about-highlight {
+  text-align: center;
+  margin-top: -10px;
+  margin-bottom: 18px;
 }

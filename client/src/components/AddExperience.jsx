@@ -242,6 +242,7 @@ const AddExperience = () => {
         <span className="add-exp-title-green">new experience</span>
       </h2>
       <form className="add-exp-form" onSubmit={handleSubmit}>
+        <div className="about-highlight">Keep your experiences relevant and avoid overly negative rants.</div>
         <div className="add-exp-grid">
           <label>Batch</label>
           <select
