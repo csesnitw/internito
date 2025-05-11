@@ -227,3 +227,14 @@ input[list]::-moz-list-button {
 }
 
 /* ...rest of your existing styles... */
+/* Gray when placeholder is selected, black otherwise */
+.search-branch-select:invalid {
+  color: #888;
+}
+.search-branch-select {
+  color: #222;
+}
+/* Make sure the placeholder option is gray in the dropdown too */
+.search-branch-select option[value=""] {
+  color: #888 !important;
+}

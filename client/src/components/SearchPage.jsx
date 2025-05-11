@@ -126,15 +126,18 @@ function SearchPage() {
             list="company-suggestions"
           />
           <select
-            value={branch}
-            onChange={(e) => setBranch(e.target.value)}
-            className="search-branch-select search-input-small"
-          >
-            <option value="">Branch (optional)</option>
-            {BRANCHES.map((b) => (
-              <option value={b} key={b}>{b}</option>
-            ))}
-          </select>
+  value={branch}
+  onChange={(e) => setBranch(e.target.value)}
+  className="search-branch-select search-input-small"
+  required
+>
+  <option value="" disabled hidden>
+    Branch (optional)
+  </option>
+  {BRANCHES.map((b) => (
+    <option value={b} key={b}>{b}</option>
+  ))}
+</select>
           <input
             type="number"
             value={cgpa}
