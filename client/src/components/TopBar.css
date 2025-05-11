@@ -11,7 +11,7 @@
 /* Logo */
 .logo h1 {
   font-weight: bolder;
-  font-size: 1.3em;
+  font-size: 1.4em;
   color: #76b852;
   margin: 0;
 }
@@ -76,7 +76,7 @@
 }
 
 /* Mobile behavior */
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 980px) {
   .hamburger {
     display: flex;
   }
