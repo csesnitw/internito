@@ -81,7 +81,6 @@
 }
 
 /* Hamburger to X transition */
-/* Hamburger to X transition */
 .hamburger.open .bar:nth-child(1) {
   transform: translateY(8px) rotate(45deg); /* was 10px */
 }

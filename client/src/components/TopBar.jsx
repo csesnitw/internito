@@ -98,10 +98,7 @@ function TopBar() {
         <div className="bar"></div>
       </div>
 
-      <nav
-        className={`nav-links ${menuOpen ? "open" : ""}`}
-        ref={navRef}
-      >
+      <nav className={`nav-links ${menuOpen ? "open" : ""}`} ref={navRef}>
         <ul>
           {!isLoggedIn ? (
             <>
@@ -134,7 +131,15 @@ function TopBar() {
                       onClick={() => setMenuOpen(false)}
                       className={({ isActive }) => (isActive ? "active" : "")}
                     >
-                      Hello <strong>{user.firstName}</strong>!
+                      {({ isActive }) =>
+                        isActive ? (
+                          <>Hello {user.firstName}!</>
+                        ) : (
+                          <>
+                            Hello <strong>{user.firstName}</strong>!
+                          </>
+                        )
+                      }
                     </NavLink>
                   ) : (
                     ""
