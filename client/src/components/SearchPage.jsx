@@ -87,7 +87,9 @@ function SearchPage() {
     if (cgpa) params.append("cgpa", cgpa);
 
     // If company is entered, use as path param, else use "all"
-    const companyParam = searchInput.trim() ? encodeURIComponent(searchInput.trim()) : "all";
+    const companyParam = searchInput.trim()
+      ? encodeURIComponent(searchInput.trim())
+      : "all";
     const queryString = params.toString();
     if (queryString) {
       navigate(`/search/${companyParam}?${queryString}`);
@@ -126,18 +128,20 @@ function SearchPage() {
             list="company-suggestions"
           />
           <select
-  value={branch}
-  onChange={(e) => setBranch(e.target.value)}
-  className="search-branch-select search-input-small"
-  required
->
-  <option value="" disabled hidden>
-    Branch (optional)
-  </option>
-  {BRANCHES.map((b) => (
-    <option value={b} key={b}>{b}</option>
-  ))}
-</select>
+            value={branch}
+            onChange={(e) => setBranch(e.target.value)}
+            className="search-branch-select search-input-small"
+            required
+          >
+            <option value="" disabled hidden>
+              Branch (optional)
+            </option>
+            {BRANCHES.map((b) => (
+              <option value={b} key={b}>
+                {b}
+              </option>
+            ))}
+          </select>
           <input
             type="number"
             value={cgpa}
@@ -155,7 +159,8 @@ function SearchPage() {
           ))}
         </datalist>
         <div className="search-tips">
-          Enter a company name, select branch, or enter your CGPA to filter results.
+          Enter a company name, select branch, or enter your CGPA to filter
+          results.
         </div>
         <button type="submit" className="search-button">
           Search
