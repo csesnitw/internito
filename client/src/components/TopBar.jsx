@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../slices/authSlice";
@@ -13,9 +13,27 @@ function TopBar() {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // Refs for hamburger and nav
+  const hamburgerRef = useRef(null);
+  const navRef = useRef(null);
+
   useEffect(() => {
-    //console.log("User details:", user);
-  }, [user]);
+    if (!menuOpen) return;
+
+    function handleClickOutside(event) {
+      if (
+        hamburgerRef.current &&
+        !hamburgerRef.current.contains(event.target) &&
+        navRef.current &&
+        !navRef.current.contains(event.target)
+      ) {
+        setMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [menuOpen]);
 
   const handleLogout = async () => {
     try {
@@ -67,13 +85,23 @@ function TopBar() {
       </div>
 
       {/* Hamburger icon */}
-      <div className="hamburger" onClick={toggleMenu}>
+      <div
+        className={`hamburger${menuOpen ? " open" : ""}`}
+        onClick={toggleMenu}
+        aria-label={menuOpen ? "Close menu" : "Open menu"}
+        tabIndex={0}
+        role="button"
+        ref={hamburgerRef}
+      >
         <div className="bar"></div>
         <div className="bar"></div>
         <div className="bar"></div>
       </div>
 
-      <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
+      <nav
+        className={`nav-links ${menuOpen ? "open" : ""}`}
+        ref={navRef}
+      >
         <ul>
           {!isLoggedIn ? (
             <>
