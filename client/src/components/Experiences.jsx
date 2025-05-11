@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import './SearchPage.css'; // For card styles
-import './Experiences.css'; // For Experiences-specific styles
+import './SearchPage.css';
+import './Experiences.css';
 
 function Experiences() {
   const user = useSelector((state) => state.auth.user);
@@ -46,20 +46,23 @@ function Experiences() {
     fetchExperiences();
   }, [sortBy]);
 
+  // Count for current responses
+  const currentCount =
+    sortBy === 'recent'
+      ? experiences.length
+      : Object.values(grouped).reduce((acc, arr) => acc + arr.length, 0);
+
   return (
-    <div className="exp-page" style={{ minHeight: '100vh', margin:'40px', marginTop:'20px' }}>
-      <h1>All Interview Experiences</h1>
-      <div className="experiences-header">
-        Current Responses : {sortBy === 'recent'
-          ? experiences.length
-          : Object.values(grouped).reduce((acc, arr) => acc + arr.length, 0)}
-      </div>
+    <div className="exp-page" style={{ minHeight: '100vh', padding: '40px 0 40px 0' }}>
+      <h1 className="main-search-title" style={{ textAlign: 'center', marginBottom: 10 }}>
+        All Interview <span>Experiences</span>
+      </h1>
       <div className="experiences-toolbar">
         <button
           className={`sort-btn${sortBy === 'company' ? ' active' : ''}`}
           onClick={() => setSortBy('company')}
         >
-          Sort by Company
+          Group by Company
         </button>
         <button
           className={`sort-btn${sortBy === 'recent' ? ' active' : ''}`}
@@ -67,28 +70,26 @@ function Experiences() {
         >
           Sort by Recent
         </button>
-        <button
-          className="search-company-btn"
-          onClick={() => navigate('/search')}
-        >
-          Search for Company
-        </button>
       </div>
-
+      <div className="experiences-count-box">
+        <span className="experiences-count-label">Current Responses</span>
+        <span className="experiences-count-value">{currentCount}</span>
+      </div>
       {loading ? (
-        <div>Loading...</div>
+        <div className="experiences-loading">Loading...</div>
       ) : sortBy === 'recent' ? (
-        <div className="experiences-results">
+        <div className="experiences-results experiences-results-left">
           {experiences.map((exp) => (
             <div key={exp._id} className="result-card experiences-card">
               <div className="card-desc">
                 {exp.OT_description?.slice(0, 180) || ''}...
               </div>
-              <div className="card-name">
-                {exp.name}
-              </div>
+              <div className="card-name">{exp.name}</div>
               <div className="card-company">
-                interview experience of <span style={{ fontWeight: 600 }}>{exp.company?.toLowerCase()}</span>
+                Interview experience of{' '}
+                <span style={{ fontWeight: 600, textTransform: 'capitalize' }}>
+                  {exp.company?.toLowerCase()}
+                </span>
               </div>
               <button
                 className="read-more-btn"
@@ -103,18 +104,19 @@ function Experiences() {
         Object.keys(grouped).length > 0 &&
         Object.entries(grouped).map(([companyName, experiences]) => (
           <div key={companyName} style={{ marginBottom: 40 }}>
-            <h2 style={{ textAlign: 'left', marginLeft: '8vw', marginBottom: 18, color: '#222' }}>{companyName}</h2>
-            <div className="experiences-results">
+            <h2 className="experiences-company-title">{companyName}</h2>
+            <div className="experiences-results experiences-results-left">
               {experiences.map((exp) => (
                 <div key={exp._id} className="result-card experiences-card">
                   <div className="card-desc">
                     {exp.OT_description?.slice(0, 180) || ''}...
                   </div>
-                  <div className="card-name">
-                    {exp.name}
-                  </div>
+                  <div className="card-name">{exp.name}</div>
                   <div className="card-company">
-                    interview experience of <span style={{ fontWeight: 600 }}>{exp.company?.toLowerCase()}</span>
+                    Interview experience of{' '}
+                    <span style={{ fontWeight: 600, textTransform: 'capitalize' }}>
+                      {exp.company?.toLowerCase()}
+                    </span>
                   </div>
                   <button
                     className="read-more-btn"
