@@ -11,7 +11,7 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user && !["dv22csb0f38","dp22csb0f23"].includes(user.username)) { //change this later
+    if (user && !["dv22csb0f38","dp22csb0f23","sp22csb0f08"].includes(user.username)) { //change this later
       // Redirect to home page if not admin
       navigate("/");
     }

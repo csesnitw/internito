@@ -53,7 +53,7 @@ function Experiences() {
       : Object.values(grouped).reduce((acc, arr) => acc + arr.length, 0);
 
   return (
-    <div className="exp-page" style={{ minHeight: '100vh', padding: '40px 0 40px 0' }}>
+    <div className="exp-page" style={{  }}>
       <h1 className="main-search-title" style={{ textAlign: 'center', marginBottom: 10 }}>
         All Interview <span>Experiences</span>
       </h1>

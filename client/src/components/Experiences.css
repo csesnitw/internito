@@ -1,5 +1,5 @@
 .exp-page {
-  padding: 0;
+  padding: 35px 20px 35px 20px;
 }
 
 .main-search-title {
@@ -114,9 +114,10 @@
 .experiences-results-left {
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 20px;
   justify-content: flex-start;
   align-items: flex-start;
+  align-content: center;
   width: 100%; /* <-- Add this line */
 }
 .experiences-results-center {
@@ -129,8 +130,7 @@
   max-width: 340px;
   background: #fff;
   border-radius: 18px;
-  box-shadow: 0 4px 16px rgba(118, 184, 82, 0.09);
-  border: 1.5px solid #e0e0e0;
+  border: var(--border);
   padding: 28px 22px 22px 22px;
   margin-bottom: 10px;
   display: flex;
@@ -141,8 +141,9 @@
 }
 
 .experiences-card:hover {
-  box-shadow: 0 8px 24px rgba(118, 184, 82, 0.16);
-  border: 1.5px solid #76b852;
+  transform: scale(1.025);
+  transition: var(--transition);
+  box-shadow: 0 7px 29px 0px rgba(67, 160, 71, 0.13);
 }
 
 .card-desc {
