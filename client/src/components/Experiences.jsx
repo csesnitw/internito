@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import './SearchPage.css';
-import './Experiences.css';
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import "./SearchPage.css";
+import "./Experiences.css";
 
 function Experiences() {
   const user = useSelector((state) => state.auth.user);
   const [experiences, setExperiences] = useState([]);
   const [grouped, setGrouped] = useState({});
-  const [sortBy, setSortBy] = useState('recent');
+  const [sortBy, setSortBy] = useState("recent");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -16,20 +16,24 @@ function Experiences() {
     const fetchExperiences = async () => {
       setLoading(true);
       try {
-        if (sortBy === 'recent') {
+        if (sortBy === "recent") {
           const response = await fetch(
-            `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences`,
-            { credentials: 'include' }
+            `${
+              process.env.REACT_APP_API_URL || "http://localhost:8000"
+            }/api/experiences`,
+            { credentials: "include" }
           );
           const data = await response.json();
           setExperiences(data);
           setGrouped({});
         } else {
           const response = await fetch(
-            `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences/company`,
+            `${
+              process.env.REACT_APP_API_URL || "http://localhost:8000"
+            }/api/experiences/company`,
             {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({}),
             }
           );
@@ -38,7 +42,7 @@ function Experiences() {
           setExperiences([]);
         }
       } catch (error) {
-        console.error('Error fetching experiences:', error);
+        console.error("Error fetching experiences:", error);
       }
       setLoading(false);
     };
@@ -48,25 +52,28 @@ function Experiences() {
 
   // Count for current responses
   const currentCount =
-    sortBy === 'recent'
+    sortBy === "recent"
       ? experiences.length
       : Object.values(grouped).reduce((acc, arr) => acc + arr.length, 0);
 
   return (
-    <div className="exp-page" style={{  }}>
-      <h1 className="main-search-title" style={{ textAlign: 'center', marginBottom: 10 }}>
+    <div className="exp-page" style={{}}>
+      <h1
+        className="main-search-title"
+        style={{ textAlign: "center", marginBottom: 10 }}
+      >
         All Interview <span>Experiences</span>
       </h1>
       <div className="experiences-toolbar">
         <button
-          className={`sort-btn${sortBy === 'company' ? ' active' : ''}`}
-          onClick={() => setSortBy('company')}
+          className={`sort-btn${sortBy === "company" ? " active" : ""}`}
+          onClick={() => setSortBy("company")}
         >
           Group by Company
         </button>
         <button
-          className={`sort-btn${sortBy === 'recent' ? ' active' : ''}`}
-          onClick={() => setSortBy('recent')}
+          className={`sort-btn${sortBy === "recent" ? " active" : ""}`}
+          onClick={() => setSortBy("recent")}
         >
           Sort by Recent
         </button>
@@ -77,17 +84,17 @@ function Experiences() {
       </div>
       {loading ? (
         <div className="experiences-loading">Loading...</div>
-      ) : sortBy === 'recent' ? (
+      ) : sortBy === "recent" ? (
         <div className="experiences-results experiences-results-left">
           {experiences.map((exp) => (
             <div key={exp._id} className="result-card experiences-card">
               <div className="card-desc">
-                {exp.OT_description?.slice(0, 180) || ''}...
+                {exp.OT_description?.slice(0, 180) || ""}...
               </div>
               <div className="card-name">{exp.name}</div>
               <div className="card-company">
-                Interview experience of{' '}
-                <span style={{ fontWeight: 600, textTransform: 'capitalize' }}>
+                Interview experience of{" "}
+                <span style={{ fontWeight: 600, textTransform: "capitalize" }}>
                   {exp.company?.toLowerCase()}
                 </span>
               </div>
@@ -108,13 +115,13 @@ function Experiences() {
             <div className="experiences-results experiences-results-left">
               {experiences.map((exp) => (
                 <div key={exp._id} className="result-card experiences-card">
-                  <div className="card-desc">
-                    {exp.OT_description?.slice(0, 180) || ''}...
-                  </div>
+                  <div className="card-desc">{exp.OT_description}</div>
                   <div className="card-name">{exp.name}</div>
                   <div className="card-company">
-                    Interview experience of{' '}
-                    <span style={{ fontWeight: 600, textTransform: 'capitalize' }}>
+                    Interview experience of{" "}
+                    <span
+                      style={{ fontWeight: 600, textTransform: "capitalize" }}
+                    >
                       {exp.company?.toLowerCase()}
                     </span>
                   </div>

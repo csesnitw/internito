@@ -116,9 +116,9 @@
   flex-wrap: wrap;
   gap: 20px;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: stretch; /* Make all cards stretch to same height */
   align-content: center;
-  width: 100%; /* <-- Add this line */
+  width: 100%;
 }
 .experiences-results-center {
   justify-content: center;
@@ -138,6 +138,7 @@
   align-items: center;
   transition: box-shadow 0.18s, border 0.18s;
   box-sizing: border-box;
+  height: 340px; /* Fixed height for all cards */
 }
 
 .experiences-card:hover {
@@ -147,12 +148,22 @@
 }
 
 .card-desc {
-  min-height: 110px;
-  margin-bottom: 14px;
   color: #444;
   font-size: 1.04rem;
   text-align: center;
   font-family: "Poppins", Arial, sans-serif;
+  width: 100%;
+  margin-bottom: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 7; /* Show up to 7 lines, adjust as needed */
+  -webkit-box-orient: vertical;
+  line-clamp: 7;
+  box-orient: vertical;
+  min-height: 7.5em; /* fallback for equal height, adjust as needed */
+  max-height: 7.5em;
+  word-break: break-word;
 }
 
 .card-name {
@@ -178,7 +189,7 @@
   border: none;
   font-weight: 600;
   width: 100%;
-  margin-top: 10px;
+  margin-top: auto;          /* Push button to bottom */
   border-radius: 25px;
   padding: 10px 0;
   cursor: pointer;
@@ -219,6 +230,7 @@
     min-width: 90vw;
     max-width: 98vw;
     padding: 18px 6vw 18px 6vw;
+    height: 280px;
   }
   .card-desc {
     min-height: 60px;

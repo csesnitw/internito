@@ -120,6 +120,7 @@ export const NAMES = [
   'NEOSOFT',
   'NETSKOPE',
   'NEWZERA',
+  'NPCI',
   'NUTANIX',
   'NVIDIA',
   'OATS SYSTEMS',

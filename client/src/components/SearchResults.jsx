@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import './SearchPage.css';
+import React, { useEffect, useState } from "react";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
+import "./SearchPage.css";
+import "./Experiences.css";
 
 function SearchResults() {
   const { query } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const [results, setResults] = useState({});
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -15,14 +16,16 @@ function SearchResults() {
     const cgpa = params.get("cgpa") || "";
 
     const fetchResults = async () => {
-      setErrorMessage('');
+      setErrorMessage("");
       setResults({});
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences/company`,
+          `${
+            process.env.REACT_APP_API_URL || "http://localhost:8000"
+          }/api/experiences/company`,
           {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               company: query === "all" ? "" : query,
               branch,
@@ -33,44 +36,65 @@ function SearchResults() {
         const data = await response.json();
         if (response.ok) {
           if (Object.keys(data).length === 0) {
-            setErrorMessage('No results found. Try selecting a different company, branch, or CGPA.');
+            setErrorMessage(
+              "No results found. Try selecting a different company, branch, or CGPA."
+            );
           } else {
             setResults(data);
           }
         } else {
-          setErrorMessage('Failed to fetch search results.');
+          setErrorMessage("Failed to fetch search results.");
         }
       } catch (error) {
-        setErrorMessage('An unexpected error occurred. Please try again later.');
+        setErrorMessage(
+          "An unexpected error occurred. Please try again later."
+        );
       }
     };
     fetchResults();
   }, [query, location.search]);
 
   return (
-    <div className="search-page">
-      <h1>Search Results for <span>{query}</span></h1>
+    <div className="exp-page">
+      <h1
+        className="main-search-title"
+        style={{ textAlign: "center", marginBottom: 10 }}
+      >
+        Search Results for <span>{query}</span>
+      </h1>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
-      <div className="search-results">
+      <div className="experiences-results experiences-results-left">
         {Object.keys(results).length > 0 &&
           Object.entries(results).map(([companyName, experiences]) => (
-            <div key={companyName} className="company-group">
-              <h2>{companyName}</h2>
-              {experiences.map((experience) => (
-                <div key={experience._id} className="result-card">
-                  <h3>{experience.company}</h3>
-                  <p><strong>Name:</strong> {experience.name}</p>
-                  <p><strong>CGPA Cutoff:</strong> {experience.cgpaCutoff}</p>
-                  <p><strong>Batch:</strong> {experience.batch}</p>
-                  <p><strong>Experience Type:</strong> {experience.experienceType}</p>
-                  <p><strong>Eligible Branches:</strong> {experience.eligibleBranches?.join(", ")}</p>
-                  <p><strong>Online Test:</strong> {experience.OT_description}</p>
-                  <p><strong>Other Comments:</strong> {experience.other_comments}</p>
-                  <button onClick={() => navigate(`/experiences/${experience._id}`)}>
-                    Read More
-                  </button>
-                </div>
-              ))}
+            <div key={companyName} style={{ width: "100%", marginBottom: 40 }}>
+              <h2 className="experiences-company-title">
+                <span>{companyName}</span>
+              </h2>
+              <div className="experiences-results experiences-results-left">
+                {experiences.map((experience) => (
+                  <div
+                    key={experience._id}
+                    className="result-card experiences-card"
+                  >
+                    <div className="card-desc">{experience.OT_description}</div>
+                    <div className="card-name">{experience.name}</div>
+                    <div className="card-company">
+                      Interview experience of{" "}
+                      <span
+                        style={{ fontWeight: 600, textTransform: "capitalize" }}
+                      >
+                        {experience.company?.toLowerCase()}
+                      </span>
+                    </div>
+                    <button
+                      className="read-more-btn"
+                      onClick={() => navigate(`/experiences/${experience._id}`)}
+                    >
+                      Read More
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
       </div>

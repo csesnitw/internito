@@ -104,20 +104,25 @@ function SearchPage() {
         <Marquee gradient={false} speed={60} pauseOnHover={true}>
           {COMPANY_LOGOS.map((logo, idx) => (
             <img
-              src={logo.url}
-              alt={logo.name}
-              key={idx}
-              onClick={() => setSearchInput(logo.name)}
-              title={logo.name}
-              style={{ cursor: "pointer" }}
-            />
+  src={logo.url}
+  alt={logo.name}
+  key={idx}
+  onClick={() => {
+    setSearchInput(logo.name);
+    setTimeout(() => {
+      document.getElementById("search-form").requestSubmit();
+    }, 0);
+  }}
+  title={logo.name}
+  style={{ cursor: "pointer" }}
+/>
           ))}
         </Marquee>
       </div>
       <h1 className="main-search-title">
         Search Experiences by <span>Company</span>
       </h1>
-      <form onSubmit={handleSearch} className="search-form">
+      <form id="search-form" onSubmit={handleSearch} className="search-form">
         <div className="search-fields-row">
           <input
             type="text"
@@ -131,7 +136,6 @@ function SearchPage() {
             value={branch}
             onChange={(e) => setBranch(e.target.value)}
             className="search-branch-select search-input-small"
-            required
           >
             <option value="" disabled hidden>
               Branch (optional)
