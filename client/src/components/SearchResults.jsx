@@ -62,6 +62,7 @@ function SearchResults() {
       >
         Search Results for <span>{query}</span>
       </h1>
+      
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <div className="experiences-results experiences-results-left">
         {Object.keys(results).length > 0 &&
