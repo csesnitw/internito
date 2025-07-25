@@ -7,7 +7,7 @@ const BRANCHES = [
   "CSE", "ECE", "EEE", "MECH", "CHEM", "CIVIL", "MME", "BIOTECH",
 ];
 const BATCHES = [
-  "2017-21", "2018-22", "2019-23", "2020-24", "2021-25", "2022-26",
+  "2017-21", "2018-22", "2019-23", "2020-24", "2021-25", "2022-26", "2023-27", "2024-28", "2025-29", "2026-30",
 ];
 const REQUIRED_FIELDS = [
   "batch", "company", "cgpaCutoff", "jobDescription", "numberOfSelections", "OT_description", "other_comments",

@@ -12,6 +12,8 @@ export const NAMES = [
   'AMERICAN EXPRESS',
   'APPLE',
   'ARCESIUM',
+  'AQR CAPITAL',
+  'ARISTA NETWORKS',
   'ARICENT',
   'ATLASSIAN',
   'AXIS BANK',
