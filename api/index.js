@@ -35,11 +35,13 @@ app.use(session({
     /* The `secret: 'my-secret-key'` in the `session` middleware configuration is setting a secret key
     used to sign the session ID cookie. This secret key is used to encrypt the session data stored
     on the client-side and prevent tampering or unauthorized access to the session data. */
-    secret: 'my-secret-key',
+
+    // TODO: make sure this is saved properly in prod
+    secret: process.env.SESSION_SECRET,
     /* The `resave: true` option in the `session` middleware configuration indicates that the session
     data should be saved back to the session store even if the session was never modified during the
     request. */
-    resave: true,
+    resave: false,
     /* The `saveUninitialized: false` option in the `session` middleware configuration indicates that
     the session will not be saved for a session that is uninitialized. In other words, if a session
     is new and has not been modified during the request, it will not be saved to the session store. */
@@ -52,6 +54,7 @@ app.use(session({
         //maxAge: 5 * 60 * 60 * 24 * 1000, // 5 days
         /* The `secure: false` option within the `session` middleware configuration is used to specify
         whether the session cookie should be set with the `Secure` attribute or not. */
+        // TODO: probably should be true in production if we use http
         secure: false
     },
 }));
