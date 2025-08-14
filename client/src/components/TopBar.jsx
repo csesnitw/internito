@@ -146,21 +146,6 @@ function TopBar() {
                   )}
                 </span>
               </li>
-              {user ? (
-                <li>
-                  <span>
-                    <NavLink
-                      to="/admin"
-                      onClick={() => setMenuOpen(false)}
-                      className={({ isActive }) => (isActive ? "active" : "")}
-                    >
-                      Admin
-                    </NavLink>
-                  </span>
-                </li>
-              ) : (
-                ""
-              )}
               <li>
                 <NavLink
                   to="/search"
