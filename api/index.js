@@ -19,6 +19,7 @@ const passportSetup = require("./passport-setup"); /// importing our student aut
 const experience_router = require("./routes/experiences"); /// importing our experience routes written in another file
 const User = require("./models/User");
 const feedbackRouter = require("./routes/feedback");
+const adminRouter = require("./routes/admin");
 /* 
 Status codes returned in the responses of various API endpoints are mostly in line with
 RESTFul API Practices
@@ -80,8 +81,8 @@ This middleware is used to parse incoming requests with JSON payloads. */
 
 app.use("/api/feedback", feedbackRouter);
 app.use("/api/experiences", experience_router); // Update the experiences route to include /api
+app.use("/api/admin", adminRouter); 
 
-/// Basic endpoint to see if our backend server is running without any complications
 app.get("/api", (req, res) => {
     try {
         return res.status(200).json("JSON Server is running");

@@ -14,7 +14,7 @@ const AdminDashboard = () => {
 
   const checkAdminStatus = async () => {
       try{
-        const res = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/checkAdmin`, {
+        const res = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/admin/checkAdmin`, {
           method: "GET",
           credentials: "include"
         });
