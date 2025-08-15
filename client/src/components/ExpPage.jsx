@@ -85,7 +85,7 @@ const ExpPage = () => {
       time += (Math.trunc(totalTime/60) + "h");
     }
     if(totalTime%60 > 0) {
-      if (totalTime !== "") {
+      if (time !== "") {
         time += " ";
       }
       time += (Math.trunc(totalTime%60) + "m");
@@ -125,9 +125,8 @@ const ExpPage = () => {
               <DropdownSection title="Interview Rounds">
                 {exp?.interviewRounds?.map((round, i) => (
                   <div key={round._id || i} className="round-block">
-                    <h3>{round.title}</h3>
+                    <h3 className = "round-heading">{round.title} <span className="bubble">{printRoundDuration(round.duration)}</span></h3>
                     <p>{round.description}</p>
-                      {round.duration !== "" ? <p>Duration: {printRoundDuration(round.duration)}</p> : null}
                   </div>
                 ))}
               </DropdownSection>
