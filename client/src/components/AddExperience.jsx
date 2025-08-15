@@ -25,8 +25,9 @@ const DEFAULT_EXPERIENCE = {
   experienceType: "Intern",
   eligibleBranches: [],
   OT_description: "",
+  OT_duration: "60",
   OT_questions: [],
-  interviewRounds: [{ title: "Round 1", description: "" }],
+  interviewRounds: [{ title: "Round 1", description: "" , duration: "60"}],
   other_comments: "",
   jobDescription: "",
   numberOfSelections: "",
@@ -139,7 +140,7 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
       ...prev,
       interviewRounds: [
         ...prev.interviewRounds,
-        { title: `Round ${prev.interviewRounds.length + 1}`, description: "" },
+        { title: `Round ${prev.interviewRounds.length + 1}`, description: "", duration: `Round duration: ` },
       ],
     }));
   };
@@ -157,6 +158,23 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
   const areRoundsValid = experience.interviewRounds.every(
     (r) => r.title.trim() !== "" && r.description.trim() !== ""
   );
+
+  const printRoundDuration = (a) => {
+    let s = "";
+    if(Math.trunc(a/60)> 0) {
+      s += (Math.trunc(a/60) + "h");
+    }
+    if(a%60 > 0) {
+      if (s !== "") {
+        s += " ";
+      }
+      s += (Math.trunc(a%60) + "m");
+    }
+    if(a == 0) {
+      s = "0m"
+    }
+    return s;
+  }
 
   // Submit
   const handleSubmit = async (e) => {
@@ -232,6 +250,7 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
     }
     setLoading(false);
   };
+
 
   return (
     <div className="add-exp-form-bg">
@@ -366,13 +385,13 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
           </div>
         </div>
 
-        <div className="add-exp-section">
+        <div className="add-exp-round">
           <label>Online Test Description</label>
           <textarea
             name="OT_description"
             value={experience.OT_description}
             onChange={handleChange}
-            placeholder="Describe the Online Test (pattern, duration, etc.)"
+            placeholder="Describe the Online Test (pattern, difficulty, etc.)"
             className={getTextareaClass(
               "OT_description",
               experience.OT_description
@@ -381,6 +400,20 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
             rows={4}
             style={{ width: "100%", minHeight: 150 }}
           />
+          <label>OT Duration:</label>
+          <input
+            type="range"
+            name="OT_duration"
+            value={experience.OT_duration}
+            onChange={handleChange}
+            min="0"
+            max="180"
+            step = "10"
+            className="slider"
+            style={{ width: "50%" }}
+          />
+          {printRoundDuration(experience.OT_duration)}
+          
         </div>
 
         <div className="add-exp-section">
@@ -435,13 +468,14 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
           {experience.interviewRounds.map((round, idx) => {
             const titleValid = round.title.trim() !== "";
             const descValid = round.description.trim() !== "";
+            const durationValid = round.duration.trim() !== "";
             return (
               <div
                 key={idx}
                 className={
                   "add-exp-round" +
                   (submitAttempted
-                    ? titleValid && descValid
+                    ? titleValid && descValid && durationValid
                       ? " valid"
                       : " invalid"
                     : "")
@@ -470,6 +504,21 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
                   rows={4}
                   style={{ width: "100%", minHeight: 150 }}
                 />
+                
+                <label>Round Duration:</label>
+                <input                
+                  type="range"
+                  value={round.duration}
+                  onChange={(e) =>
+                    handleRoundChange(idx, "duration", e.target.value)
+                  }
+                  min="0"
+                  max="180"
+                  step = "10"
+                  className="slider"
+                  style={{ width: "50%" }}
+                />
+                {printRoundDuration(round.duration)}
                 {experience.interviewRounds.length > 1 && (
                   <button
                     type="button"
