@@ -3,11 +3,10 @@ const router = express.Router();
 const AdminMod = require("../models/Admin");
 
 const isAdmin = async (req, res, next) => {
-    if(!req.isAuthenticated()){
-        throw new Error("User is not authenticated");
-    }
-
     try{
+        if(!req.isAuthenticated()){
+            throw new Error("User is not authenticated");
+        }
         const admin = await AdminMod.findOne({ email: req.user.email });
         if(!admin){
             throw new Error("User is not an admin");
@@ -16,7 +15,7 @@ const isAdmin = async (req, res, next) => {
     } 
     catch(error){
         res.status(400).json({
-            sucess: false,
+            success: false,
             message: error.message
         });
     }
@@ -30,4 +29,4 @@ router.get("/checkAdmin", isAdmin, (req, res) => {
     });
 });
 
-model.exports = router;
+module.exports = router;
