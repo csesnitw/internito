@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 
+/*
+* The `admins` collection will be used to store the admin users by email.
+*/
 const adminSchema = new mongoose.Schema({
     id: {
         type: Number,

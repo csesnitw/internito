@@ -55,7 +55,7 @@ app.use(session({
         //maxAge: 5 * 60 * 60 * 24 * 1000, // 5 days
         /* The `secure: false` option within the `session` middleware configuration is used to specify
         whether the session cookie should be set with the `Secure` attribute or not. */
-        // TODO: probably should be true in production if we use https
+        // SHOULD be true in production if we use https (safe) otherwise false for dev or non-https environments
         secure: process.env.HTTPS === "true",
     },
 }));

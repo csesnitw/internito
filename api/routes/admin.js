@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const AdminMod = require("../models/Admin");
 
+/*
+* This function calls the next middleware only if the user is authenticated and is an admin.
+* It can be used to quickly check if the user is indeed an admin.
+*/
 const isAdmin = async (req, res, next) => {
     try{
         if(!req.isAuthenticated()){
@@ -21,6 +25,9 @@ const isAdmin = async (req, res, next) => {
     }
 };
 
+/*
+* This GET route responds successfully if the user is an admin.
+*/
 router.get("/checkAdmin", isAdmin, (req, res) => {
     res.status(200).json({
         success: true,

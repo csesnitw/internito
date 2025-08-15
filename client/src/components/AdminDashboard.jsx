@@ -12,6 +12,9 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(null);
 
+  /*
+  * This function polls the server to check if the user is an admin, and sets the isAdmin state accordingly.
+  */
   const checkAdminStatus = async () => {
       try{
         const res = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/admin/checkAdmin`, {
