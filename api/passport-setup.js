@@ -70,21 +70,26 @@ module.exports = function () {
                 // Extract year of study, course, and branch from the rollNo
                 const yearOfStudy = 24 - parseInt(rollNo.slice(0, 2)) + 1; // Assuming 24xx represents the year of admission
 
-                const branchCode = rollNo.slice(2, 5);  // 3rd to 5th characters represent the branch
-                const courseCode = rollNo.charAt(5);   // 6th character represents the course
+                const branchCode = rollNo.slice(2, 4);  // 3rd to 4th characters represent the branch
+                const courseCode = rollNo.charAt(4);   // 5th character represents the course
 
                 // Mapping branch codes to branch names
                 const branchMap = {
-                    "csb": "Computer Science and Engineering",
-                    "ecb": "Electronics and Communication Engineering",
-                    "eeb": "Electrical and Electronics Engineering",
-                    // Add more mappings as needed
+                    "bt": "Biotechnology",
+                    "ch": "Chemical Engineering",
+                    "ce": "Civil Engineering",
+                    "cs": "Computer Science and Engineering",
+                    "ec": "Electronics and Communication Engineering",
+                    "ee": "Electrical and Electronics Engineering",
+                    "ma": "Mathematics and Computing",
+                    "mm": "Metallurgical and Materials Engineering",
+                    // Add moreed mappings as need
                 };
 
                 // Mapping course codes to course names
                 const courseMap = {
-                    "0": "B.Tech",
-                    "1": "M.Tech",
+                    "B": "B.Tech",
+                    "M": "M.Tech",
                     // Add more mappings as needed
                 };
 
@@ -107,9 +112,9 @@ module.exports = function () {
                     authentication strategy when a user successfully authenticates with Google. It
                     signifies the end of the async function and the control is passed onto the next
                     function */
-                    userExists.yearOfStudy = yearOfStudy;
-                    userExists.branch = branch;
-                    userExists.course = course;
+                    // userExists.yearOfStudy = yearOfStudy; //These 3 lines don't do anything
+                    // userExists.branch = branch;
+                    // userExists.course = course;
                     return done(null, { role: true, user: userExists, accessToken: accessToken })
                 }
 
