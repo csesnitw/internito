@@ -45,7 +45,6 @@ const ExpPage = () => {
     }
   };
 
-  // Fetch data based on the ID from the URL
   const fetchData = async () => {
     setLoading(true);
     setError(null);
@@ -68,7 +67,7 @@ const ExpPage = () => {
       setError("Failed to fetch data");
     }
   };
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchData();
   }, []);
@@ -90,6 +89,12 @@ const ExpPage = () => {
               <DropdownSection title="Job Description">
                 <p>{exp?.jobDescription}</p>
               </DropdownSection>
+
+              {exp?.experienceType && exp.experienceType.toLowerCase() === "placement" && (
+                <DropdownSection title="FTE Role">
+                  <p>{exp?.fteRole}</p>
+                </DropdownSection>
+              )}
 
               <DropdownSection title="Number of Selections">
                 <p>{exp?.numberOfSelections}</p>

@@ -13,6 +13,25 @@ const REQUIRED_FIELDS = [
   "batch", "company", "cgpaCutoff", "jobDescription", "numberOfSelections", "OT_description", "other_comments",
 ];
 
+// FTE role options as requested
+const FTE_OPTIONS = [
+  "SDE",
+  "Software Engineer",
+  "Member Technical Staff",
+  "Assistant Software Engineer",
+  "Engineering Analyst",
+  "Server Technology",
+  "Applications Development",
+  "ML Engineer",
+  "Big Data Engineer",
+  "Application Engineer",
+  "Consulting Engineering",
+  "Data Analyst",
+  "Data Scientist",
+  "IT Analyst",
+  "Other",
+];
+
 function autoGrow(e) {
   e.target.style.height = "auto";
   e.target.style.height = e.target.scrollHeight + "px";
@@ -30,6 +49,7 @@ const DEFAULT_EXPERIENCE = {
   other_comments: "",
   jobDescription: "",
   numberOfSelections: "",
+  fteRole: "", // <-- added default field
 };
 
 const AddExperience = ({ initialExperience, editMode, experienceId }) => {
@@ -171,6 +191,10 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
     REQUIRED_FIELDS.forEach((field) => {
       if (!isFieldValid(field, experience[field])) valid = false;
     });
+    // If experienceType is Placement, ensure fteRole is provided
+    if (experience.experienceType === "Placement") {
+      if (!experience.fteRole || experience.fteRole.trim() === "") valid = false;
+    }
     // Validate OT Questions and Interview Rounds
     if (!isOTQuestionsValid) valid = false;
     if (!areRoundsValid) valid = false;
@@ -302,6 +326,26 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
             <option value="Intern">Intern</option>
             <option value="Placement">Placement</option>
           </select>
+
+          {/* Conditional FTE dropdown shown only when Placement is selected */}
+          {experience.experienceType === "Placement" && (
+            <>
+              <label>FTE Role</label>
+              <select
+                name="fteRole"
+                value={experience.fteRole}
+                onChange={handleChange}
+                className={getInputClass("fteRole", experience.fteRole)}
+              >
+                <option value="">Select FTE Role</option>
+                {FTE_OPTIONS.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+            </>
+          )}
 
           <label>Eligible Branches</label>
           <div className="branches-list">
@@ -548,7 +592,7 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
         {`
           @keyframes spin {
             0% { transform: rotate(0deg);}
-            100% { transform: rotate(360deg);}
+            100% { transform: rotate(360deg); }
           }
         `}
       </style>
