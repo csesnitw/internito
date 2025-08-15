@@ -79,18 +79,18 @@ const ExpPage = () => {
     }
   }, [exp]);
 
-  const printRoundDuration = (a) => {
-    let s = "";
-    if(Math.trunc(a/60)> 0) {
-      s += (Math.trunc(a/60) + "h");
+  const printRoundDuration = (totalTime) => {
+    let time = "";
+    if(Math.trunc(totalTime/60)> 0) {
+      time += (Math.trunc(totalTime/60) + "h");
     }
-    if(a%60 > 0) {
-      if (s !== "") {
-        s += " ";
+    if(totalTime%60 > 0) {
+      if (totalTime !== "") {
+        time += " ";
       }
-      s += (Math.trunc(a%60) + "m");
+      time += (Math.trunc(totalTime%60) + "m");
     }
-    return s;
+    return time;
   }
 
 
