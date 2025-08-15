@@ -111,7 +111,7 @@ const ExpPage = () => {
               </DropdownSection>
               <DropdownSection title="Online Test Description">
                 <p>{exp?.OT_description}</p>
-                <p>Duration: {printRoundDuration(exp?.OT_duration)}</p>
+                {exp?.OT_duration !== "" ? <p>Duration: {printRoundDuration(exp?.OT_duration)}</p> : null}
               </DropdownSection>
 
               <DropdownSection title="Online Test Questions">
@@ -127,7 +127,7 @@ const ExpPage = () => {
                   <div key={round._id || i} className="round-block">
                     <h3>{round.title}</h3>
                     <p>{round.description}</p>
-                     <p>Duration: {printRoundDuration(round.duration)}</p>
+                      {round.duration !== "" ? <p>Duration: {printRoundDuration(round.duration)}</p> : null}
                   </div>
                 ))}
               </DropdownSection>
