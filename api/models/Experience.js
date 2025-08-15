@@ -18,7 +18,17 @@ const experienceSchema = new mongoose.Schema({
   jobDescription: { type: String }, // <-- add this
   numberOfSelections: { type: Number }, // <-- add this
   name: { type: String, required: true }, // <-- add this
-  status: { type: String, required: true }
+  status: { type: String, required: true },
+  verdict: {
+    type: String,
+    enum: [
+      "REJ_OT",    // Didn't get past OT
+      "SEL_OT",    // Got past OT
+      "SEL_INT",   // Selected
+      "REJ_INT",   // Rejected in interview
+    ],
+    default: undefined
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model("Experience", experienceSchema);
