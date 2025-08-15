@@ -140,7 +140,7 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
       ...prev,
       interviewRounds: [
         ...prev.interviewRounds,
-        { title: `Round ${prev.interviewRounds.length + 1}`, description: "", duration: `Round duration: ` },
+        { title: `Round ${prev.interviewRounds.length + 1}`, description: "", duration: "60" },
       ],
     }));
   };
