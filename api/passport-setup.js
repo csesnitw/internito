@@ -67,11 +67,7 @@ module.exports = function () {
                 written from the 2nd index all the way until the '@' character.
                 */
 
-                // Extract year of study, course, and branch from the rollNo
-                const yearOfStudy = 24 - parseInt(rollNo.slice(0, 2)) + 1; // Assuming 24xx represents the year of admission
-
                 const branchCode = rollNo.slice(2, 4);  // 3rd to 4th characters represent the branch
-                const courseCode = rollNo.charAt(4);   // 5th character represents the course
 
                 // Mapping branch codes to branch names
                 const branchMap = {
@@ -83,18 +79,11 @@ module.exports = function () {
                     "ee": "Electrical and Electronics Engineering",
                     "ma": "Mathematics and Computing",
                     "mm": "Metallurgical and Materials Engineering",
-                    // Add moreed mappings as need
+                    // Add more mappings as need
                 };
 
-                // Mapping course codes to course names
-                const courseMap = {
-                    "B": "B.Tech",
-                    "M": "M.Tech",
-                    // Add more mappings as needed
-                };
 
                 const branch = branchMap[branchCode] || "Unknown Branch";
-                const course = courseMap[courseCode] || "Unknown Course";
 
 
                 // These are basic JS split operations to extract information from profile. Refer
@@ -112,9 +101,6 @@ module.exports = function () {
                     authentication strategy when a user successfully authenticates with Google. It
                     signifies the end of the async function and the control is passed onto the next
                     function */
-                    // userExists.yearOfStudy = yearOfStudy; //These 3 lines don't do anything
-                    // userExists.branch = branch;
-                    // userExists.course = course;
                     return done(null, { role: true, user: userExists, accessToken: accessToken })
                 }
 
@@ -127,7 +113,6 @@ module.exports = function () {
                     email: userEmail,
                     rollNo: rollNo,
                     profilePic: photoURL,
-                    yearOfStudy: yearOfStudy,
                     branch: branch,
                     linkedIn: "",
                     github: "",
