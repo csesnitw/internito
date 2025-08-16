@@ -141,8 +141,8 @@ const UserDashboard = () => {
             <span className={styles.label}>Branch:</span> {user.branch}
           </p>
           <p>
-            <span className={styles.label}>Year of Enrollment:</span>{" "}
-            {user.rollNo.slice(0,2)}
+            <span className={styles.label}>Year of Study:</span>{" "}
+            {user.yearOfStudy}
           </p>
           <p>
             <span className={styles.label}>LinkedIn:</span>{" "}
