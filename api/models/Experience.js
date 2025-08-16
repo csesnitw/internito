@@ -23,7 +23,6 @@ const experienceSchema = new mongoose.Schema({
     type: String,
     enum: [
       "REJ_OT",    // Didn't get past OT
-      "SEL_OT",    // Got past OT
       "SEL_INT",   // Selected
       "REJ_INT",   // Rejected in interview
     ],

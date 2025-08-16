@@ -116,7 +116,7 @@ router.post("/addExperience", async (req, res) => {
       return res.status(400).json({ error: true, message: 'All required fields must be filled.' });
     }
 
-    if(verdict && !["REJ_OT", "SEL_OT", "SEL_INT", "REJ_INT"].includes(verdict)){
+    if(verdict === null || (verdict && !["REJ_OT", "SEL_OT", "SEL_INT", "REJ_INT"].includes(verdict))){
       return res.status(400).json({ error: true, message: 'Invalid verdicts.' });
     }
 
