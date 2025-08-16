@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { NAMES } from "../constants/companies";
+import { VERDICTS } from "../constants/verdictsMap"
 import "./AddExperience.css";
 
 const BRANCHES = [
@@ -8,11 +9,6 @@ const BRANCHES = [
 ];
 const BATCHES = [
   "2017-21", "2018-22", "2019-23", "2020-24", "2021-25", "2022-26", "2023-27", "2024-28", "2025-29", "2026-30",
-];
-const VERDICTS = [
-  { label: "Didn't pass online test", value: "REJ_OT" },
-  { label: "Didn't pass interview", value: "REJ_INT" },
-  { label: "Selected in interview", value: "SEL_INT" },
 ];
 const REQUIRED_FIELDS = [
   "batch", "company", "cgpaCutoff", "jobDescription", "numberOfSelections", "OT_description", "other_comments",
