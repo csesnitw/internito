@@ -108,12 +108,16 @@ router.post("/addExperience", async (req, res) => {
     const {
       company, batch, cgpaCutoff, experienceType,
       eligibleBranches, OT_description, OT_questions, interviewRounds, other_comments,
-      jobDescription, numberOfSelections
+      jobDescription, numberOfSelections, verdict = undefined
     } = req.body;
 
     // Validate required fields
     if (!company || !batch || !cgpaCutoff || !experienceType || !OT_questions || !interviewRounds) {
       return res.status(400).json({ error: true, message: 'All required fields must be filled.' });
+    }
+
+    if(verdict === null || (verdict && !["REJ_OT", "SEL_OT", "SEL_INT", "REJ_INT"].includes(verdict))){
+      return res.status(400).json({ error: true, message: 'Invalid verdicts.' });
     }
 
     // Sentiment check (unchanged)
@@ -149,6 +153,7 @@ router.post("/addExperience", async (req, res) => {
       other_comments,
       jobDescription,
       numberOfSelections,
+      verdict: verdict, 
       status: "Pending",
     });
     const savedExperience = await newExperience.save();
