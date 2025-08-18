@@ -1,12 +1,18 @@
+
 const mongoose = require("mongoose");
+
 const experienceSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   company: { type: String, required: true },
   batch: { type: String, required: true },
   cgpaCutoff: { type: Number, required: true },
   experienceType: { type: String, required: true },
+  fteRole: {
+    type: String,
+    required: true,
+  },
   eligibleBranches: [{ type: String }],
-  OT_description: { type: String }, // <-- add this
+  OT_description: { type: String },
   OT_questions: [{ type: String }],
   interviewRounds: [
     {
@@ -15,9 +21,8 @@ const experienceSchema = new mongoose.Schema({
     }
   ],
   other_comments: { type: String },
-  jobDescription: { type: String }, // <-- add this
-  numberOfSelections: { type: Number }, // <-- add this
-  name: { type: String, required: true }, // <-- add this
+  numberOfSelections: { type: Number },
+  name: { type: String, required: true },
   status: { type: String, required: true }
 }, { timestamps: true });
 
