@@ -10,11 +10,33 @@ const BATCHES = [
   "2017-21", "2018-22", "2019-23", "2020-24", "2021-25", "2022-26", "2023-27", "2024-28", "2025-29", "2026-30",
 ];
 const REQUIRED_FIELDS = [
-  "batch", "company", "cgpaCutoff", "jobDescription", "numberOfSelections", "OT_description", "other_comments",
+  "batch", "company", "cgpaCutoff", "fteRole", "numberOfSelections", "OT_description", "other_comments",
 ];
 
-// FTE role options as requested
-const FTE_OPTIONS = [
+function autoGrow(e) {
+  e.target.style.height = "auto";
+  e.target.style.height = e.target.scrollHeight + "px";
+}
+
+const INTERN_ROLES = [
+  "Analog",
+  "Application Developer",
+  "Core",
+  "Digital",
+  "Hardware",
+  "Intern Analyst",
+  "Member Technical Staff",
+  "SDE",
+  "Software Engineer",
+  "Summer Analyst",
+  "Surface Enginner",
+  "SWE",
+  "Advanced Application Engineering Analyst Intern",
+  "Data Science Intern",
+  "Other"
+];
+
+const FTE_ROLES = [
   "SDE",
   "Software Engineer",
   "Member Technical Staff",
@@ -29,33 +51,29 @@ const FTE_OPTIONS = [
   "Data Analyst",
   "Data Scientist",
   "IT Analyst",
-  "Other",
+  "Other"
 ];
-
-function autoGrow(e) {
-  e.target.style.height = "auto";
-  e.target.style.height = e.target.scrollHeight + "px";
-}
 
 const DEFAULT_EXPERIENCE = {
   company: "",
   batch: "",
   cgpaCutoff: "",
-  experienceType: "Intern",
+  experienceType: "",
+  fteRole: "",
+  otherRole: "",
   eligibleBranches: [],
   OT_description: "",
   OT_questions: [],
   interviewRounds: [{ title: "Round 1", description: "" }],
   other_comments: "",
-  jobDescription: "",
   numberOfSelections: "",
-  fteRole: "", // <-- added default field
 };
 
 const AddExperience = ({ initialExperience, editMode, experienceId }) => {
   const user = useSelector((state) => state.auth.user);
   const [loading, setLoading] = useState(false);
-  const [experience, setExperience] = useState(DEFAULT_EXPERIENCE);
+  const getDefaultExperience = () => JSON.parse(JSON.stringify(DEFAULT_EXPERIENCE));
+  const [experience, setExperience] = useState(getDefaultExperience());
   const [dontRememberSelections, setDontRememberSelections] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -82,6 +100,19 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
       if (dontRememberSelections) return true;
       const num = parseInt(value, 10);
       return value !== "" && !isNaN(num) && num >= 0;
+    }
+    if (name === "fteRole") {
+    if (value === "Other") {
+      return experience.otherRole && experience.otherRole.trim() !== "";
+    }
+    return value && value.trim() !== "";
+    }
+
+    if (name === "otherRole") {
+      if (experience.fteRole === "Other") {
+        return value && value.trim() !== "";
+      }
+      return true; 
     }
     if (REQUIRED_FIELDS.includes(name)) {
       return value && value.trim() !== "";
@@ -178,6 +209,18 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
     (r) => r.title.trim() !== "" && r.description.trim() !== ""
   );
 
+  const validateForm = () => {
+    for (const field of REQUIRED_FIELDS) {
+      if (!isFieldValid(field, experience[field])) {
+        return false;
+      }
+    }
+    if (experience.fteRole === "Other" && !isFieldValid("otherRole", experience.otherRole)) {
+      return false;
+    }
+    return true;
+  };
+
   // Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -191,10 +234,6 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
     REQUIRED_FIELDS.forEach((field) => {
       if (!isFieldValid(field, experience[field])) valid = false;
     });
-    // If experienceType is Placement, ensure fteRole is provided
-    if (experience.experienceType === "Placement") {
-      if (!experience.fteRole || experience.fteRole.trim() === "") valid = false;
-    }
     // Validate OT Questions and Interview Rounds
     if (!isOTQuestionsValid) valid = false;
     if (!areRoundsValid) valid = false;
@@ -211,6 +250,10 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
       numberOfSelections: dontRememberSelections
         ? -1
         : experience.numberOfSelections,
+      fteRole:
+        experience.fteRole === "Other"
+          ? experience.otherRole
+          : experience.fteRole,
     };
 
     try {
@@ -244,7 +287,7 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
         data = await response.json();
         if (response.ok) {
           setSuccessMessage("Thank you! Experience submitted for review.");
-          setExperience(DEFAULT_EXPERIENCE);
+          setExperience(getDefaultExperience());
           setDontRememberSelections(false);
           setSubmitAttempted(false);
         } else {
@@ -323,29 +366,51 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
             onChange={handleChange}
             className="add-exp-grid-input"
           >
+            <option value="">Select</option>
             <option value="Intern">Intern</option>
             <option value="Placement">Placement</option>
           </select>
 
-          {/* Conditional FTE dropdown shown only when Placement is selected */}
-          {experience.experienceType === "Placement" && (
-            <>
-              <label>FTE Role</label>
-              <select
-                name="fteRole"
-                value={experience.fteRole}
+          <label>
+            {experience.experienceType === "Intern"
+              ? "Intern Role"
+              : experience.experienceType === "Placement"
+              ? "FTE Role"
+              : "Role"}
+          </label>
+
+          <div style={{ display: "flex", gap: "10px" }}>
+            <select
+              name="fteRole"
+              value={experience.fteRole || ""}
+              onChange={handleChange}
+              className={getInputClass("fteRole", experience.fteRole)}
+              disabled={!experience.experienceType}
+            >
+              <option value="">Select Role</option>
+              {(experience.experienceType === "Intern"
+                ? INTERN_ROLES
+                : experience.experienceType === "Placement"
+                ? FTE_ROLES
+                : []
+              ).map((role, idx) => (
+                <option key={idx} value={role}>
+                  {role}
+                </option>
+              ))}
+            </select>
+
+            {experience.fteRole === "Other" && (
+              <input
+                type="text"
+                name="otherRole"
+                value={experience.otherRole || ""}
                 onChange={handleChange}
-                className={getInputClass("fteRole", experience.fteRole)}
-              >
-                <option value="">Select FTE Role</option>
-                {FTE_OPTIONS.map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
-                ))}
-              </select>
-            </>
-          )}
+                placeholder="Enter your role"
+                className={getInputClass("otherRole", experience.otherRole)}
+              />
+            )}
+          </div>
 
           <label>Eligible Branches</label>
           <div className="branches-list">
@@ -364,19 +429,6 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
               </label>
             ))}
           </div>
-          <label>Job Description</label>
-          <input
-            type="text"
-            name="jobDescription"
-            value={experience.jobDescription}
-            onChange={handleChange}
-            placeholder="Job Description"
-            className={getInputClass(
-              "jobDescription",
-              experience.jobDescription
-            )}
-            style={{ width: "100%" }}
-          />
 
           <label>Number of Selections</label>
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -592,7 +644,7 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
         {`
           @keyframes spin {
             0% { transform: rotate(0deg);}
-            100% { transform: rotate(360deg); }
+            100% { transform: rotate(360deg);}
           }
         `}
       </style>

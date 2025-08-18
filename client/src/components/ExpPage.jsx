@@ -67,7 +67,7 @@ const ExpPage = () => {
       setError("Failed to fetch data");
     }
   };
-// eslint-disable-next-line react-hooks/exhaustive-deps
+  
   useEffect(() => {
     fetchData();
   }, []);
@@ -86,12 +86,10 @@ const ExpPage = () => {
         <>
           <div className="left-section">
             <div className="details-section">
-              <DropdownSection title="Job Description">
-                <p>{exp?.jobDescription}</p>
-              </DropdownSection>
-
-              {exp?.experienceType && exp.experienceType.toLowerCase() === "placement" && (
-                <DropdownSection title="FTE Role">
+             {exp?.experienceType && (
+                <DropdownSection
+                  title={exp.experienceType.toLowerCase() === "intern" ? "Intern Role" : "FTE Role"}
+                >
                   <p>{exp?.fteRole}</p>
                 </DropdownSection>
               )}

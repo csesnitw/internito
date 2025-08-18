@@ -45,6 +45,41 @@ const getSentiment = text => {
   return analysis_score;
 }
 
+const INTERN_OPTIONS = [
+  "Analog",
+  "Application Developer",
+  "Core",
+  "Digital",
+  "Hardware",
+  "Intern Analyst",
+  "Member Technical Staff",
+  "SDE",
+  "Software Engineer",
+  "Summer Analyst",
+  "Surface Enginner",
+  "SWE",
+  "Advanced Application Engineering Analyst Intern",
+  "Data Science Intern",
+  "Other"
+];
+
+const FTE_OPTIONS = [
+  "SDE",
+  "Software Engineer",
+  "Member Technical Staff",
+  "Assistant Software Engineer",
+  "Engineering Analyst",
+  "Server Technology",
+  "Applications Development",
+  "ML Engineer",
+  "Big Data Engineer",
+  "Application Engineer",
+  "Consulting Engineering",
+  "Data Analyst",
+  "Data Scientist",
+  "IT Analyst",
+  "Other"
+];
 
 // Get all experiences sorted by date
 router.get("/", async (req, res) => {
@@ -96,24 +131,6 @@ router.get("/pending", async (req, res) => {
   }
 });
 
-const FTE_OPTIONS = [
-  "SDE",
-  "Software Engineer",
-  "Member Technical Staff",
-  "Assistant Software Engineer",
-  "Engineering Analyst",
-  "Server Technology",
-  "Applications Development",
-  "ML Engineer",
-  "Big Data Engineer",
-  "Application Engineer",
-  "Consulting Engineering",
-  "Data Analyst",
-  "Data Scientist",
-  "IT Analyst",
-  "Other"
-];
-
 // Add a new experience
 router.post("/addExperience", async (req, res) => {
   try {
@@ -123,36 +140,31 @@ router.post("/addExperience", async (req, res) => {
     }
 
     const {
-  company, batch, cgpaCutoff, experienceType,
-  eligibleBranches, OT_description, OT_questions, interviewRounds, other_comments,
-  numberOfSelections, fteRole
-} = req.body;
+      company, batch, cgpaCutoff, experienceType,
+      eligibleBranches, OT_description, OT_questions, interviewRounds, other_comments,
+      numberOfSelections, fteRole, otherRole
+    } = req.body;
 
-if (!company || !batch || !cgpaCutoff || !experienceType || !OT_questions || !interviewRounds) {
-  return res.status(400).json({ error: true, message: 'All required fields must be filled.' });
-}
+    // Validate required fields
+    if (!company || !batch || !cgpaCutoff || !experienceType || !fteRole || !OT_questions || !interviewRounds) {
+      return res.status(400).json({ error: true, message: 'All required fields must be filled.' });
+    }
 
-const type = String(experienceType || "").trim().toLowerCase();
-const fte = String(fteRole || "").trim().toLowerCase();
+    const type = String(experienceType || "").trim().toLowerCase();
+    const role = String(fteRole || "").trim().toLowerCase();
 
-if (type === "placement") {
-  if (!fte || fte === "") {
-    return res.status(400).json({ error: true, message: 'For Placement entries, please select an FTE role.' });
-  }
-  const validFte = FTE_OPTIONS.map(opt => opt.toLowerCase());
-  if (!validFte.includes(fte)) {
-    return res.status(400).json({ error: true, message: 'Invalid FTE role selected.' });
-  }
-}
-
-const requireJobDescription = type === "intern" || (type === "placement" && fte === "other");
-if (requireJobDescription && (!jobDescription || jobDescription.trim() === "")) {
-  return res.status(400).json({
-    error: true,
-    message: "Job description is required for Intern entries or when FTE role is Other."
-  });
-}
-
+    if (type === "placement") {
+      const validFte = FTE_OPTIONS.map(opt => opt.toLowerCase());
+      if (!role || (!validFte.includes(role) && role.trim() === "")) {
+        return res.status(400).json({ error: true, message: "Invalid FTE role selected." });
+      }
+    }
+    if (type === "intern") {
+      const validIntern = INTERN_OPTIONS.map(opt => opt.toLowerCase());
+      if (!role || (!validIntern.includes(role) && role.trim() === "")) {
+        return res.status(400).json({ error: true, message: "Invalid Intern role selected." });
+      }
+    }
 
     // Sentiment check (unchanged)
     const text = [
@@ -175,18 +187,18 @@ if (requireJobDescription && (!jobDescription || jobDescription.trim() === "")) 
     // Create a new experience
     const newExperience = new Experience({
       user: userObj._id,
-      name,
+      name, // <-- add name here
       company,
       batch,
       cgpaCutoff,
       experienceType,
+      fteRole, 
+      otherRole,            
       eligibleBranches,
-      OT_description,
+      OT_description, 
       OT_questions,
       interviewRounds,
       other_comments,
-      jobDescription,
-      fteRole: fteRole || "",
       numberOfSelections,
       status: "Pending",
     });

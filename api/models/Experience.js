@@ -1,3 +1,4 @@
+
 const mongoose = require("mongoose");
 
 const experienceSchema = new mongoose.Schema({
@@ -5,27 +6,11 @@ const experienceSchema = new mongoose.Schema({
   company: { type: String, required: true },
   batch: { type: String, required: true },
   cgpaCutoff: { type: Number, required: true },
-  experienceType: { type: String, required: true }, 
-  fteRole: { 
-    type: String, 
-    enum: [
-      "SDE", 
-      "Software Engineer", 
-      "Member Technical Staff", 
-      "Assistant Software Engineer", 
-      "Engineering Analyst", 
-      "Server Technology", 
-      "Applications Development", 
-      "ML Engineer", 
-      "Big Data Engineer", 
-      "Application Engineer", 
-      "Consulting Engineering", 
-      "Data Analyst", 
-      "Data Scientist", 
-      "IT Analyst", 
-      "Other"
-    ] 
-  }, 
+  experienceType: { type: String, required: true },
+  fteRole: {
+    type: String,
+    required: true,
+  },
   eligibleBranches: [{ type: String }],
   OT_description: { type: String },
   OT_questions: [{ type: String }],
@@ -36,7 +21,6 @@ const experienceSchema = new mongoose.Schema({
     }
   ],
   other_comments: { type: String },
-  jobDescription: { type: String },
   numberOfSelections: { type: Number },
   name: { type: String, required: true },
   status: { type: String, required: true }
