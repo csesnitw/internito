@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { NAMES } from "../constants/companies";
+import { VERDICTS } from "../constants/verdictsMap"
 import "./AddExperience.css";
 
 const BRANCHES = [
@@ -30,6 +31,7 @@ const DEFAULT_EXPERIENCE = {
   other_comments: "",
   jobDescription: "",
   numberOfSelections: "",
+  verdict: undefined,
 };
 
 const AddExperience = ({ initialExperience, editMode, experienceId }) => {
@@ -96,6 +98,11 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
       setExperience((prev) => ({
         ...prev,
         numberOfSelections: checked ? "-1" : "",
+      }));
+    } else if (name === "verdict") {    //if verdict is not selected, set it to undefined
+      setExperience((prev) => ({
+        ...prev,
+        verdict: value === "" ? undefined : value,
       }));
     } else {
       setExperience((prev) => ({
@@ -364,6 +371,21 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
               <span className="modern-checkbox-text">Don't Remember</span>
             </label>
           </div>
+
+          <label>Verdict (Optional)</label>
+          <select
+            name="verdict"
+            value={experience.verdict}
+            onChange={handleChange}
+            className={getInputClass("verdict", experience.verdict)}
+          >
+            <option value="">Select verdict</option>
+            {VERDICTS.map((verdict) => (
+              <option key={verdict.value} value={verdict.value}>
+                {verdict.label}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="add-exp-section">
