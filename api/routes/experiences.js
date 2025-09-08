@@ -110,7 +110,7 @@ router.post("/addExperience", async (req, res) => {
     const {
       company, batch, cgpaCutoff, experienceType,
       eligibleBranches, OT_description, OT_questions, interviewRounds, other_comments,
-      jobDescription, numberOfSelections
+      jobDescription, numberOfSelections, comments,
     } = req.body;
 
     // Validate required fields
@@ -152,6 +152,7 @@ router.post("/addExperience", async (req, res) => {
       jobDescription,
       numberOfSelections,
       status: "Pending",
+      comments,
     });
     const savedExperience = await newExperience.save();
     res.status(201).json({ success: true, message: 'Experience added successfully!' });
@@ -278,38 +279,6 @@ router.post('/company', async (req, res) => {
   }
 });
 
-router.post("/:id/comments", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { text } = req.body;
-    
-
-    if (!req.user || !req.user.user) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-    if (!text || text.trim() === "") {
-      return res.status(400).json({ message: "Comment text is required" });
-    }
-
-    const experience = await Experience.findById(id);
-    if (!experience) return res.status(404).json({ message: "Experience not found" });
-
-    experience.comments.push({
-      user: req.user.user._id,
-      text
-    });
-
-    await experience.save();
-    await experience.populate("comments.user", "firstName lastName");
-
-    const created = experience.comments[experience.comments.length - 1];
-    return res.status(201).json({ comment: created });
-  } catch (error) {
-    console.error("Error adding comment:", error);
-    res.status(500).json({ message: "Failed to add comment" });
-  }
-});
-
 
 router.get("/:id/comments", async (req, res) => {
   try {
@@ -355,6 +324,7 @@ router.post("/:id/comments", async (req, res) => {
 
     // 3. Get experience owner and commenter info
     const owner = experience.user;
+    console.log(owner);
     const commenter = req.user.user;
 
     if (owner.email) {
