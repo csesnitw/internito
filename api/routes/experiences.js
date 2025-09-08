@@ -308,11 +308,9 @@ router.post("/:id/comments", async (req, res) => {
       return res.status(400).json({ message: "Comment text is required" });
     }
 
-    // 1. Find experience
-    const experience = await Experience.findById(id).populate("user"); // get owner
+    const experience = await Experience.findById(id).populate("user");
     if (!experience) return res.status(404).json({ message: "Experience not found" });
 
-    // 2. Save comment
     experience.comments.push({
       user: req.user.user._id,
       text,
@@ -322,13 +320,11 @@ router.post("/:id/comments", async (req, res) => {
 
     const created = experience.comments[experience.comments.length - 1];
 
-    // 3. Get experience owner and commenter info
     const owner = experience.user;
     // console.log(owner);
     const commenter = req.user.user;
 
     if (owner.email) {
-      // 4. Setup transporter
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -337,12 +333,11 @@ router.post("/:id/comments", async (req, res) => {
         },
       });
 
-      // 5. Send styled email to owner
       await transporter.sendMail({
-        from: `"interNito Notifications" <${process.env.FEEDBACK_MAIL_USER}>`,
+        from: `"interNito Comment" <${process.env.FEEDBACK_MAIL_USER}>`,
         to: owner.email,
         subject: `New comment on your ${experience.company} experience`,
-        replyTo: commenter.email || process.env.FEEDBACK_MAIL_USER,
+        replyTo: commenter.email,
         html: `
           <div style="font-family:'Poppins',Arial,sans-serif;max-width:600px;margin:0 auto;background:#f9f9f9;padding:32px 24px 24px 24px;border-radius:16px;box-shadow:0 2px 12px rgba(34,139,34,0.07);">
             <div style="text-align:center;margin-bottom:18px;">
@@ -353,7 +348,7 @@ router.post("/:id/comments", async (req, res) => {
             </div>
             <div style="background:#fff;border-radius:12px;padding:20px 18px 14px 18px;border:1.5px solid #e0e0e0;">
               <p style="margin:0 0 8px 0;font-size:1.05rem;color:#333;">
-                <strong>From:</strong> <span style="color:#76b852;">${commenter.firstName} ${commenter.lastName || ""}</span>
+                <strong>From:</strong> <span style="color:#76b852;">${commenter.firstName} ${commenter.lastName || ""} (${commenter.email})</span>
               </p>
               <p style="margin:0 0 8px 0;font-size:1.05rem;color:#333;">
                 <strong>Comment:</strong>
@@ -362,7 +357,7 @@ router.post("/:id/comments", async (req, res) => {
                 ${text}
               </div>
               <p style="font-size:0.97rem;color:#888;margin:0 0 4px 0;">
-                <em>Replying to this email will send your response directly to the commenter (if they provided an email).</em>
+                <em>Replying to this email will send your response directly to the commenter.</em>
               </p>
             </div>
             <div style="margin-top:28px;text-align:center;font-size:0.95rem;color:#aaa;">
