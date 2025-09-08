@@ -20,6 +20,8 @@ const ExpPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expUser, setExpUser] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
 
   const fetchUser = async () => {
     setLoading(true);
@@ -76,8 +78,48 @@ const ExpPage = () => {
   useEffect(() => {
     if (exp) {
       fetchUser();
+      fetchComments();
     }
   }, [exp]);
+
+  const fetchComments = async () => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL || "http://localhost:8000"}/api/experiences/${id}/comments`,
+      { credentials: "include" }
+    );
+    const data = await response.json();
+    if (response.ok) {
+      setComments(data);
+    }
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+  }
+};
+
+const handleCommentSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL || "http://localhost:8000"}/api/experiences/${id}/comments`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ text: newComment }),
+      }
+    );
+    const data = await response.json();
+    if (response.ok) {
+      setComments([...comments, data.comment]); // add new comment to list
+      setNewComment("");
+    } else {
+      alert(data.message);
+    }
+  } catch (error) {
+    console.error("Error submitting comment:", error);
+  }
+};
 
   return (
     <div className="container">
@@ -85,6 +127,7 @@ const ExpPage = () => {
         <p>Loading...</p>
       ) : (
         <>
+        <div className="top-section">
           <div className="left-section">
             <div className="details-section">
               <DropdownSection title="Job Description">
@@ -152,7 +195,7 @@ const ExpPage = () => {
                 </p>
               )}
 
-              {expUser.github === "" || expUser.linkedIn === undefined ? (
+              {expUser.github === "" || expUser.github === undefined ? (
                 ""
               ) : (
                 <p>
@@ -168,9 +211,34 @@ const ExpPage = () => {
               )}
             </div>
           </div>
+        </div>
+          <div className="comments-section">
+            <h2>Comments</h2>
+            {comments.length === 0 ? (
+              <p>No comments yet.</p>
+            ) : (
+              comments.map((c, i) => (
+                <div key={i} className="comment">
+                  <strong>{c.user?.firstName} {c.user?.lastName}:</strong>
+                  <p>{c.text}</p>
+                </div>
+              ))
+            )}
+
+            <form onSubmit={handleCommentSubmit}>
+              <textarea
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="Write a comment..."
+                required
+              />
+              <button type="submit">Post</button>
+            </form>
+          </div>
         </>
       )}
-      {error && <p>{error}</p>}
+      {error && <p>{error}</p>
+      }
     </div>
   );
 };

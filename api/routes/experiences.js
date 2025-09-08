@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Experience = require("../models/Experience");
+const nodemailer = require("nodemailer");
+const User = require("../models/User");
 
 // Include npm packages
 const natural = require("natural");
@@ -275,4 +277,137 @@ router.post('/company', async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch company search results' });
   }
 });
+
+router.post("/:id/comments", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { text } = req.body;
+    
+
+    if (!req.user || !req.user.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    if (!text || text.trim() === "") {
+      return res.status(400).json({ message: "Comment text is required" });
+    }
+
+    const experience = await Experience.findById(id);
+    if (!experience) return res.status(404).json({ message: "Experience not found" });
+
+    experience.comments.push({
+      user: req.user.user._id,
+      text
+    });
+
+    await experience.save();
+    await experience.populate("comments.user", "firstName lastName");
+
+    const created = experience.comments[experience.comments.length - 1];
+    return res.status(201).json({ comment: created });
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    res.status(500).json({ message: "Failed to add comment" });
+  }
+});
+
+
+router.get("/:id/comments", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const experience = await Experience.findById(id).populate(
+      "comments.user",
+      "firstName lastName"
+    );
+    if (!experience) return res.status(404).json({ message: "Experience not found" });
+
+    res.status(200).json(experience.comments);
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    res.status(500).json({ message: "Failed to fetch comments" });
+  }
+});
+
+router.post("/:id/comments", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { text } = req.body;
+
+    if (!req.user || !req.user.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    if (!text || text.trim() === "") {
+      return res.status(400).json({ message: "Comment text is required" });
+    }
+
+    // 1. Find experience
+    const experience = await Experience.findById(id).populate("user"); // get owner
+    if (!experience) return res.status(404).json({ message: "Experience not found" });
+
+    // 2. Save comment
+    experience.comments.push({
+      user: req.user.user._id,
+      text,
+    });
+    await experience.save();
+    await experience.populate("comments.user", "firstName lastName");
+
+    const created = experience.comments[experience.comments.length - 1];
+
+    // 3. Get experience owner and commenter info
+    const owner = experience.user;
+    const commenter = req.user.user;
+
+    if (owner.email) {
+      // 4. Setup transporter
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.FEEDBACK_MAIL_USER,
+          pass: process.env.FEEDBACK_MAIL_PASS,
+        },
+      });
+
+      // 5. Send styled email to owner
+      await transporter.sendMail({
+        from: `"interNito Notifications" <${process.env.FEEDBACK_MAIL_USER}>`,
+        to: owner.email,
+        subject: `New comment on your ${experience.company} experience`,
+        replyTo: commenter.email || process.env.FEEDBACK_MAIL_USER,
+        html: `
+          <div style="font-family:'Poppins',Arial,sans-serif;max-width:600px;margin:0 auto;background:#f9f9f9;padding:32px 24px 24px 24px;border-radius:16px;box-shadow:0 2px 12px rgba(34,139,34,0.07);">
+            <div style="text-align:center;margin-bottom:18px;">
+              <img src="https://drive.usercontent.google.com/download?id=15i1bEJ-SXKmF4WwqDLo83Qot7rrzSRSA&export=view&authuser=0" alt="interNito Logo" style="width:70px;height:auto;margin-bottom:8px;display:inline-block;" />
+            </div>
+            <div style="text-align:center;margin-bottom:24px;">
+              <h2 style="margin:0;font-size:1.5rem;color:#222;font-weight:600;letter-spacing:0.01em;">New Comment Received</h2>
+            </div>
+            <div style="background:#fff;border-radius:12px;padding:20px 18px 14px 18px;border:1.5px solid #e0e0e0;">
+              <p style="margin:0 0 8px 0;font-size:1.05rem;color:#333;">
+                <strong>From:</strong> <span style="color:#76b852;">${commenter.firstName} ${commenter.lastName || ""}</span>
+              </p>
+              <p style="margin:0 0 8px 0;font-size:1.05rem;color:#333;">
+                <strong>Comment:</strong>
+              </p>
+              <div style="border-left:4px solid #76b852;padding-left:14px;margin:8px 0 16px 0;color:#222;font-size:1.08rem;line-height:1.6;background:#f6fff4;border-radius:6px;">
+                ${text}
+              </div>
+              <p style="font-size:0.97rem;color:#888;margin:0 0 4px 0;">
+                <em>Replying to this email will send your response directly to the commenter (if they provided an email).</em>
+              </p>
+            </div>
+            <div style="margin-top:28px;text-align:center;font-size:0.95rem;color:#aaa;">
+              <span>interNito Notification System</span>
+            </div>
+          </div>
+        `,
+      });
+    }
+
+    return res.status(201).json({ comment: created });
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    res.status(500).json({ message: "Failed to add comment" });
+  }
+});
+
 module.exports = router;
