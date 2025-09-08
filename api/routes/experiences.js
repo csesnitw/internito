@@ -324,7 +324,7 @@ router.post("/:id/comments", async (req, res) => {
 
     // 3. Get experience owner and commenter info
     const owner = experience.user;
-    console.log(owner);
+    // console.log(owner);
     const commenter = req.user.user;
 
     if (owner.email) {
