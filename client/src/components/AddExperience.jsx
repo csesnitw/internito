@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { NAMES } from "../constants/companies";
 import "./AddExperience.css";
+import Slider from "@mui/material/Slider";
 
 const BRANCHES = [
   "CSE", "ECE", "EEE", "MECH", "CHEM", "CIVIL", "MME", "BIOTECH",
@@ -401,17 +402,33 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
             style={{ width: "100%", minHeight: 150 }}
           />
           <label>OT Duration:</label>
-          <input
-            type="range"
-            name="OT_duration"
-            value={experience.OT_duration}
-            onChange={handleChange}
-            min="0"
-            max="180"
-            step = "10"
-            className="slider"
-            style={{ width: "50%" }}
-          />
+					<Slider 
+							value={experience.OT_duration}
+							onChange={(e, newValue) =>
+								handleChange({
+									target: { name: "OT_duration", value: newValue },
+								})
+							}
+							min={0}
+							max={180}
+							step={10}
+							sx={{
+								width: "50%",
+								"& .MuiSlider-track": {
+									backgroundColor: "#76b852",
+									border: "none",
+								},
+								"& .MuiSlider-rail": {
+									backgroundColor: "#76b852",
+								},
+								"& .MuiSlider-thumb": {
+									backgroundColor: "#76b852",
+									"&:hover, &.Mui-focusVisible, &.Mui-active": {
+										boxShadow: "0 0 0 8px rgba(118, 184, 82, 0.3)",
+									},
+								},
+							}}
+						/>
           {printRoundDuration(experience.OT_duration)}
           
         </div>
@@ -468,14 +485,13 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
           {experience.interviewRounds.map((round, idx) => {
             const titleValid = round.title.trim() !== "";
             const descValid = round.description.trim() !== "";
-            const durationValid = round.duration.trim() !== "";
             return (
               <div
                 key={idx}
                 className={
                   "add-exp-round" +
                   (submitAttempted
-                    ? titleValid && descValid && durationValid
+                    ? titleValid && descValid
                       ? " valid"
                       : " invalid"
                     : "")
@@ -506,18 +522,29 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
                 />
                 
                 <label>Round Duration:</label>
-                <input                
-                  type="range"
-                  value={round.duration}
-                  onChange={(e) =>
-                    handleRoundChange(idx, "duration", e.target.value)
-                  }
-                  min="0"
-                  max="180"
-                  step = "10"
-                  className="slider"
-                  style={{ width: "50%" }}
-                />
+                <Slider
+									value={round.duration}
+									onChange={(e, newValue) => handleRoundChange(idx, "duration", newValue)}
+									min={0}
+									max={180}
+									step={10}
+									sx={{
+										width: "50%",
+										"& .MuiSlider-track": {
+											backgroundColor: "#76b852",
+											border: "none",
+										},
+										"& .MuiSlider-rail": {
+											backgroundColor: "#76b852",
+										},
+										"& .MuiSlider-thumb": {
+											backgroundColor: "#76b852",
+											"&:hover, &.Mui-focusVisible, &.Mui-active": {
+												boxShadow: "0 0 0 8px rgba(118, 184, 82, 0.3)",
+											},
+										},
+									}}
+								/>
                 {printRoundDuration(round.duration)}
                 {experience.interviewRounds.length > 1 && (
                   <button
