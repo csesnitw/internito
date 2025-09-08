@@ -137,8 +137,10 @@ const ExpPage = () => {
                 <p>{exp?.numberOfSelections}</p>
               </DropdownSection>
               <DropdownSection title="Online Test Description">
-                 <p className="round-heading">{exp?.OT_description}
-                {exp?.OT_duration !== "" ?<span className="bubble">{printRoundDuration(exp?.OT_duration)}</span> : null}</p>
+                {/* find a better fix*/}
+                <div className="round-heading"><h3>Online Test: </h3> {exp?.OT_duration !== "" ?<span className="bubble">{printRoundDuration(exp?.OT_duration)}</span> : null}</div> 
+                <p>{exp?.OT_description}
+               </p>
               </DropdownSection>
 
               <DropdownSection title="Online Test Questions">
