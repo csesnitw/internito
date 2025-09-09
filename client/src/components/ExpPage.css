@@ -157,3 +157,7 @@
     border-radius: 4px;
     cursor: pointer;
   }
+
+  textarea {
+    resize: none;
+  }

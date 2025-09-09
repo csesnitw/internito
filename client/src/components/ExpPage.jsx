@@ -14,6 +14,12 @@ const DropdownSection = ({ title, children }) => {
     </div>
   );
 };
+
+function autoGrow(e) {
+  e.target.style.height = "auto";
+  e.target.style.height = e.target.scrollHeight + "px";
+}
+
 const ExpPage = () => {
   const { id } = useParams();
   const [exp, setExp] = useState(null);
@@ -162,6 +168,33 @@ const handleCommentSubmit = async (e) => {
                 <p>{exp?.other_comments}</p>
               </DropdownSection>
             </div>
+            <div className="comments-section">
+            <h2>Comments</h2>
+            {comments.length === 0 ? (
+              <p>No comments yet.</p>
+            ) : (
+              comments.map((c, i) => (
+                <div key={i} className="comment">
+                  <strong>{c.user?.firstName} {c.user?.lastName}:</strong>
+                  <p>{c.text}</p>
+                </div>
+              ))
+            )}
+
+            <form onSubmit={handleCommentSubmit}>
+              <textarea
+                name="newComment"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="Write a comment..."
+                onInput={autoGrow}
+                rows={4}
+                style={{ width: "100%", minHeight: 150 }}
+                required
+              />
+              <button type="submit">Post</button>
+            </form>
+          </div>
           </div>
           <div className="right-section">
             <div className="user-card">
@@ -212,29 +245,7 @@ const handleCommentSubmit = async (e) => {
             </div>
           </div>
         </div>
-          <div className="comments-section">
-            <h2>Comments</h2>
-            {comments.length === 0 ? (
-              <p>No comments yet.</p>
-            ) : (
-              comments.map((c, i) => (
-                <div key={i} className="comment">
-                  <strong>{c.user?.firstName} {c.user?.lastName}:</strong>
-                  <p>{c.text}</p>
-                </div>
-              ))
-            )}
-
-            <form onSubmit={handleCommentSubmit}>
-              <textarea
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Write a comment..."
-                required
-              />
-              <button type="submit">Post</button>
-            </form>
-          </div>
+          
         </>
       )}
       {error && <p>{error}</p>
