@@ -111,7 +111,7 @@ const handleCommentSubmit = async (e) => {
     );
     const data = await response.json();
     if (response.ok) {
-      setComments([...comments, data.comment]); // add new comment to list
+      setComments([...comments, data.comment]);
       setNewComment("");
     } else {
       alert(data.message);
