@@ -375,4 +375,39 @@ router.post("/:id/comments", async (req, res) => {
   }
 });
 
+router.post("/:experienceId/comments/:commentId/replies", async (req, res) => {
+  try {
+    if (!req.user || !req.user.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const { experienceId, commentId } = req.params;
+    const { text } = req.body;
+
+    if (!text || text.trim() === "") {
+      return res.status(400).json({ message: "Reply text is required" });
+    }
+
+    const experience = await Experience.findById(experienceId).populate("comments.user", "firstName lastName");
+    if (!experience) return res.status(404).json({ message: "Experience not found" });
+
+    const comment = experience.comments.id(commentId);
+    if (!comment) return res.status(404).json({ message: "Comment not found" });
+
+    comment.replies.push({
+      user: req.user.user._id,
+      text,
+    });
+
+    await experience.save();
+    await experience.populate("comments.replies.user", "firstName lastName");
+
+    const newReply = comment.replies[comment.replies.length - 1];
+    res.status(201).json({ reply: newReply });
+  } catch (error) {
+    console.error("Error adding reply:", error);
+    res.status(500).json({ message: "Failed to add reply" });
+  }
+});
+
 module.exports = router;
