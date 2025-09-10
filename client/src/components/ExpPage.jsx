@@ -226,7 +226,7 @@ const handleAddReply = async (commentId) => {
                     <div className="add-reply">
                       <input
                         type="text"
-                        placeholder="Write a reply..."
+                        placeholder=" Write a reply..."
                         value={replyInputs[c._id] || ""}
                         onChange={(e) =>
                           setReplyInputs({ ...replyInputs, [c._id]: e.target.value })
