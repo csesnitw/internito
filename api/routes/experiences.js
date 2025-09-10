@@ -283,10 +283,9 @@ router.post('/company', async (req, res) => {
 router.get("/:id/comments", async (req, res) => {
   try {
     const { id } = req.params;
-    const experience = await Experience.findById(id).populate(
-      "comments.user",
-      "firstName lastName"
-    );
+    const experience = await Experience.findById(id)
+    .populate("comments.user", "firstName lastName")
+    .populate("comments.replies.user", "firstName lastName");
     if (!experience) return res.status(404).json({ message: "Experience not found" });
 
     res.status(200).json(experience.comments);

@@ -28,6 +28,7 @@ const ExpPage = () => {
   const [expUser, setExpUser] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const [replyInputs, setReplyInputs] = useState({});
 
   const fetchUser = async () => {
     setLoading(true);
@@ -127,6 +128,41 @@ const handleCommentSubmit = async (e) => {
   }
 };
 
+
+
+const handleAddReply = async (commentId) => {
+  const text = replyInputs[commentId];
+  if (!text) return;
+
+  try {
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL || "http://localhost:8000"}/api/experiences/${id}/comments/${commentId}/replies`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ text }),
+      }
+    );
+    const data = await res.json();
+    if (res.ok) {
+      setComments((prev) =>
+        prev.map((c) =>
+          c._id === commentId
+            ? { ...c, replies: [...(c.replies || []), data.reply] }
+            : c
+        )
+      );
+      setReplyInputs({ ...replyInputs, [commentId]: "" });
+    } else {
+      alert(data.message);
+    }
+  } catch (err) {
+    console.error("Failed to add reply", err);
+  }
+};
+
+
   return (
     <div className="container">
       {loading ? (
@@ -173,13 +209,33 @@ const handleCommentSubmit = async (e) => {
             {comments.length === 0 ? (
               <p>No comments yet.</p>
             ) : (
-              comments.map((c, i) => (
-                <div key={i} className="comment">
-                  <strong>{c.user?.firstName} {c.user?.lastName}:</strong>
-                  <p>{c.text}</p>
-                </div>
-              ))
-            )}
+                comments.map((c) => (
+                  <div key={c._id} className="comment">
+                    <strong>{c.user?.firstName} {c.user?.lastName}:</strong>
+                    <p>{c.text}</p>
+
+                    <div className="replies">
+                      {c.replies?.map((r) => (
+                        <div key={r._id} className="reply">
+                          <strong>{r.user?.firstName} {r.user?.lastName}:</strong>
+                          <p>{r.text}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="add-reply">
+                      <input
+                        type="text"
+                        placeholder="Write a reply..."
+                        value={replyInputs[c._id] || ""}
+                        onChange={(e) =>
+                          setReplyInputs({ ...replyInputs, [c._id]: e.target.value })
+                        }
+                      />
+                      <button onClick={() => handleAddReply(c._id)}>Reply</button>
+                    </div>
+                  </div>
+                )))}
 
             <form onSubmit={handleCommentSubmit}>
               <textarea
