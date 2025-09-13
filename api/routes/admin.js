@@ -11,7 +11,7 @@ const isAdmin = async (req, res, next) => {
         if(!req.isAuthenticated()){
             throw new Error("User is not authenticated");
         }
-        const admin = await AdminMod.findOne({ email: req.user.email });
+        const admin = await AdminMod.findOne({ email: req.user.user.email });
         if(!admin){
             throw new Error("User is not an admin");
         }
