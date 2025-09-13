@@ -29,6 +29,8 @@ const ExpPage = () => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [replyInputs, setReplyInputs] = useState({});
+  const [collapsedReplies, setCollapsedReplies] = useState({});
+
 
   const fetchUser = async () => {
     setLoading(true);
@@ -162,6 +164,13 @@ const handleAddReply = async (commentId) => {
   }
 };
 
+const toggleReplies = (commentId) => {
+  setCollapsedReplies((prev) => ({
+    ...prev,
+    [commentId]: !prev[commentId],
+  }));
+};
+
 
   return (
     <div className="container">
@@ -214,27 +223,42 @@ const handleAddReply = async (commentId) => {
                     <strong>{c.user?.firstName} {c.user?.lastName}:</strong>
                     <p>{c.text}</p>
 
-                    <div className="replies">
-                      {c.replies?.map((r) => (
-                        <div key={r._id} className="reply">
-                          <strong>{r.user?.firstName} {r.user?.lastName}:</strong>
-                          <p>{r.text}</p>
-                        </div>
-                      ))}
-                    </div>
+                    {c.replies?.length > 0 && (
+                    <div className="replies-section">
+                      <button
+                        className="toggle-replies-btn"
+                        onClick={() => toggleReplies(c._id)}
+                      >
+                        {collapsedReplies[c._id]
+                          ? `View ${c.replies.length} repl${c.replies.length > 1 ? "ies" : "y"}`
+                          : "Hide replies"}
+                      </button>
 
-                    <div className="add-reply">
-                      <input
-                        type="text"
-                        placeholder=" Write a reply..."
-                        value={replyInputs[c._id] || ""}
-                        onChange={(e) =>
-                          setReplyInputs({ ...replyInputs, [c._id]: e.target.value })
-                        }
-                      />
-                      <button onClick={() => handleAddReply(c._id)}>Reply</button>
+                      {!collapsedReplies[c._id] && (
+                        <div className="replies">
+                          {c.replies.map((r) => (
+                            <div key={r._id} className="reply">
+                              <strong>{r.user?.firstName} {r.user?.lastName}:</strong>
+                              <p>{r.text}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
+                  )}
+
+                  <div className="add-reply">
+                    <input
+                      type="text"
+                      placeholder=" Write a reply..."
+                      value={replyInputs[c._id] || ""}
+                      onChange={(e) =>
+                        setReplyInputs({ ...replyInputs, [c._id]: e.target.value })
+                      }
+                    />
+                    <button onClick={() => handleAddReply(c._id)}>Reply</button>
                   </div>
+                </div>
                 )))}
 
             <form onSubmit={handleCommentSubmit}>

@@ -175,3 +175,18 @@
     margin-left: 1.5rem;
     margin-top: 0.3rem;
   }
+
+  .toggle-replies-btn {
+    background: none;
+    border: none;
+    color: #548d36;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .toggle-replies-btn:hover {
+    text-decoration: underline;
+  }
