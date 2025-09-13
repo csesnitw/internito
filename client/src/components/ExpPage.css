@@ -177,16 +177,10 @@
   }
 
   .toggle-replies-btn {
-    background: none;
-    border: none;
-    color: #548d36;
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 3px;
     cursor: pointer;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-left: 1.2rem;
   }
-
-  .toggle-replies-btn:hover {
-    text-decoration: underline;
-  }
+ 
