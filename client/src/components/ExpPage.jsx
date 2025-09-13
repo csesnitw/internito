@@ -100,6 +100,11 @@ const ExpPage = () => {
     const data = await response.json();
     if (response.ok) {
       setComments(data);
+      const collapsed = {};
+      data.forEach((c) => {
+        collapsed[c._id] = true;
+      });
+      setCollapsedReplies(collapsed);
     }
   } catch (error) {
     console.error("Error fetching comments:", error);
