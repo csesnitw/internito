@@ -138,6 +138,7 @@
     margin-bottom: 10px;
     margin-top: 10px;
     border-radius: 6px;
+    max-width: 100%;
   }
 
   .comments-section textarea {
@@ -214,6 +215,12 @@
     color: #666;
   }
 
+  .comment p,
+  .reply p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+  }
 
 
  
