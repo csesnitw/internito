@@ -219,3 +219,10 @@
   font-size: 0.8rem;
   color: #666;
 }
+
+.comment p,
+.reply p {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
