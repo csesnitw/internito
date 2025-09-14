@@ -332,7 +332,7 @@ const toggleReplies = (commentId) => {
                 </p>
               )}
 
-              {expUser.github === "" || expUser.github === undefined ? (
+              {expUser.github === "" || expUser.linkedIn === undefined ? (
                 ""
               ) : (
                 <p>
