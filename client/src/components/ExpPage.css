@@ -186,13 +186,23 @@
     padding: 5%;
   }
 
-  .toggle-replies-btn {
-    font-size: 0.75rem;
-    padding: 2px 6px;
-    border-radius: 3px;
+  .comments-section .replies-actions .toggle-replies-btn {
+    background: transparent;
+    border: none;
+    color: #548d36;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0;
+    margin-left: 0.8rem;
     cursor: pointer;
-    margin-left: 1.2rem;
+    display: inline-block;
+    line-height: 1;
   }
+  .comments-section .replies-actions .toggle-replies-btn:hover {
+    text-decoration: underline;
+    background: transparent;
+  }
+
 
 
  
