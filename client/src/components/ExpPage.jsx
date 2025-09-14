@@ -20,6 +20,12 @@ function autoGrow(e) {
   e.target.style.height = e.target.scrollHeight + "px";
 }
 
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-GB");
+}
+
+
 const ExpPage = () => {
   const { id } = useParams();
   const [exp, setExp] = useState(null);
@@ -228,9 +234,11 @@ const toggleReplies = (commentId) => {
             ) : (
                 comments.map((c) => (
                   <div key={c._id} className="comment">
-                    <strong>{c.user?.firstName} {c.user?.lastName}:</strong>
+                      <div className="comment-header">
+                        <strong>{c.user?.firstName} {c.user?.lastName}</strong>
+                        <span className="comment-time">{formatDate(c.createdAt)}</span>
+                      </div>
                     <p>{c.text}</p>
-
                     <div className="replies-section">
                     <div className="replies-actions">
                       {c.replies?.length > 0 && (
@@ -261,7 +269,10 @@ const toggleReplies = (commentId) => {
                       <div className="replies">
                         {c.replies.map((r) => (
                           <div key={r._id} className="reply">
-                            <strong>{r.user?.firstName} {r.user?.lastName}:</strong>
+                            <div className="comment-header">
+                              <strong>{r.user?.firstName} {r.user?.lastName}</strong>
+                              <span className="comment-time">{formatDate(r.createdAt)}</span>
+                            </div>
                             <p>{r.text}</p>
                           </div>
                         ))}

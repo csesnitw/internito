@@ -15,6 +15,11 @@ const DropdownSection = ({ title, children }) => {
   );
 };
 
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-GB");
+}
+
 const ExpPage = () => {
   const { id } = useParams();
   const [exp, setExp] = useState(null);
@@ -199,9 +204,10 @@ const ExpPage = () => {
                 ) : (
                   comments.map((c) => (
                     <div key={c._id} className="comment">
-                      <strong>
-                        {c.user?.firstName} {c.user?.lastName}:
-                      </strong>
+                      <div className="comment-header">
+                        <strong>{c.user?.firstName} {c.user?.lastName}</strong>
+                        <span className="comment-time">{formatDate(c.createdAt)}</span>
+                      </div>
                       <p>{c.text}</p>
 
                       <div className="replies-section">
@@ -222,9 +228,10 @@ const ExpPage = () => {
                           <div className="replies">
                             {c.replies.map((r) => (
                               <div key={r._id} className="reply">
-                                <strong>
-                                  {r.user?.firstName} {r.user?.lastName}:
-                                </strong>
+                                <div className="comment-header">
+                                  <strong>{r.user?.firstName} {r.user?.lastName}</strong>
+                                  <span className="comment-time">{formatDate(r.createdAt)}</span>
+                                </div>
                                 <p>{r.text}</p>
                               </div>
                             ))}

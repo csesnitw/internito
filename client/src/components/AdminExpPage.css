@@ -209,4 +209,15 @@
   background: transparent;
 }
 
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comment-time {
+  font-size: 0.8rem;
+  color: #666;
+}
+
 /* ...existing code... */
