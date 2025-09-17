@@ -67,7 +67,7 @@ const ExpPage = () => {
         { credentials: "include" }
       );
       const data = await response.json();
-      if (response.ok) {
+      if (response.ok){
         setExp(data);
       } else {
         console.error("Error fetching data:", data.message);
@@ -82,28 +82,18 @@ const ExpPage = () => {
   const handleDecision = async (id, d) => {
     try {
       if (d === "rejected") {
-        await fetch(
-          `${
-            process.env.REACT_APP_API_URL || "http://localhost:8000"
-          }/api/experiences/delete/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
+        await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences/delete/${id}`, {
+          method: "DELETE",
+        });
         setDecision(<p className="success">Experience deleted</p>);
       } else {
-        await fetch(
-          `${
-            process.env.REACT_APP_API_URL || "http://localhost:8000"
-          }/api/experiences/verify/${id}`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ status: d }),
-          }
-        );
+        await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/api/experiences/verify/${id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status: d }),
+        });
         setDecision(<p className="success">Experience accepted</p>);
       }
       setTimeout(() => {
@@ -272,7 +262,7 @@ const ExpPage = () => {
               ) : (
                 <p>
                   <span className="label">LinkedIn: </span>
-                  {expUser.linkedIn}
+{expUser.linkedIn}
                 </p>
               )}
 
@@ -287,8 +277,7 @@ const ExpPage = () => {
                 ""
               ) : (
                 <p>
-                  <span className="label">Resume: </span>
-                  {expUser.resume}
+                  <span className="label">Resume: </span>{expUser.resume}
                 </p>
               )}
             </div>
