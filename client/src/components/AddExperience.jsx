@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { NAMES } from "../constants/companies";
 import "./AddExperience.css";
+import Slider from "@mui/material/Slider";
 
 const BRANCHES = [
   "CSE", "ECE", "EEE", "MECH", "CHEM", "CIVIL", "MME", "BIOTECH",
@@ -25,8 +26,9 @@ const DEFAULT_EXPERIENCE = {
   experienceType: "Intern",
   eligibleBranches: [],
   OT_description: "",
+  OT_duration: "60",
   OT_questions: [],
-  interviewRounds: [{ title: "Round 1", description: "" }],
+  interviewRounds: [{ title: "Round 1", description: "" , duration: "60"}],
   other_comments: "",
   jobDescription: "",
   numberOfSelections: "",
@@ -139,7 +141,7 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
       ...prev,
       interviewRounds: [
         ...prev.interviewRounds,
-        { title: `Round ${prev.interviewRounds.length + 1}`, description: "" },
+        { title: `Round ${prev.interviewRounds.length + 1}`, description: "", duration: "60" },
       ],
     }));
   };
@@ -157,6 +159,23 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
   const areRoundsValid = experience.interviewRounds.every(
     (r) => r.title.trim() !== "" && r.description.trim() !== ""
   );
+
+  const printRoundDuration = (a) => {
+    let s = "";
+    if(Math.trunc(a/60)> 0) {
+      s += (Math.trunc(a/60) + "h");
+    }
+    if(a%60 > 0) {
+      if (s !== "") {
+        s += " ";
+      }
+      s += (Math.trunc(a%60) + "m");
+    }
+    if(a == 0) {
+      s = "0m"
+    }
+    return s;
+  }
 
   // Submit
   const handleSubmit = async (e) => {
@@ -232,6 +251,7 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
     }
     setLoading(false);
   };
+
 
   return (
     <div className="add-exp-form-bg">
@@ -366,13 +386,13 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
           </div>
         </div>
 
-        <div className="add-exp-section">
+        <div className="add-exp-round">
           <label>Online Test Description</label>
           <textarea
             name="OT_description"
             value={experience.OT_description}
             onChange={handleChange}
-            placeholder="Describe the Online Test (pattern, duration, etc.)"
+            placeholder="Describe the Online Test (pattern, difficulty, etc.)"
             className={getTextareaClass(
               "OT_description",
               experience.OT_description
@@ -381,6 +401,36 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
             rows={4}
             style={{ width: "100%", minHeight: 150 }}
           />
+          <label>OT Duration:</label>
+					<Slider 
+							value={experience.OT_duration}
+							onChange={(e, newValue) =>
+								handleChange({
+									target: { name: "OT_duration", value: newValue },
+								})
+							}
+							min={0}
+							max={180}
+							step={10}
+							sx={{
+								width: "50%",
+								"& .MuiSlider-track": {
+									backgroundColor: "#76b852",
+									border: "none",
+								},
+								"& .MuiSlider-rail": {
+									backgroundColor: "#76b852",
+								},
+								"& .MuiSlider-thumb": {
+									backgroundColor: "#76b852",
+									"&:hover, &.Mui-focusVisible, &.Mui-active": {
+										boxShadow: "0 0 0 8px rgba(118, 184, 82, 0.3)",
+									},
+								},
+							}}
+						/>
+          {printRoundDuration(experience.OT_duration)}
+          
         </div>
 
         <div className="add-exp-section">
@@ -470,6 +520,32 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
                   rows={4}
                   style={{ width: "100%", minHeight: 150 }}
                 />
+                
+                <label>Round Duration:</label>
+                <Slider
+									value={round.duration}
+									onChange={(e, newValue) => handleRoundChange(idx, "duration", newValue)}
+									min={0}
+									max={180}
+									step={10}
+									sx={{
+										width: "50%",
+										"& .MuiSlider-track": {
+											backgroundColor: "#76b852",
+											border: "none",
+										},
+										"& .MuiSlider-rail": {
+											backgroundColor: "#76b852",
+										},
+										"& .MuiSlider-thumb": {
+											backgroundColor: "#76b852",
+											"&:hover, &.Mui-focusVisible, &.Mui-active": {
+												boxShadow: "0 0 0 8px rgba(118, 184, 82, 0.3)",
+											},
+										},
+									}}
+								/>
+                {printRoundDuration(round.duration)}
                 {experience.interviewRounds.length > 1 && (
                   <button
                     type="button"

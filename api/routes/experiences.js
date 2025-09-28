@@ -107,7 +107,7 @@ router.post("/addExperience", async (req, res) => {
 
     const {
       company, batch, cgpaCutoff, experienceType,
-      eligibleBranches, OT_description, OT_questions, interviewRounds, other_comments,
+      eligibleBranches, OT_description, OT_duration, OT_questions, interviewRounds, other_comments,
       jobDescription, numberOfSelections
     } = req.body;
 
@@ -144,6 +144,7 @@ router.post("/addExperience", async (req, res) => {
       experienceType,
       eligibleBranches,
       OT_description, // <-- Add this line
+      OT_duration,
       OT_questions,
       interviewRounds,
       other_comments,

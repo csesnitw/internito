@@ -7,11 +7,13 @@ const experienceSchema = new mongoose.Schema({
   experienceType: { type: String, required: true },
   eligibleBranches: [{ type: String }],
   OT_description: { type: String }, // <-- add this
+  OT_duration: {type: String},
   OT_questions: [{ type: String }],
   interviewRounds: [
     {
       title: String,
       description: String,
+      duration: String
     }
   ],
   other_comments: { type: String },

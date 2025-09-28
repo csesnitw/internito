@@ -79,6 +79,21 @@ const ExpPage = () => {
     }
   }, [exp]);
 
+  const printRoundDuration = (totalTime) => {
+    let time = "";
+    if(Math.trunc(totalTime/60)> 0) {
+      time += (Math.trunc(totalTime/60) + "h");
+    }
+    if(totalTime%60 > 0) {
+      if (time !== "") {
+        time += " ";
+      }
+      time += (Math.trunc(totalTime%60) + "m");
+    }
+    return time;
+  }
+
+
   return (
     <div className="container">
       {loading ? (
@@ -95,7 +110,10 @@ const ExpPage = () => {
                 <p>{exp?.numberOfSelections}</p>
               </DropdownSection>
               <DropdownSection title="Online Test Description">
-                <p>{exp?.OT_description}</p>
+                {/* find a better fix*/}
+                <div className="round-heading"><h3>Online Test: </h3> {exp?.OT_duration ?<span className="bubble">{printRoundDuration(exp?.OT_duration)}</span> : null}</div> 
+                <p>{exp?.OT_description}
+               </p>
               </DropdownSection>
 
               <DropdownSection title="Online Test Questions">
@@ -109,7 +127,7 @@ const ExpPage = () => {
               <DropdownSection title="Interview Rounds">
                 {exp?.interviewRounds?.map((round, i) => (
                   <div key={round._id || i} className="round-block">
-                    <h3>{round.title}</h3>
+                    <h3 className = "round-heading">{round.title} {round.duration ?<span className="bubble">{printRoundDuration(round.duration)}</span> : null}</h3>
                     <p>{round.description}</p>
                   </div>
                 ))}
