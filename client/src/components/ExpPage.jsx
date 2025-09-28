@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./ExpPage.css";
 
@@ -21,7 +21,7 @@ const ExpPage = () => {
   const [error, setError] = useState(null);
   const [expUser, setExpUser] = useState(null);
 
-  const fetchUser = useCallback(async () => {
+  const fetchUser = async () => {
     setLoading(true);
     setError(null);
     try {
@@ -43,10 +43,10 @@ const ExpPage = () => {
       console.error("Error fetching data:", error);
       setError("Failed to fetch user data");
     }
-  }, [exp.user]);
+  };
 
   // Fetch data based on the ID from the URL
-  const fetchData = useCallback(async () => {
+  const fetchData = async () => {
     setLoading(true);
     setError(null);
     try {
@@ -67,17 +67,17 @@ const ExpPage = () => {
       console.error("Error fetching data:", error);
       setError("Failed to fetch data");
     }
-  }, [id]);
+  };
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, []);
 
   useEffect(() => {
     if (exp) {
       fetchUser();
     }
-  }, [exp, fetchUser]);
+  }, [exp]);
 
   const printRoundDuration = (totalTime) => {
     let time = "";
