@@ -19,7 +19,6 @@ const passportSetup = require("./passport-setup"); /// importing our student aut
 const experience_router = require("./routes/experiences"); /// importing our experience routes written in another file
 const User = require("./models/User");
 const feedbackRouter = require("./routes/feedback");
-const adminRouter = require("./routes/admin");
 /* 
 Status codes returned in the responses of various API endpoints are mostly in line with
 RESTFul API Practices
@@ -36,13 +35,11 @@ app.use(session({
     /* The `secret: 'my-secret-key'` in the `session` middleware configuration is setting a secret key
     used to sign the session ID cookie. This secret key is used to encrypt the session data stored
     on the client-side and prevent tampering or unauthorized access to the session data. */
-
-    // TODO: make sure this is saved properly in prod
-    secret: process.env.SESSION_SECRET,
+    secret: 'my-secret-key',
     /* The `resave: true` option in the `session` middleware configuration indicates that the session
     data should be saved back to the session store even if the session was never modified during the
     request. */
-    resave: false,
+    resave: true,
     /* The `saveUninitialized: false` option in the `session` middleware configuration indicates that
     the session will not be saved for a session that is uninitialized. In other words, if a session
     is new and has not been modified during the request, it will not be saved to the session store. */
@@ -55,8 +52,7 @@ app.use(session({
         //maxAge: 5 * 60 * 60 * 24 * 1000, // 5 days
         /* The `secure: false` option within the `session` middleware configuration is used to specify
         whether the session cookie should be set with the `Secure` attribute or not. */
-        // SHOULD be true in production if we use https (safe) otherwise false for dev or non-https environments
-        secure: process.env.HTTPS === "true",
+        secure: false
     },
 }));
 
@@ -81,8 +77,8 @@ This middleware is used to parse incoming requests with JSON payloads. */
 
 app.use("/api/feedback", feedbackRouter);
 app.use("/api/experiences", experience_router); // Update the experiences route to include /api
-app.use("/api/admin", adminRouter); 
 
+/// Basic endpoint to see if our backend server is running without any complications
 app.get("/api", (req, res) => {
     try {
         return res.status(200).json("JSON Server is running");

@@ -110,9 +110,7 @@ module.exports = function () {
                     userExists.yearOfStudy = yearOfStudy;
                     userExists.branch = branch;
                     userExists.course = course;
-                    await userExists.save().then(() => {
-                        return done(null, { role: true, user: userExists, accessToken: accessToken })
-                    }).catch(() => {});
+                    return done(null, { role: true, user: userExists, accessToken: accessToken })
                 }
 
                 /// Creates a new User object
