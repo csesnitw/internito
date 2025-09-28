@@ -178,7 +178,7 @@ const ExpPage = () => {
                 </p>
               )}
 
-              {expUser.github === "" || expUser.linkedIn === undefined ? (
+              {expUser.github === "" || expUser.github === undefined ? (
                 ""
               ) : (
                 <p>
