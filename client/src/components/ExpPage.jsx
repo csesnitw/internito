@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./ExpPage.css";
 
+// Round type constants for pill indicators
+const ROUND_TYPES = ["HR", "Technical", "Project", "Resume", "Mixed"];
+
 const DropdownSection = ({ title, children }) => {
   const [open, setOpen] = useState(false);
 
@@ -109,7 +112,14 @@ const ExpPage = () => {
               <DropdownSection title="Interview Rounds">
                 {exp?.interviewRounds?.map((round, i) => (
                   <div key={round._id || i} className="round-block">
-                    <h3>{round.title}</h3>
+                    <div className="round-header">
+                      <h3>{round.title}</h3>
+                      {round.type && ROUND_TYPES.includes(round.type) && (
+                        <span className={`round-type-pill round-type-${round.type.toLowerCase()}`}>
+                          {round.type}
+                        </span>
+                      )}
+                    </div>
                     <p>{round.description}</p>
                   </div>
                 ))}
