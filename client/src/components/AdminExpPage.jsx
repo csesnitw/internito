@@ -107,14 +107,14 @@ const ExpPage = () => {
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, []);
 
   useEffect(() => {
     if (exp) {
       fetchUser();
       fetchComments();
     }
-  }, [exp, fetchUser, fetchComments]);
+  }, [exp]);
 
   const fetchComments = async () => {
     try {

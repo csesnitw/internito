@@ -109,7 +109,7 @@ router.post("/addExperience", async (req, res) => {
 
     const {
       company, batch, cgpaCutoff, experienceType,
-      eligibleBranches, OT_description, OT_questions, interviewRounds, other_comments,
+      eligibleBranches, OT_description, OT_duration, OT_questions, interviewRounds, other_comments,
       jobDescription, numberOfSelections, comments,
     } = req.body;
 
