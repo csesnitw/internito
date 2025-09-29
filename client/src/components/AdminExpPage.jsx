@@ -14,6 +14,12 @@ const DropdownSection = ({ title, children }) => {
     </div>
   );
 };
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-GB");
+}
+
 const ExpPage = () => {
   const { id } = useParams();
   const [exp, setExp] = useState(null);
@@ -22,6 +28,8 @@ const ExpPage = () => {
   const [decision, setDecision] = useState(null);
   const [expUser, setExpUser] = useState(null);
   const navigate = useNavigate();
+  const [comments, setComments] = useState([]);
+  const [collapsedReplies, setCollapsedReplies] = useState({});
 
   const fetchUser = async () => {
     setLoading(true);
@@ -34,7 +42,7 @@ const ExpPage = () => {
         { credentials: "include" }
       );
       const data = await response.json();
-      if (response.ok){
+      if (response.ok) {
         setExpUser(data.user);
         setLoading(false);
       } else {
@@ -58,7 +66,7 @@ const ExpPage = () => {
         }/api/experiences/specific/${id}`,
         { credentials: "include" }
       );
-      const data = await response.json()
+      const data = await response.json();
       if (response.ok){
         setExp(data);
       } else {
@@ -104,8 +112,38 @@ const ExpPage = () => {
   useEffect(() => {
     if (exp) {
       fetchUser();
+      fetchComments();
     }
   }, [exp]);
+
+  const fetchComments = async () => {
+    try {
+      const response = await fetch(
+        `${
+          process.env.REACT_APP_API_URL || "http://localhost:8000"
+        }/api/experiences/${id}/comments`,
+        { credentials: "include" }
+      );
+      const data = await response.json();
+      if (response.ok) {
+        setComments(data);
+        const collapsed = {};
+        data.forEach((c) => {
+          collapsed[c._id] = true;
+        });
+        setCollapsedReplies(collapsed);
+      }
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    }
+  };
+
+  const toggleReplies = (commentId) => {
+    setCollapsedReplies((prev) => ({
+      ...prev,
+      [commentId]: !prev[commentId],
+    }));
+  };
 
   const printRoundDuration = (a) => {
     let s = "";
@@ -121,12 +159,14 @@ const ExpPage = () => {
     return s;
   }
 
+
   return (
     <div className="container">
       {loading ? (
         <p>Loading...</p>
       ) : (
         <>
+          <div className="top-section">
           <div className="left-section">
             <div className="details-section">
               <DropdownSection title="Job Description">
@@ -164,8 +204,52 @@ const ExpPage = () => {
                 <p>{exp?.other_comments}</p>
               </DropdownSection>
             </div>
-          </div>
-          <div className="right-section">
+            <div className="comments-section">
+                <h2>Comments</h2>
+                {comments.length === 0 ? (
+                  <p>No comments yet.</p>
+                ) : (
+                  comments.map((c) => (
+                    <div key={c._id} className="comment">
+                      <div className="comment-header">
+                        <strong>{c.user?.firstName} {c.user?.lastName}</strong>
+                        <span className="comment-time">{formatDate(c.createdAt)}</span>
+                      </div>
+                      <p>{c.text}</p>
+
+                      <div className="replies-section">
+                        {c.replies?.length > 0 && (
+                          <button
+                            className="toggle-replies-btn"
+                            onClick={() => toggleReplies(c._id)}
+                          >
+                            {collapsedReplies[c._id]
+                              ? `View ${c.replies.length} repl${
+                                  c.replies.length > 1 ? "ies" : "y"
+                                }`
+                              : "Hide replies"}
+                          </button>
+                        )}
+
+                        {!collapsedReplies[c._id] && c.replies?.length > 0 && (
+                          <div className="replies">
+                            {c.replies.map((r) => (
+                              <div key={r._id} className="reply">
+                                <div className="comment-header">
+                                  <strong>{r.user?.firstName} {r.user?.lastName}</strong>
+                                  <span className="comment-time">{formatDate(r.createdAt)}</span>
+                                </div>
+                                <p>{r.text}</p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            <div className="right-section">
             <div className="user-card">
               <h1 className="user-title">User Details</h1>
               <p>
@@ -193,7 +277,8 @@ const ExpPage = () => {
                 ""
               ) : (
                 <p>
-                  <span className="label">LinkedIn: </span>{expUser.linkedIn}
+                  <span className="label">LinkedIn: </span>
+{expUser.linkedIn}
                 </p>
               )}
 
@@ -226,6 +311,8 @@ const ExpPage = () => {
             </button>
             {decision}
           </div>
+          </div>
+
         </>
       )}
       {error && <p>{error}</p>}

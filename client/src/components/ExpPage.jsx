@@ -15,12 +15,30 @@ const DropdownSection = ({ title, children }) => {
     </div>
   );
 };
+
+function autoGrow(e) {
+  e.target.style.height = "auto";
+  e.target.style.height = e.target.scrollHeight + "px";
+}
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-GB");
+}
+
+
 const ExpPage = () => {
   const { id } = useParams();
   const [exp, setExp] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expUser, setExpUser] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
+  const [replyInputs, setReplyInputs] = useState({});
+  const [collapsedReplies, setCollapsedReplies] = useState({});
+  const [openReplyBoxes, setOpenReplyBoxes] = useState({});
+
 
   const fetchUser = async () => {
     setLoading(true);
@@ -77,8 +95,97 @@ const ExpPage = () => {
   useEffect(() => {
     if (exp) {
       fetchUser();
+      fetchComments();
     }
   }, [exp]);
+
+
+  const fetchComments = async () => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL || "http://localhost:8000"}/api/experiences/${id}/comments`,
+      { credentials: "include" }
+    );
+    const data = await response.json();
+    if (response.ok) {
+      setComments(data);
+      const collapsed = {};
+      data.forEach((c) => {
+        collapsed[c._id] = true;
+      });
+      setCollapsedReplies(collapsed);
+    }
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+  }
+};
+
+const handleCommentSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL || "http://localhost:8000"}/api/experiences/${id}/comments`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ text: newComment }),
+      }
+    );
+    const data = await response.json();
+    if (response.ok) {
+      setComments([...comments, data.comment]);
+      setNewComment("");
+    } else {
+      alert(data.message);
+    }
+  } catch (error) {
+    console.error("Error submitting comment:", error);
+  }
+};
+
+
+
+const handleAddReply = async (commentId) => {
+  const text = replyInputs[commentId];
+  if (!text) return;
+
+  try {
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL || "http://localhost:8000"}/api/experiences/${id}/comments/${commentId}/replies`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ text }),
+      }
+    );
+    const data = await res.json();
+    if (res.ok) {
+      setComments((prev) =>
+        prev.map((c) =>
+          c._id === commentId
+            ? { ...c, replies: [...(c.replies || []), data.reply] }
+            : c
+        )
+      );
+      setReplyInputs({ ...replyInputs, [commentId]: "" });
+      setOpenReplyBoxes((prev) => ({ ...prev, [commentId]: false }));
+    } else {
+      alert(data.message);
+    }
+  } catch (err) {
+    console.error("Failed to add reply", err);
+  }
+};
+
+
+const toggleReplies = (commentId) => {
+  setCollapsedReplies((prev) => ({
+    ...prev,
+    [commentId]: !prev[commentId],
+  }));
+};
 
   const printRoundDuration = (totalTime) => {
     let time = "";
@@ -95,12 +202,14 @@ const ExpPage = () => {
   }
 
 
+
   return (
     <div className="container">
       {loading ? (
         <p>Loading...</p>
       ) : (
         <>
+        <div className="top-section">
           <div className="left-section">
             <div className="details-section">
               <DropdownSection title="Job Description">
@@ -138,6 +247,89 @@ const ExpPage = () => {
                 <p>{exp?.other_comments}</p>
               </DropdownSection>
             </div>
+            <div className="comments-section">
+            <h2>Comments</h2>
+            {comments.length === 0 ? (
+              <p>No comments yet.</p>
+            ) : (
+                comments.map((c) => (
+                  <div key={c._id} className="comment">
+                      <div className="comment-header">
+                        <strong>{c.user?.firstName} {c.user?.lastName}</strong>
+                        <span className="comment-time">{formatDate(c.createdAt)}</span>
+                      </div>
+                    <p>{c.text}</p>
+                    <div className="replies-section">
+                    <div className="replies-actions">
+                      {c.replies?.length > 0 && (
+                        <button
+                          className="toggle-replies-btn"
+                          onClick={() => toggleReplies(c._id)}
+                        >
+                          {collapsedReplies[c._id]
+                            ? `View ${c.replies.length} repl${c.replies.length > 1 ? "ies" : "y"}`
+                            : "Hide replies"}
+                        </button>
+                      )}
+
+                      <button
+                        className="toggle-replies-btn"
+                        onClick={() =>
+                          setOpenReplyBoxes((prev) => ({
+                            ...prev,
+                            [c._id]: !prev[c._id],
+                          }))
+                        }
+                      >
+                        {openReplyBoxes[c._id] ? "Cancel" : "Reply"}
+                      </button>
+                    </div>
+
+                    {!collapsedReplies[c._id] && c.replies?.length > 0 && (
+                      <div className="replies">
+                        {c.replies.map((r) => (
+                          <div key={r._id} className="reply">
+                            <div className="comment-header">
+                              <strong>{r.user?.firstName} {r.user?.lastName}</strong>
+                              <span className="comment-time">{formatDate(r.createdAt)}</span>
+                            </div>
+                            <p>{r.text}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {openReplyBoxes[c._id] && (
+                      <div className="add-reply">
+                        <input
+                          type="text"
+                          placeholder="Write a reply..."
+                          value={replyInputs[c._id] || ""}
+                          onChange={(e) =>
+                            setReplyInputs({ ...replyInputs, [c._id]: e.target.value })
+                          }
+                        />
+                        <button onClick={() => handleAddReply(c._id)}>Post</button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                )))}
+
+            <form onSubmit={handleCommentSubmit}>
+              <textarea
+                name="newComment"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="Write a comment..."
+                onInput={autoGrow}
+                rows={4}
+                style={{ width: "100%", minHeight: 150 }}
+                required
+              />
+              <button type="submit">Post</button>
+            </form>
+          </div>
           </div>
           <div className="right-section">
             <div className="user-card">
@@ -194,6 +386,8 @@ const ExpPage = () => {
               )}
             </div>
           </div>
+        </div>
+          
         </>
       )}
       {error && <p>{error}</p>}

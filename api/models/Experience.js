@@ -21,6 +21,21 @@ const experienceSchema = new mongoose.Schema({
   numberOfSelections: { type: Number }, // <-- add this
   name: { type: String, required: true }, // <-- add this
   status: { type: String, required: true },
+
+  comments: [
+    {
+      user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+      text: { type: String, required: true },
+      createdAt: { type: Date, default: Date.now },
+      replies: [
+        {
+          user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+          text: { type: String, required: true },
+          createdAt: { type: Date, default: Date.now },
+        }
+      ],
+    }
+  ]
   verdict: { type: String }
 }, { timestamps: true });
 
