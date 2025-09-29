@@ -107,14 +107,14 @@ const ExpPage = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   useEffect(() => {
     if (exp) {
       fetchUser();
       fetchComments();
     }
-  }, [exp]);
+  }, [exp, fetchUser, fetchComments]);
 
   const fetchComments = async () => {
     try {
@@ -165,7 +165,6 @@ const ExpPage = () => {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <>
           <div className="top-section">
             <div className="left-section">
               <div className="details-section">
@@ -313,7 +312,6 @@ const ExpPage = () => {
               {decision}
             </div>
             </div>
-        </>
       )}
       {error && <p>{error}</p>}
     </div>
