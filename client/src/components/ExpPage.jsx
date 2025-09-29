@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 import { VERDICTS } from "../constants/verdictsMap"
 import "./ExpPage.css";
 
+// Round type constants for pill indicators
+const ROUND_TYPES = ["HR", "Technical", "Project", "Resume", "Mixed"];
+
 const DropdownSection = ({ title, children }) => {
   const [open, setOpen] = useState(false);
 
@@ -237,6 +240,14 @@ const toggleReplies = (commentId) => {
               <DropdownSection title="Interview Rounds">
                 {exp?.interviewRounds?.map((round, i) => (
                   <div key={round._id || i} className="round-block">
+                    <div className="round-header">
+                      <h3>{round.title}</h3>
+                      {round.type && ROUND_TYPES.includes(round.type) && (
+                        <span className={`round-type-pill round-type-${round.type.toLowerCase()}`}>
+                          {round.type}
+                        </span>
+                      )}
+                    </div>
                     <h3 className = "round-heading">{round.title} {round.duration ?<span className="bubble">{printRoundDuration(round.duration)}</span> : null}</h3>
                     <p>{round.description}</p>
                   </div>
