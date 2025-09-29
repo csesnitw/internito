@@ -111,9 +111,87 @@
     border-radius: 6px;
   }
   
+  .round-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
   .round-block h3 {
-    margin-bottom: 5px;
+    margin: 0;
     color: #2980b9;
+    flex-grow: 1;
+  }
+
+  /* Round type pill styles - consistent with website UI */
+  .round-type-pill {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 22px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 2px solid transparent;
+    cursor: default;
+    transition: all 0.2s ease;
+  }
+
+  .round-type-hr {
+    background-color: #8e44ad;
+  }
+
+  .round-type-hr:hover {
+    background-color: #7d3c98;
+    border-color: #6c3483;
+    transform: translateY(-1px) scale(1.05);
+    color: white;
+  }
+
+  .round-type-technical {
+    background-color: #e74c3c;
+  }
+
+  .round-type-technical:hover {
+    background-color: #dc2d2d;
+    border-color: #c0392b;
+    transform: translateY(-1px) scale(1.05);
+    color: white;
+  }
+
+  .round-type-project {
+    background-color: #3498db;
+  }
+
+  .round-type-project:hover {
+    background-color: #2e86c1;
+    border-color: #2874a6;
+    transform: translateY(-1px) scale(1.05);
+    color: white;
+  }
+
+  .round-type-resume {
+    background-color: #27ae60;
+  }
+
+  .round-type-resume:hover {
+    background-color: #229954;
+    border-color: #1e8449;
+    transform: translateY(-1px) scale(1.05);
+    color: white;
+  }
+
+  .round-type-mixed {
+    background-color: #f39c12;
+  }
+
+  .round-type-mixed:hover {
+    background-color: #e67e22;
+    border-color: #d68910;
+    transform: translateY(-1px) scale(1.05);
+    color: white;
   }
   
   .dropdown-content p {
@@ -239,4 +317,3 @@
     justify-content: space-between;
     align-items: center;
   }
-
