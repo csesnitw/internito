@@ -120,7 +120,7 @@
     white-space: pre-wrap;
     line-height: 1.6;
   }
-  
+
   .comments-section {
     width: 100%;
     margin-top: 30px;
@@ -224,3 +224,19 @@
 
 
  
+
+  .bubble {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6B7280;
+    background-color: #E5E7EB;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+}
+
+  .round-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+

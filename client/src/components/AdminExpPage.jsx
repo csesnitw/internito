@@ -145,6 +145,21 @@ const ExpPage = () => {
     }));
   };
 
+  const printRoundDuration = (a) => {
+    let s = "";
+    if(Math.trunc(a/60)> 0) {
+      s += (Math.trunc(a/60) + "h");
+    }
+    if(a%60 > 0) {
+      if (s !== "") {
+        s += " ";
+      }
+      s += (Math.trunc(a%60) + "m");
+    }
+    return s;
+  }
+
+
   return (
     <div className="container">
       {loading ? (
@@ -152,42 +167,44 @@ const ExpPage = () => {
       ) : (
         <>
           <div className="top-section">
-            <div className="left-section">
-              <div className="details-section">
-                <DropdownSection title="Job Description">
-                  <p>{exp?.jobDescription}</p>
-                </DropdownSection>
+          <div className="left-section">
+            <div className="details-section">
+              <DropdownSection title="Job Description">
+                <p>{exp?.jobDescription}</p>
+              </DropdownSection>
 
-                <DropdownSection title="Number of Selections">
-                  <p>{exp?.numberOfSelections}</p>
-                </DropdownSection>
-                <DropdownSection title="Online Test Description">
-                  <p>{exp?.OT_description}</p>
-                </DropdownSection>
+              <DropdownSection title="Number of Selections">
+                <p>{exp?.numberOfSelections}</p>
+              </DropdownSection>
+              <DropdownSection title="Online Test Description">
+                {/* find a better fix*/}
+                <div className="round-heading"><h3>Online Test: </h3> {exp?.OT_duration ?<span className="bubble">{printRoundDuration(exp?.OT_duration)}</span> : null}</div> 
+                <p>{exp?.OT_description}
+               </p>
+              </DropdownSection>
 
-                <DropdownSection title="Online Test Questions">
-                  {exp?.OT_questions?.map((q, i) => (
-                    <div key={i} className="question-block">
-                      <p>{q}</p>
-                    </div>
-                  ))}
-                </DropdownSection>
+              <DropdownSection title="Online Test Questions">
+                {exp?.OT_questions?.map((q, i) => (
+                  <div key={i} className="question-block">
+                    <p>{q}</p>
+                  </div>
+                ))}
+              </DropdownSection>
 
-                <DropdownSection title="Interview Rounds">
-                  {exp?.interviewRounds?.map((round, i) => (
-                    <div key={round._id || i} className="round-block">
-                      <h3>{round.title}</h3>
-                      <p>{round.description}</p>
-                    </div>
-                  ))}
-                </DropdownSection>
+              <DropdownSection title="Interview Rounds">
+                {exp?.interviewRounds?.map((round, i) => (
+                  <div key={round._id || i} className="round-block">
+                    <h3 className = "round-heading">{round.title} {round.duration ?<span className="bubble">{printRoundDuration(round.duration)}</span> : null}</h3>
+                    <p>{round.description}</p>
+                  </div>
+                ))}
+              </DropdownSection>
 
-                <DropdownSection title="Other Comments">
-                  <p>{exp?.other_comments}</p>
-                </DropdownSection>
-              </div>
-
-              <div className="comments-section">
+              <DropdownSection title="Other Comments">
+                <p>{exp?.other_comments}</p>
+              </DropdownSection>
+            </div>
+            <div className="comments-section">
                 <h2>Comments</h2>
                 {comments.length === 0 ? (
                   <p>No comments yet.</p>
@@ -232,7 +249,6 @@ const ExpPage = () => {
                   ))
                 )}
               </div>
-            </div>
             <div className="right-section">
             <div className="user-card">
               <h1 className="user-title">User Details</h1>

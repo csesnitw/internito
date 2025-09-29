@@ -146,6 +146,7 @@ router.post("/addExperience", async (req, res) => {
       experienceType,
       eligibleBranches,
       OT_description, // <-- Add this line
+      OT_duration,
       OT_questions,
       interviewRounds,
       other_comments,

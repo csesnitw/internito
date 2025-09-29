@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { VERDICTS } from "../constants/verdictsMap"
 import "./ExpPage.css";
 
 const DropdownSection = ({ title, children }) => {
@@ -98,6 +99,7 @@ const ExpPage = () => {
     }
   }, [exp]);
 
+
   const fetchComments = async () => {
   try {
     const response = await fetch(
@@ -185,6 +187,21 @@ const toggleReplies = (commentId) => {
   }));
 };
 
+  const printRoundDuration = (totalTime) => {
+    let time = "";
+    if(Math.trunc(totalTime/60)> 0) {
+      time += (Math.trunc(totalTime/60) + "h");
+    }
+    if(totalTime%60 > 0) {
+      if (time !== "") {
+        time += " ";
+      }
+      time += (Math.trunc(totalTime%60) + "m");
+    }
+    return time;
+  }
+
+
 
   return (
     <div className="container">
@@ -203,7 +220,10 @@ const toggleReplies = (commentId) => {
                 <p>{exp?.numberOfSelections}</p>
               </DropdownSection>
               <DropdownSection title="Online Test Description">
-                <p>{exp?.OT_description}</p>
+                {/* find a better fix*/}
+                <div className="round-heading"><h3>Online Test: </h3> {exp?.OT_duration ?<span className="bubble">{printRoundDuration(exp?.OT_duration)}</span> : null}</div> 
+                <p>{exp?.OT_description}
+               </p>
               </DropdownSection>
 
               <DropdownSection title="Online Test Questions">
@@ -217,7 +237,7 @@ const toggleReplies = (commentId) => {
               <DropdownSection title="Interview Rounds">
                 {exp?.interviewRounds?.map((round, i) => (
                   <div key={round._id || i} className="round-block">
-                    <h3>{round.title}</h3>
+                    <h3 className = "round-heading">{round.title} {round.duration ?<span className="bubble">{printRoundDuration(round.duration)}</span> : null}</h3>
                     <p>{round.description}</p>
                   </div>
                 ))}
@@ -335,6 +355,13 @@ const toggleReplies = (commentId) => {
                 <span className="label">Eligible Branches:</span>{" "}
                 {exp.eligibleBranches.join(", ")}
               </p>
+              {exp.verdict !== undefined && exp.verdict !== null && exp.verdict !== "" && (
+                <p>
+                  <span className="label">Verdict: </span>
+                  {VERDICTS.find(v => v.value === exp.verdict)?.label}
+                </p>
+              )}
+
               {expUser.linkedIn === "" || expUser.linkedIn === undefined ? (
                 ""
               ) : (
@@ -343,7 +370,7 @@ const toggleReplies = (commentId) => {
                 </p>
               )}
 
-              {expUser.github === "" || expUser.linkedIn === undefined ? (
+              {expUser.github === "" || expUser.github === undefined ? (
                 ""
               ) : (
                 <p>

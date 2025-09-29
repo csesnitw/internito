@@ -161,7 +161,6 @@
   box-sizing: border-box;   
 }
 
-
 .comment {
   background: #efe7e7;
   padding: 10px;
@@ -226,3 +225,19 @@
   overflow-wrap: break-word;
   white-space: pre-wrap;
 }
+/* ...existing code... */
+
+  .bubble {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6B7280;
+    background-color: #E5E7EB;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+}
+
+  .round-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }

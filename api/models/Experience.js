@@ -7,11 +7,13 @@ const experienceSchema = new mongoose.Schema({
   experienceType: { type: String, required: true },
   eligibleBranches: [{ type: String }],
   OT_description: { type: String }, // <-- add this
+  OT_duration: {type: String},
   OT_questions: [{ type: String }],
   interviewRounds: [
     {
       title: String,
       description: String,
+      duration: String
     }
   ],
   other_comments: { type: String },
@@ -19,6 +21,7 @@ const experienceSchema = new mongoose.Schema({
   numberOfSelections: { type: Number }, // <-- add this
   name: { type: String, required: true }, // <-- add this
   status: { type: String, required: true },
+
   comments: [
     {
       user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
@@ -33,6 +36,7 @@ const experienceSchema = new mongoose.Schema({
       ],
     }
   ]
+  verdict: { type: String }
 }, { timestamps: true });
 
 module.exports = mongoose.model("Experience", experienceSchema);
