@@ -35,7 +35,7 @@ const experienceSchema = new mongoose.Schema({
         }
       ],
     }
-  ]
+  ],
   verdict: { type: String }
 }, { timestamps: true });
 
