@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { NAMES } from "../constants/companies";
+import { VERDICTS } from "../constants/verdictsMap"
 import "./AddExperience.css";
+import Slider from "@mui/material/Slider";
 
 // Constants
 const BRANCHES = [
@@ -34,12 +36,13 @@ const DEFAULT_EXPERIENCE = {
   experienceType: "Intern",
   eligibleBranches: [],
   OT_description: "",
+  OT_duration: "60",
   OT_questions: [],
-  interviewRounds: [{ title: "Round 1", type: "", description: "" }],
+  interviewRounds: [{ title: "Round 1", description: "" , duration: "60"}],
   other_comments: "",
   jobDescription: "",
   numberOfSelections: "",
-  rounds: [],
+  verdict: undefined,
 };
 
 const AddExperience = ({ initialExperience, editMode, experienceId }) => {
@@ -94,28 +97,30 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
 
   // Form change handlers
   const handleChange = (e) => {
-    const { name, value, checked } = e.target;
-    
-    switch (name) {
-      case "eligibleBranches":
-        setExperience((prev) => ({
-          ...prev,
-          eligibleBranches: checked
-            ? [...prev.eligibleBranches, value]
-            : prev.eligibleBranches.filter((branch) => branch !== value),
-        }));
-        break;
-        
-      case "dontRememberSelections":
-        setDontRememberSelections(checked);
-        setExperience((prev) => ({
-          ...prev,
-          numberOfSelections: checked ? "-1" : "",
-        }));
-        break;
-        
-      default:
-        setExperience((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    if (name === "eligibleBranches") {
+      setExperience((prev) => ({
+        ...prev,
+        eligibleBranches: checked
+          ? [...prev.eligibleBranches, value]
+          : prev.eligibleBranches.filter((b) => b !== value),
+      }));
+    } else if (name === "dontRememberSelections") {
+      setDontRememberSelections(checked);
+      setExperience((prev) => ({
+        ...prev,
+        numberOfSelections: checked ? "-1" : "",
+      }));
+    } else if (name === "verdict") {    //if verdict is not selected, set it to undefined
+      setExperience((prev) => ({
+        ...prev,
+        verdict: value === "" ? undefined : value,
+      }));
+    } else {
+      setExperience((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
     }
   };
 
@@ -145,8 +150,9 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
   // Interview Rounds handlers
   const handleRoundChange = (idx, field, value) => {
     setExperience((prev) => {
-      const updated = [...prev.interviewRounds];
-      updated[idx][field] = value;
+      const updated = prev.interviewRounds.map((round, i) =>
+        i === idx ? { ...round, [field]: value } : round
+      );
       return { ...prev, interviewRounds: updated };
     });
   };
@@ -156,11 +162,7 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
       ...prev,
       interviewRounds: [
         ...prev.interviewRounds,
-        { 
-          title: `Round ${prev.interviewRounds.length + 1}`, 
-          type: "", 
-          description: "" 
-        },
+        { title: `Round ${prev.interviewRounds.length + 1}`, description: "", duration: "60" },
       ],
     }));
   };
@@ -182,8 +184,26 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
     round.type.trim() !== "" && 
     round.description.trim() !== ""
   );
+  
+  const printRoundDuration = (a) => {
+    let s = "";
+    if(Math.trunc(a/60)> 0) {
+      s += (Math.trunc(a/60) + "h");
+    }
+    if(a%60 > 0) {
+      if (s !== "") {
+        s += " ";
+      }
+      s += (Math.trunc(a%60) + "m");
+    }
+    if(a == 0) {
+      s = "0m"
+    }
+    return s;
+  }
 
-  // Form submission handler
+  // Submit
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage("");
@@ -283,6 +303,7 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
     };
 
 
+
   return (
     <div className="add-exp-form-bg">
       <h2 className="add-exp-title">
@@ -361,27 +382,79 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
               onChange={handleChange}
               className="modern-checkbox"
             />
-            <span className="modern-checkbox-custom" />
-            <span className="modern-checkbox-text">Don't Remember</span>
-          </label>
+            <label className="modern-checkbox-label" style={{ margin: 0 }}>
+              <input
+                type="checkbox"
+                name="dontRememberSelections"
+                checked={dontRememberSelections}
+                onChange={handleChange}
+                className="modern-checkbox"
+              />
+              <span className="modern-checkbox-custom" />
+              <span className="modern-checkbox-text">Don't Remember</span>
+            </label>
+          </div>
+
+          <label>Verdict (Optional)</label>
+          <select
+            name="verdict"
+            value={experience.verdict}
+            onChange={handleChange}
+            className={getInputClass("verdict", experience.verdict)}
+          >
+            <option value="">Select verdict</option>
+            {VERDICTS.map((verdict) => (
+              <option key={verdict.value} value={verdict.value}>
+                {verdict.label}
+              </option>
+            ))}
+          </select>
         </div>
 
-        {/* Job Description */}
-        <div className="add-exp-section">
-          <label>Job Description</label>
-          <textarea name="jobDescription" value={experience.jobDescription} onChange={handleChange}
-            placeholder="Describe the role, responsibilities, and requirements"
-            className={getTextareaClass("jobDescription", experience.jobDescription)}
-            onInput={autoGrow} rows={4} style={{ width: "100%", minHeight: 120 }} />
-        </div>
-
-        {/* OT Description */}
-        <div className="add-exp-section">
+        <div className="add-exp-round">
           <label>Online Test Description</label>
-          <textarea name="OT_description" value={experience.OT_description} onChange={handleChange}
-            placeholder="Describe the Online Test (pattern, duration, etc.)"
-            className={getTextareaClass("OT_description", experience.OT_description)}
-            onInput={autoGrow} rows={4} style={{ width: "100%", minHeight: 150 }} />
+          <textarea
+            name="OT_description"
+            value={experience.OT_description}
+            onChange={handleChange}
+            placeholder="Describe the Online Test (pattern, difficulty, etc.)"
+            className={getTextareaClass(
+              "OT_description",
+              experience.OT_description
+            )}
+            onInput={autoGrow}
+            rows={4}
+            style={{ width: "100%", minHeight: 150 }}
+          />
+          <label>OT Duration:</label>
+					<Slider 
+							value={experience.OT_duration}
+							onChange={(e, newValue) =>
+								handleChange({
+									target: { name: "OT_duration", value: newValue },
+								})
+							}
+							min={0}
+							max={180}
+							step={10}
+							sx={{
+								width: "50%",
+								"& .MuiSlider-track": {
+									backgroundColor: "#76b852",
+									border: "none",
+								},
+								"& .MuiSlider-rail": {
+									backgroundColor: "#76b852",
+								},
+								"& .MuiSlider-thumb": {
+									backgroundColor: "#76b852",
+									"&:hover, &.Mui-focusVisible, &.Mui-active": {
+										boxShadow: "0 0 0 8px rgba(118, 184, 82, 0.3)",
+									},
+								},
+							}}
+						/>
+          {printRoundDuration(experience.OT_duration)}
         </div>
 
         {/* OT Questions */}
@@ -459,6 +532,31 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
                   rows={4}
                 />
                 
+                <label>Round Duration:</label>
+                <Slider
+									value={round.duration}
+									onChange={(e, newValue) => handleRoundChange(idx, "duration", newValue)}
+									min={0}
+									max={180}
+									step={10}
+									sx={{
+										width: "50%",
+										"& .MuiSlider-track": {
+											backgroundColor: "#76b852",
+											border: "none",
+										},
+										"& .MuiSlider-rail": {
+											backgroundColor: "#76b852",
+										},
+										"& .MuiSlider-thumb": {
+											backgroundColor: "#76b852",
+											"&:hover, &.Mui-focusVisible, &.Mui-active": {
+												boxShadow: "0 0 0 8px rgba(118, 184, 82, 0.3)",
+											},
+										},
+									}}
+								/>
+                {printRoundDuration(round.duration)}
                 {experience.interviewRounds.length > 1 && (
                   <button
                     type="button"
