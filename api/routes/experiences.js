@@ -47,7 +47,41 @@ const getSentiment = text => {
   return analysis_score;
 }
 
+const INTERN_OPTIONS = [
+  "Analog",
+  "Application Developer",
+  "Core",
+  "Digital",
+  "Hardware",
+  "Intern Analyst",
+  "Member Technical Staff",
+  "SDE",
+  "Software Engineer",
+  "Summer Analyst",
+  "Surface Enginner",
+  "SWE",
+  "Advanced Application Engineering Analyst Intern",
+  "Data Science Intern",
+  "Other"
+];
 
+const FTE_OPTIONS = [
+  "SDE",
+  "Software Engineer",
+  "Member Technical Staff",
+  "Assistant Software Engineer",
+  "Engineering Analyst",
+  "Server Technology",
+  "Applications Development",
+  "ML Engineer",
+  "Big Data Engineer",
+  "Application Engineer",
+  "Consulting Engineering",
+  "Data Analyst",
+  "Data Scientist",
+  "IT Analyst",
+  "Other"
+];
 
 // Get all experiences sorted by date
 router.get("/", async (req, res) => {
@@ -110,12 +144,28 @@ router.post("/addExperience", async (req, res) => {
     const {
       company, batch, cgpaCutoff, experienceType,
       eligibleBranches, OT_description, OT_duration, OT_questions, interviewRounds, other_comments,
-      jobDescription, numberOfSelections, comments,
+      jobDescription, numberOfSelections, comments, fteRole, otherRole
     } = req.body;
 
     // Validate required fields
-    if (!company || !batch || !cgpaCutoff || !experienceType || !OT_questions || !interviewRounds) {
+    if (!company || !batch || !cgpaCutoff || !experienceType || !fteRole || !OT_questions || !interviewRounds) {
       return res.status(400).json({ error: true, message: 'All required fields must be filled.' });
+    }
+
+    const type = String(experienceType || "").trim().toLowerCase();
+    const role = String(fteRole || "").trim().toLowerCase();
+
+    if (type === "placement") {
+      const validFte = FTE_OPTIONS.map(opt => opt.toLowerCase());
+      if (!role || (!validFte.includes(role) && role.trim() === "")) {
+        return res.status(400).json({ error: true, message: "Invalid FTE role selected." });
+      }
+    }
+    if (type === "intern") {
+      const validIntern = INTERN_OPTIONS.map(opt => opt.toLowerCase());
+      if (!role || (!validIntern.includes(role) && role.trim() === "")) {
+        return res.status(400).json({ error: true, message: "Invalid Intern role selected." });
+      }
     }
 
     // Sentiment check (unchanged)
@@ -144,13 +194,14 @@ router.post("/addExperience", async (req, res) => {
       batch,
       cgpaCutoff,
       experienceType,
+      fteRole, 
+      otherRole,            
       eligibleBranches,
       OT_description, // <-- Add this line
       OT_duration,
       OT_questions,
       interviewRounds,
       other_comments,
-      jobDescription,
       numberOfSelections,
       status: "Pending",
       comments,

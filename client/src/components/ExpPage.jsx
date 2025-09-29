@@ -64,7 +64,6 @@ const ExpPage = () => {
     }
   };
 
-  // Fetch data based on the ID from the URL
   const fetchData = async () => {
     setLoading(true);
     setError(null);
@@ -87,7 +86,7 @@ const ExpPage = () => {
       setError("Failed to fetch data");
     }
   };
-
+  
   useEffect(() => {
     fetchData();
   }, []);
@@ -212,9 +211,13 @@ const toggleReplies = (commentId) => {
         <div className="top-section">
           <div className="left-section">
             <div className="details-section">
-              <DropdownSection title="Job Description">
-                <p>{exp?.jobDescription}</p>
-              </DropdownSection>
+             {exp?.experienceType && (
+                <DropdownSection
+                  title={exp.experienceType.toLowerCase() === "intern" ? "Intern Role" : "FTE Role"}
+                >
+                  <p>{exp?.fteRole}</p>
+                </DropdownSection>
+              )}
 
               <DropdownSection title="Number of Selections">
                 <p>{exp?.numberOfSelections}</p>
