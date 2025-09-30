@@ -139,6 +139,7 @@
   transition: box-shadow 0.18s, border 0.18s;
   box-sizing: border-box;
   height: 340px; /* Fixed height for all cards */
+  word-wrap: break-word;
 }
 
 .experiences-card:hover {
