@@ -119,7 +119,7 @@ function SearchPage() {
           ))}
         </Marquee>
       </div>
-      <h1 className="main-search-title">
+      <h1 className="main-search-title close-gap-home">
         Search Experiences by <span>Company</span>
       </h1>
       <form id="search-form" onSubmit={handleSearch} className="search-form">

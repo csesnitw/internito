@@ -12,6 +12,7 @@
   width: 100%;
   max-width: 600px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  word-wrap: break-word;
 }
 
 .user-title {
