@@ -154,6 +154,7 @@ router.post("/addExperience", async (req, res) => {
       numberOfSelections,
       status: "Pending",
       comments,
+      rounds: interviewRounds.map(r => r.title), 
     });
     const savedExperience = await newExperience.save();
     res.status(201).json({ success: true, message: 'Experience added successfully!' });
@@ -309,19 +310,28 @@ router.post("/:id/comments", async (req, res) => {
       return res.status(400).json({ message: "Comment text is required" });
     }
 
-    const experience = await Experience.findById(id).populate("user");
-    if (!experience) return res.status(404).json({ message: "Experience not found" });
-
-    experience.comments.push({
+    const newComment = {
       user: req.user.user._id,
       text,
-    });
-    await experience.save();
-    await experience.populate("comments.user", "firstName lastName");
+      createdAt: new Date(),
+    };
 
-    const created = experience.comments[experience.comments.length - 1];
+    const updatedExperience = await Experience.findByIdAndUpdate(
+      id,
+      { $push: { comments: newComment } },
+      { new: true }
+    )
+      .populate("user")
+      .populate("comments.user", "firstName lastName");
 
-    const owner = experience.user;
+    if (!updatedExperience) {
+      return res.status(404).json({ message: "Experience not found" });
+    }
+
+    const created =
+      updatedExperience.comments[updatedExperience.comments.length - 1];
+
+    const owner = updatedExperience.user;
     const commenter = req.user.user;
 
     if (owner.email) {
@@ -336,7 +346,7 @@ router.post("/:id/comments", async (req, res) => {
       await transporter.sendMail({
         from: `"interNito Comment" <${process.env.FEEDBACK_MAIL_USER}>`,
         to: owner.email,
-        subject: `New comment on your ${experience.company} experience`,
+        subject: `New comment on your ${updatedExperience.company} experience`,
         replyTo: commenter.email,
         html: `
           <div style="font-family:'Poppins',Arial,sans-serif;max-width:600px;margin:0 auto;background:#f9f9f9;padding:32px 24px 24px 24px;border-radius:16px;box-shadow:0 2px 12px rgba(34,139,34,0.07);">
@@ -348,7 +358,9 @@ router.post("/:id/comments", async (req, res) => {
             </div>
             <div style="background:#fff;border-radius:12px;padding:20px 18px 14px 18px;border:1.5px solid #e0e0e0;">
               <p style="margin:0 0 8px 0;font-size:1.05rem;color:#333;">
-                <strong>From:</strong> <span style="color:#76b852;">${commenter.firstName} ${commenter.lastName || ""} (${commenter.email})</span>
+                <strong>From:</strong> <span style="color:#76b852;">${
+                  commenter.firstName
+                } ${commenter.lastName || ""} (${commenter.email})</span>
               </p>
               <p style="margin:0 0 8px 0;font-size:1.05rem;color:#333;">
                 <strong>Comment:</strong>
