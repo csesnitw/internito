@@ -81,6 +81,7 @@ const ExpPage = () => {
       const data = await response.json();
       if (response.ok){
         setExp(data);
+        console.log(data)
       } else {
         console.error("Error fetching data:", data.message);
         setError("Failed to fetch data");

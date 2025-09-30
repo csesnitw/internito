@@ -258,6 +258,8 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
       verdict: experience.verdict,
     };
 
+    console.log(payload);
+
     try {
       let response, data;
       if (editMode && experienceId) {

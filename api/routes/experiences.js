@@ -110,7 +110,7 @@ router.post("/addExperience", async (req, res) => {
     const {
       company, batch, cgpaCutoff, experienceType,
       eligibleBranches, OT_description, OT_duration, OT_questions, interviewRounds, other_comments,
-      jobDescription, numberOfSelections, comments,
+      jobDescription, numberOfSelections, comments, verdict
     } = req.body;
 
     // Validate required fields
@@ -154,6 +154,7 @@ router.post("/addExperience", async (req, res) => {
       numberOfSelections,
       status: "Pending",
       comments,
+      verdict: verdict ? verdict : undefined
     });
     const savedExperience = await newExperience.save();
     res.status(201).json({ success: true, message: 'Experience added successfully!' });
