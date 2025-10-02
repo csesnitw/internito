@@ -7,7 +7,7 @@ import Slider from "@mui/material/Slider";
 
 // Constants
 const BRANCHES = [
-  "CSE", "ECE", "EEE", "MECH", "CHEM", "CIVIL", "MME", "BIOTECH",
+  "CSE", "MNC", "ECE", "EEE", "Mech", "Chem", "Civil", "MME", "Biotech",
 ];
 
 const BATCHES = [
