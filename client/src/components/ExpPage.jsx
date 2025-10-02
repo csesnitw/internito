@@ -246,7 +246,7 @@ const ExpPage = () => {
                     <div className="round-header">
                       <h3>{round.title}</h3>
                       {round.type && ROUND_TYPES.includes(round.type) && (
-                        <span className={`round-type-pill round-type-${round.type.toLowerCase()}`}>
+                        <span className={`exppage-round-type-pill round-type-${round.type.toLowerCase()}`}>
                           {round.type}
                         </span>
                       )}
