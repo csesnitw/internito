@@ -38,7 +38,7 @@ app.use(session({
     on the client-side and prevent tampering or unauthorized access to the session data. */
 
     // TODO: make sure this is saved properly in prod
-    secret: 'my-secret-key',
+    secret: process.env.SESSION_SECRET,
     /* The `resave: true` option in the `session` middleware configuration indicates that the session
     data should be saved back to the session store even if the session was never modified during the
     request. */

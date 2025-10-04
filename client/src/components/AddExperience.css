@@ -29,6 +29,7 @@
   font-weight: 600;
   font-family: "Poppins", Arial, sans-serif;
 }
+
 .add-exp-title-green {
   color: var(--green);
   font-weight: 700;
@@ -211,9 +212,9 @@
   border-radius: 7px;
   padding: 12px 16px;
   gap: 8px;
-  margin-bottom: 28px; 
   transition: box-shadow 0.2s, border 0.2s, background 0.2s;
   box-shadow: 0 1px 4px rgba(118, 184, 82, 0.04);
+  margin-bottom: 15px;
 }
 
 .add-exp-ot-question-card input {
@@ -244,8 +245,8 @@
 
 .add-exp-remove-btn {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 8px;
+  right: 8px;
   background: none;
   color: #e74c3c;
   border: none;
@@ -452,68 +453,23 @@
 }
 
 /* Plain input/textarea for inside cards (for OT and Interview rounds) */
-.plain-input::placeholder,
-.plain-textarea::placeholder {
-  text-align: left;
-  color: #888; 
-  font-style: italic;
-}
-/* Larger text area with VS Code-like look */
+.plain-input,
 .plain-textarea {
-  max-width: 100%;
-  width: 100%;
-  min-width: 700px;
-  min-height: 700px;               /* bigger height */
-  padding: 14px;
-  font-family: 'Fira Code', 'Courier New', monospace;
-  font-size: 15px;
-  line-height: 1.6;
-  background: #1e1e1e;             /* VS Code dark */
-  color: #dcdcdc;
-  border: 1px solid #333;
-  border-radius: 8px;              /* slightly square */
-  resize: vertical;
-  box-sizing: border-box;
-
-  /* VS Code-like inset shadow */
-  box-shadow: inset 0 0 6px rgba(0,0,0,0.6);
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  color: #222;
+  font-size: 1rem;
+  font-family: inherit;
+  padding: 0;
+  resize: none;
 }
 
-/* Medium screens (tablets) */
-@media (max-width: 1024px) {
-  .plain-textarea {
-    min-height: 400px;
-    font-size: 14px;
-  }
-}
-
-/* Small screens (mobiles) */
-@media (max-width: 600px) {
-  .plain-textarea {
-    min-height: 250px;
-    font-size: 13px;
-    padding: 10px;
-  }
-}
-
-/* Input consistency */
-.plain-input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  box-sizing: border-box;
-}
-.add-exp-round-divider {
-  border: none;
-  border-top: 1px solid #444;
-  margin: 5px 0;
-}
+.plain-input:focus,
 .plain-textarea:focus {
-  outline: none;
-  border-color: #007acc; /* VS Code blue */
-  box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.4);
+  background: transparent !important;
+  outline: none !important;
 }
 
 /* Responsive adjustments for AddExperience form */
@@ -600,5 +556,115 @@
   }
   .modern-checkbox-text {
     font-size: 0.9rem;
+  }
+}
+
+.add-exp-grid-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.add-exp-grid-row label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #222;
+  font-family: "Poppins", Arial, sans-serif;
+  margin-bottom: 0; /* override any grid label spacing */
+  flex-shrink: 0;
+}
+
+.add-exp-grid-row .add-exp-grid-input {
+  flex: 1;
+  min-width: 120px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1.5px solid #ccc;
+  font-size: 1rem;
+  font-family: "Poppins", Arial, sans-serif;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.add-exp-grid-row .add-exp-grid-input:focus {
+  border: 1.5px solid #76b852;
+  box-shadow: 0 2px 8px rgba(118, 184, 82, 0.07);
+}
+
+.add-exp-grid-row .modern-checkbox-label {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .add-exp-grid-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .add-exp-grid-row .modern-checkbox-label {
+    margin-top: 6px;
+  }
+}
+
+/* Round Type Selection Pills */
+.round-type-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+  width: 100%;
+}
+
+.round-type-pill {
+  padding: 8px 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 20px;
+  border: 1.5px solid #ddd;
+  background-color: #fff;
+  color: #555;
+  cursor: pointer;
+  font-family: "Poppins", Arial, sans-serif;
+  transition: all 0.2s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.round-type-pill:hover {
+  border-color: #76b852;
+  background-color: #f8fffe;
+  color: #76b852;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(118, 184, 82, 0.15);
+}
+
+.round-type-pill.selected {
+  background-color: #76b852;
+  color: #fff;
+  border-color: #76b852;
+  box-shadow: 0 2px 6px rgba(118, 184, 82, 0.25);
+}
+
+.round-type-pill.selected:hover {
+  background-color: #5fa143;
+  border-color: #5fa143;
+  transform: translateY(-1px);
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .round-type-options {
+    gap: 6px;
+    margin: 8px 0;
+  }
+  
+  .round-type-pill {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    font-weight: 500;
   }
 }
