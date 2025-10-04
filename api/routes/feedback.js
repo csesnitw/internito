@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
     // Send mail to admin (yourself)
     const adminMail = await transporter.sendMail({
       from: `"interNito Feedback" <${process.env.FEEDBACK_MAIL_USER}>`,
-      to: "cses.dev@gmail.com",
+      to: "ramasani2007@gmail.com",
       subject: `New Feedback from ${userName}`,
       replyTo: userEmail, // This is important!
       html: `
