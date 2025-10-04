@@ -4,8 +4,7 @@
   "description": "The backend for CSES Internito application",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "dev": "nodemon index.js"
+    "start": "nodemon index.js"
   },
   "dependencies": {
     "apos-to-lex-form": "^1.0.5",
@@ -16,12 +15,10 @@
     "mongoose": "^8.13.2",
     "natural": "^8.0.1",
     "nodemailer": "^6.10.1",
+    "nodemon": "^3.1.10",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "spelling-corrector": "^3.0.0",
     "stopword": "^3.1.4"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.10"
   }
 }
