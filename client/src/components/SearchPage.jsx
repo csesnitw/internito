@@ -42,7 +42,7 @@ const COMPANY_LOGOS = [
     name: "Visa",
   },
   {
-    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Samsung_Logo.svg/2560px-Samsung_Logo.svg.png",
+    url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Samsung_Black_icon.svg/1920px-Samsung_Black_icon.svg.png",
     name: "Samsung",
   },
   {

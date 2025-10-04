@@ -142,12 +142,12 @@
   margin-bottom: 12px;
 }
 
-.round-type-pill {
+.exppage-round-type-pill {
   padding: 4px 12px;
   border-radius: 12px;
+  color: #fff;
   font-size: 0.85rem;
   font-weight: bold;
-  color: white;
   white-space: nowrap;
 }
 .round-type-hr { background-color: #4a90e2; }

@@ -134,6 +134,18 @@ const ExpPage = () => {
                 {exp?.interviewRounds?.map((round, i) => (
                   <div key={round._id || i} className="round-block">
                     <h3>{round.title}</h3>
+                    <div className="round-header">
+                      <h3>{round.title}</h3>
+                      {round.type && ROUND_TYPES.includes(round.type) && (
+                        <span className={`exppage-round-type-pill round-type-${round.type.toLowerCase()}`}>
+                          {round.type}
+                        </span>
+                      )}
+                      {/* The duration is currently inside this div */}
+                      {round.duration ? (
+                        <span className="bubble">{printRoundDuration(round.duration)}</span>
+                      ) : null}
+                    </div>
                     <p>{round.description}</p>
                   </div>
                 ))}

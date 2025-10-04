@@ -9,7 +9,7 @@ import parserTypescript from "prettier/parser-typescript";
 import parserHTML from "prettier/parser-html";
 
 const BRANCHES = [
-  "CSE", "ECE", "EEE", "MECH", "CHEM", "CIVIL", "MME", "BIOTECH",
+  "CSE", "MNC", "ECE", "EEE", "Mech", "Chem", "Civil", "MME", "Biotech",
 ];
 const BATCHES = [
   "2017-21", "2018-22", "2019-23", "2020-24", "2021-25", "2022-26", "2023-27", "2024-28", "2025-29", "2026-30",

@@ -91,7 +91,7 @@ const AdminDashboard = () => {
                 {exp.name}
               </div>
               <div className="card-company">
-                interview experience of <span style={{ fontWeight: 600 }}>{exp.company?.toLowerCase()}</span>
+                Interview experience of <span style={{ fontWeight: 600 }}>{exp.company}</span>
               </div>
               <button
                 className="read-more-btn"
