@@ -4,8 +4,13 @@ import { NAMES } from "../constants/companies";
 import { VERDICTS } from "../constants/verdictsMap";
 import "./AddExperience.css";
 import Slider from "@mui/material/Slider";
+import { useRef} from "react";
+import prettier from "prettier/standalone";
+import parserBabel from "prettier/parser-babel";
+import parserTypescript from "prettier/parser-typescript";
+import parserHTML from "prettier/parser-html";
 
-// Constants
+//Constants
 const BRANCHES = [
   "CSE", "MNC", "ECE", "EEE", "Mech", "Chem", "Civil", "MME", "Biotech",
 ];
@@ -50,12 +55,15 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
 
   // Component state
   const [loading, setLoading] = useState(false);
-  const [experience, setExperience] = useState(DEFAULT_EXPERIENCE);
+  const getDefaultExperience = () => JSON.parse(JSON.stringify(DEFAULT_EXPERIENCE));
+  const [experience, setExperience] = useState(getDefaultExperience());
   const [dontRememberSelections, setDontRememberSelections] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [submitAttempted, setSubmitAttempted] = useState(false);
+  const debounceTimers = useRef({});
 
+  // Autofill if editing
   useEffect(() => {
     if (initialExperience) {
       setExperience({ ...DEFAULT_EXPERIENCE, ...initialExperience });
@@ -124,30 +132,87 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
     }
   };
 
-  // OT Questions handlers
-  const handleOTQuestionChange = (idx, value) => {
+  // OT Questions
+  const handleOTQuestionChange = (idx, field, value) => {
     setExperience((prev) => {
       const updated = [...prev.OT_questions];
-      updated[idx] = value;
+      updated[idx] = { ...updated[idx], [field]: value };
       return { ...prev, OT_questions: updated };
     });
   };
-
   const addOTQuestion = () => {
     setExperience((prev) => ({
       ...prev,
-      OT_questions: [...prev.OT_questions, ""],
+      OT_questions: [...prev.OT_questions, { question: "", solutionText: "", solutionCode: "", language: "C++", references: "" }],
     }));
   };
-
   const removeOTQuestion = (idx) => {
     setExperience((prev) => ({
       ...prev,
       OT_questions: prev.OT_questions.filter((_, i) => i !== idx),
     }));
   };
+  const detectLanguage = (code) => {
+    if (!code) return null;
+    const lower = code.toLowerCase();
+    if (lower.includes("#include") || lower.includes("std::")) return "C++";
+    if (lower.includes("public static void main")) return "Java";
+    if (lower.includes("def ") || lower.includes("import ")) return "Python";
+    if (lower.includes("function") || lower.includes("console.log")) return "JavaScript";
+    if (lower.includes("typescript") || lower.includes(": number") || lower.includes(": string")) return "TypeScript";
 
-  // Interview Rounds handlers
+    return null; 
+  };
+  const formatCode = async (code, language) => {
+    try {
+      if (!code) return code;
+
+      // Frontend formatting for web languages
+      if (language === "JavaScript" || language === "JS") {
+        return prettier.format(code, {
+          parser: "babel",
+          plugins: [parserBabel],
+          semi: true,
+          singleQuote: false,
+          tabWidth: 2,
+          useTabs: false,
+        });
+      }
+
+      if (language === "TypeScript") {
+        return prettier.format(code, {
+          parser: "typescript",
+          plugins: [parserTypescript],
+          semi: true,
+          singleQuote: false,
+          tabWidth: 2,
+          useTabs: false,
+        });
+      }
+
+      try {
+        const res = await fetch("/format", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code, language }),
+        });
+        if (!res.ok) {
+          console.warn("Formatter backend returned non-OK status");
+          return code;
+        }
+        const data = await res.json();
+        return data.formatted ?? code;
+      } catch (err) {
+        console.warn("Formatter backend call failed:", err);
+        return code;
+      }
+    } catch (err) {
+      console.error("formatCode error:", err);
+      return code;
+    }
+  };
+
+  // Interview Rounds
   const handleRoundChange = (idx, field, value) => {
     setExperience((prev) => {
       const updated = prev.interviewRounds.map((round, i) =>
@@ -193,6 +258,10 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
     return s;
   };
 
+  // Validation for OT Questions and Interview Rounds
+  const isOTQuestionsValid =
+    experience.OT_questions.every((q) => !q.question || q.question.trim() !== "");
+    
   // Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -224,7 +293,7 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
       }
     }
 
-    if (experience.OT_questions.some(q => q.trim() === "")) {
+    if (experience.OT_questions.some(q => q.question.trim() === "")) {
       setValidationError("Please fill in all OT questions or remove empty ones.");
       return;
     }
@@ -245,7 +314,13 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
       eligibleBranches: experience.eligibleBranches.length ? experience.eligibleBranches : ["CSE"],
       OT_description: experience.OT_description.trim(),
       OT_duration: experience.OT_duration,
-      OT_questions: experience.OT_questions.map(q => q.trim()).filter(q => q !== ""),
+      OT_questions: experience.OT_questions.map(q => ({
+        question: q.question.trim(),
+        solutionText: q.solutionText.trim(),
+        solutionCode: q.solutionCode.trim(),
+        language: q.language,
+        references: q.references.trim(),
+      })).filter(q => q.question !== ""),
       interviewRounds: experience.interviewRounds.map((round, idx) => ({
         title: round.title.trim() || `Round ${idx + 1}`,
         type: round.type.trim(),
@@ -276,7 +351,7 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
         data = await response.json();
         if (response.ok) {
           setSuccessMessage("Thank you! Experience submitted for review.");
-          setExperience(DEFAULT_EXPERIENCE);
+          setExperience(getDefaultExperience());
           setDontRememberSelections(false);
           setSubmitAttempted(false);
         } else setErrorMessage(data.message || "Submission failed.");
@@ -436,31 +511,134 @@ const AddExperience = ({ initialExperience, editMode, experienceId }) => {
         {/* OT Questions */}
         <div className="add-exp-section">
           <label>Online Test Questions</label>
-          <div className="add-exp-ot-questions-list">
-            {experience.OT_questions.map((q, idx) => (
-              <div
-                key={idx}
-                className={`add-exp-ot-question-card ${submitAttempted ? (q.trim() ? "valid" : "invalid") : ""
-                  }`}
-              >
-                <input
-                  type="text"
-                  value={q}
-                  onChange={(e) => handleOTQuestionChange(idx, e.target.value)}
-                  placeholder={`Question ${idx + 1} of OT`}
-                  className="plain-input"
-                />
-                <button
-                  type="button"
-                  className="add-exp-remove-btn"
-                  onClick={() => removeOTQuestion(idx)}
+            {experience.OT_questions.map((q, idx) => {
+              const isValid = q.question.trim() !== "";
+              return (
+                <div
+                  key={idx}
+                  className={
+                    "add-exp-ot-question-card" +
+                    (submitAttempted ? (isValid ? " valid" : " invalid") : "")
+                  }
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "12px",
+                    width: "100%",
+                    boxSizing: "border-box"
+                  }}
                 >
-                  ×
-                </button>
-              </div>
-            ))}
-          </div>
-          <button type="button" className="add-exp-add-btn" onClick={addOTQuestion}>
+                  {/* Question */}
+                  <input
+                    type="text"
+                    value={q.question}
+                    onChange={(e) => handleOTQuestionChange(idx, "question", e.target.value)}
+                    placeholder={`Question ${idx + 1} of OT`}
+                    className="plain-input"
+                  />
+
+                  <hr className="add-exp-round-divider" />
+
+                  {/* Solution Section */}
+                  <input
+                    type="text"
+                    value={q.solutionText}
+                    onChange={(e) => handleOTQuestionChange(idx, "solutionText", e.target.value)}
+                    placeholder="Brief solution / explanation"
+                    className="plain-input"
+                  />
+
+                  {/* Language Selector + Code Area */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                    {/* Language Selector (replace your existing select) */}
+                    <select
+                      value={q.language}
+                      onChange={(e) => {
+                        const newLang = e.target.value;
+
+                        // 🔹 Reset code when changing language manually
+                        handleOTQuestionChange(idx, "language", newLang);
+                        handleOTQuestionChange(idx, "solutionCode", "");
+                      }}
+                      className="plain-input"
+                      style={{ width: "150px" }}
+                    >
+                      <option value="C++">C++</option>
+                      <option value="Java">Java</option>
+                      <option value="Python">Python</option>
+                      <option value="JavaScript">JavaScript</option>
+                      <option value="TypeScript">TypeScript</option>
+                    </select>
+                    {/* Solution Code Input */}
+                    <textarea
+                      value={q.solutionCode}
+                      onChange={(e) => {
+                        const newValue = e.target.value;
+                        handleOTQuestionChange(idx, "solutionCode", newValue);
+
+                        // 🔹 Auto-detect language from keywords
+                        const detected = detectLanguage(newValue);
+                        if (detected && detected !== q.language) {
+                          handleOTQuestionChange(idx, "language", detected);
+                        }
+
+                        // Debounce formatting
+                        if (debounceTimers.current[idx]) {
+                          clearTimeout(debounceTimers.current[idx]);
+                        }
+                        debounceTimers.current[idx] = setTimeout(async () => {
+                          const formatted = await formatCode(newValue, q.language);
+                          if (formatted !== newValue) {
+                            handleOTQuestionChange(idx, "solutionCode", formatted);
+                          }
+                        }, 800);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Tab") {
+                          e.preventDefault();
+                          const start = e.target.selectionStart;
+                          const end = e.target.selectionEnd;
+                          const value = e.target.value;
+                          const indent = "  "; 
+                          e.target.value = value.substring(0, start) + indent + value.substring(end);
+                          e.target.selectionStart = e.target.selectionEnd = start + indent.length;
+                          handleOTQuestionChange(idx, "solutionCode", e.target.value);
+                        }
+                      }}
+                      placeholder="Write solution code here..."
+                      className="plain-textarea code-box"
+                      rows={6}
+                    />
+                  </div>
+                  <hr className="add-exp-round-divider" />
+
+                  {/* References (Optional) */}
+                  <input
+                    type="text"
+                    value={q.references}
+                    onChange={(e) => handleOTQuestionChange(idx, "references", e.target.value)}
+                    placeholder="References (optional)"
+                    className="plain-input"
+                  />
+
+                  <button
+                    type="button"
+                    className="add-exp-remove-btn"
+                    onClick={() => removeOTQuestion(idx)}
+                    aria-label="Remove question"
+                    title="Remove"
+                  >
+                    ×
+                  </button>
+                </div>
+              );
+            })}
+          <button
+            type="button"
+            className="add-exp-add-btn"
+            onClick={addOTQuestion}
+            style={{ marginTop: 8 }}
+          >
             + Add OT Question
           </button>
         </div>

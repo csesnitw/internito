@@ -114,7 +114,7 @@ router.post("/addExperience", async (req, res) => {
     } = req.body;
 
     // Validate required fields
-    if (!company || !batch || !cgpaCutoff || !experienceType || !OT_questions || !interviewRounds) {
+    if (!company || !batch || !cgpaCutoff || !experienceType || !interviewRounds) {
       return res.status(400).json({ error: true, message: 'All required fields must be filled.' });
     }
 
