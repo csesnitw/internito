@@ -90,7 +90,7 @@ const ExpPage = () => {
 
   useEffect(() => {
     fetchData();
-  }, [id]);
+  }, []);
 
   useEffect(() => {
     if (exp) {
@@ -232,13 +232,37 @@ const ExpPage = () => {
                   <p>{exp?.OT_description}</p>
                 </DropdownSection>
 
-                <DropdownSection title="Online Test Questions">
-                  {exp?.OT_questions?.map((q, i) => (
-                    <div key={i} className="question-block">
-                      <p>{q}</p>
-                    </div>
-                  ))}
-                </DropdownSection>
+              <DropdownSection title="Online Test Questions">
+                {exp?.OT_questions?.map((q, i) => (
+                  <div key={q._id || i} className="question-block" style={{ marginBottom: "16px" }}>
+                    {q.question && (
+                      <p><strong>Q{i + 1}:</strong> {q.question}</p>
+                    )}
+                    {q.solutionText && (
+                      <p><strong>Solution:</strong> {q.solutionText}</p>
+                    )}
+                    {q.solutionCode && (
+                      <pre style={{
+                        background: "#1e1e1e",
+                        color: "#dcdcdc",
+                        padding: "12px",
+                        borderRadius: "6px",
+                        overflowX: "auto",
+                        fontFamily: "'Fira Code', monospace",
+                        marginTop: "8px"
+                      }}>
+                        {q.solutionCode}
+                      </pre>
+                    )}
+                    {q.language && (
+                      <p><em>Language:</em> {q.language}</p>
+                    )}
+                    {q.references && (
+                      <p><strong>References:</strong> {q.references}</p>
+                    )}
+                  </div>
+                ))}
+              </DropdownSection>
 
                 <DropdownSection title="Interview Rounds">
                   {exp?.interviewRounds?.map((round, i) => (
