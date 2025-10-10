@@ -19,15 +19,7 @@ const experienceSchema = new mongoose.Schema(
     experienceType: { type: String, required: true, default: "Intern" },
     eligibleBranches: { type: [String], required: true },
     OT_description: { type: String, required: true },
-    OT_questions: [
-      {
-        question: { type: String },
-        solutionText: { type: String },
-        solutionCode: { type: String },
-        language: { type: String },
-        references: { type: String },
-      },
-    ],
+    OT_questions: { type: [String], required: true },
     OT_duration: {type: String},
     interviewRounds: { type: [interviewRoundSchema], required: true },
     other_comments: { type: String, required: true },
