@@ -212,7 +212,6 @@
   border-radius: 7px;
   padding: 12px 16px;
   gap: 8px;
-  margin-bottom: 28px; 
   transition: box-shadow 0.2s, border 0.2s, background 0.2s;
   box-shadow: 0 1px 4px rgba(118, 184, 82, 0.04);
   margin-bottom: 15px;
@@ -454,68 +453,23 @@
 }
 
 /* Plain input/textarea for inside cards (for OT and Interview rounds) */
-.plain-input::placeholder,
-.plain-textarea::placeholder {
-  text-align: left;
-  color: #888; 
-  font-style: italic;
-}
-/* Larger text area with VS Code-like look */
+.plain-input,
 .plain-textarea {
-  max-width: 100%;
-  width: 100%;
-  min-width: 700px;
-  min-height: 700px;               /* bigger height */
-  padding: 14px;
-  font-family: 'Fira Code', 'Courier New', monospace;
-  font-size: 15px;
-  line-height: 1.6;
-  background: #1e1e1e;             /* VS Code dark */
-  color: #dcdcdc;
-  border: 1px solid #333;
-  border-radius: 8px;              /* slightly square */
-  resize: vertical;
-  box-sizing: border-box;
-
-  /* VS Code-like inset shadow */
-  box-shadow: inset 0 0 6px rgba(0,0,0,0.6);
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  color: #222;
+  font-size: 1rem;
+  font-family: inherit;
+  padding: 0;
+  resize: none;
 }
 
-/* Medium screens (tablets) */
-@media (max-width: 1024px) {
-  .plain-textarea {
-    min-height: 400px;
-    font-size: 14px;
-  }
-}
-
-/* Small screens (mobiles) */
-@media (max-width: 600px) {
-  .plain-textarea {
-    min-height: 250px;
-    font-size: 13px;
-    padding: 10px;
-  }
-}
-
-/* Input consistency */
-.plain-input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  box-sizing: border-box;
-}
-.add-exp-round-divider {
-  border: none;
-  border-top: 1px solid #444;
-  margin: 5px 0;
-}
+.plain-input:focus,
 .plain-textarea:focus {
-  outline: none;
-  border-color: #007acc; /* VS Code blue */
-  box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.4);
+  background: transparent !important;
+  outline: none !important;
 }
 
 /* Responsive adjustments for AddExperience form */
