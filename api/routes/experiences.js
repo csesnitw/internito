@@ -232,6 +232,7 @@ router.post('/company', async (req, res) => {
   // Allowed branches
   const BRANCHES = [
     "CSE",
+    "CSE AIDS",
     "ECE",
     "EEE",
     "MECH",
